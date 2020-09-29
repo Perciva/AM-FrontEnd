@@ -11,6 +11,9 @@ $theme-color: rgb(0, 115, 255);
 
 .login-box .content {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .login-box .content .part {
@@ -30,9 +33,14 @@ input {
     border-radius: 12px;
 }
 
+h2 {
+    padding: 0;
+    margin: 0;
+}
+
 p {
     color: $shadow-color;
-    border: 0;
+    margin: 0;
     padding: 0;
 }
 
