@@ -2,15 +2,21 @@ $dark-grey:#676767;
 $shadow-color: #888888;
 $theme-color: rgb(0, 115, 255);
 .login-box {
-    border: solid $dark-grey 1px;
+    // border: solid $dark-grey 1px;
     width: 350px;
     height: 450px;
     border-radius: 5px;
-    box-shadow: 3px 3px $shadow-color;
+    background-color: white;
+    // box-shadow: 3px 3px $shadow-color;
+}
+
+.login-box .logo-box {
+    height: 40%;
 }
 
 .login-box .content {
     padding: 20px;
+    height: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
