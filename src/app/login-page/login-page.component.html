@@ -1,7 +1,7 @@
 <div class="login-box">
     <div class="logo-div">
-        <img src="https://vlab.apps.binus.ac.id/images/ribbon.png" alt="" class="img-ribbon">
-        <img src="https://vlab.apps.binus.ac.id/images/logo.svg" alt="" class="img-logo">
+        <img src="/src/assets/ribbon.png" alt="" class="img-ribbon">
+        <img src="/src/assets/logo.svg" alt="" class="img-logo">
     </div>
     <div class="content">
         <div>
@@ -12,14 +12,16 @@
         </div>
         <form action="" method="post">
             <div class="part">
-                <label for="">Username</label>
-                <br>
-                <input type="text" name="" id="">
+                <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>person</mat-icon>
+                    <input matInput placeholder="Username">
+                </mat-form-field>
             </div>
             <div class="part">
-                <label for="">Password</label>
-                <br>
-                <input type="password" name="" id="">
+                <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <input matInput placeholder="Password">
+                </mat-form-field>
             </div>
             <div class="part">
                 <input type="submit" class="submit-button" value="Login">
