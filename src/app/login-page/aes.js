@@ -1,4 +1,9 @@
-window.System = { __namespace: true, __typeName: "System", getName: function() { return "System"; }, __upperCaseTypes: {} };
+window.System = {
+    __namespace: true,
+    __typeName: "System",
+    getName: function() { return "System"; },
+    __upperCaseTypes: {}
+};
 System.__rootNamespaces = [System];
 System.__registeredTypes = {};
 System.__registerNameSpace = function(namespacePath) {
@@ -8,7 +13,10 @@ System.__registerNameSpace = function(namespacePath) {
         var currentPart = namespaceParts[i];
         var ns = rootObject[currentPart];
         if (!ns) {
-            ns = rootObject[currentPart] = { __namespace: true, __typeName: namespaceParts.slice(0, i + 1).join('.') };
+            ns = rootObject[currentPart] = {
+                __namespace: true,
+                __typeName: namespaceParts.slice(0, i + 1).join('.')
+            };
             var parsedName = eval(ns.__typeName);
             ns.getName = function ns$getName() { return this.__typeName; }
         }
@@ -17,7 +25,26 @@ System.__registerNameSpace = function(namespacePath) {
 }
 System.Type = function() {}
 System.Type.RegisterNamespace = System.__registerNameSpace;
-System.TypeCode = { Empty: 0, Object: 1, DBNull: 2, Boolean: 3, Char: 4, SByte: 5, Byte: 6, Int16: 7, UInt16: 8, Int32: 9, UInt32: 10, Int64: 11, UInt64: 12, Single: 13, Double: 14, Decimal: 15, DateTime: 16, String: 18 }
+System.TypeCode = {
+    Empty: 0,
+    Object: 1,
+    DBNull: 2,
+    Boolean: 3,
+    Char: 4,
+    SByte: 5,
+    Byte: 6,
+    Int16: 7,
+    UInt16: 8,
+    Int32: 9,
+    UInt32: 10,
+    Int64: 11,
+    UInt64: 12,
+    Single: 13,
+    Double: 14,
+    Decimal: 15,
+    DateTime: 16,
+    String: 18
+}
 System.Text = System.Text ? System.Text : {};
 System.Text.Trim = function(valText, valSymbols) {
     if (valSymbols == null) valSymbols = " ";
@@ -31,7 +58,9 @@ System.Text.Trim = function(valText, valSymbols) {
 System.Text.ToCamelCase = function(valText) {
     var r1 = new RegExp("([A-Z])([A-Z]+)", "ig");
 
-    function ConvertCase(a, b, c) { return b.toUpperCase() + c.toLowerCase(); }
+    function ConvertCase(a, b, c) {
+        return b.toUpperCase() + c.toLowerCase();
+    }
     var results = valText.replace(r1, ConvertCase);
     return results;
 }
@@ -39,9 +68,17 @@ System.Extensions = function() {
     this.Apply = function() {
         var isServerSide = false;
         if (typeof(Response) == "object") isServerSide = true;
-        String.prototype.Trim = function(string) { return System.Text.Trim(this, string); };
-        String.prototype.ToCamelCase = function() { return System.Text.ToCamelCase(this); };
-        Array.prototype.Clone = function() { var buffer = this.slice(0, this.length); for (var i = 0; i < this.length; i++) buffer[i] = this[i]; return buffer; }
+        String.prototype.Trim = function(string) {
+            return System.Text.Trim(this, string);
+        };
+        String.prototype.ToCamelCase = function() {
+            return System.Text.ToCamelCase(this);
+        };
+        Array.prototype.Clone = function() {
+            var buffer = this.slice(0, this.length);
+            for (var i = 0; i < this.length; i++) buffer[i] = this[i];
+            return buffer;
+        }
     }
 }
 System.Extensions = new System.Extensions();
@@ -51,7 +88,9 @@ System.Type.Class.Register = function(typeName, baseType) {
     var classType = eval(typeName);
     System.Type.Class._registerClass.apply(classType, arguments);
     classType.IsAbstract = true;
-    classType.prototype.GetType = function() { return eval(typeName) };
+    classType.prototype.GetType = function() {
+        return eval(typeName)
+    };
 }
 System.Type.Class._registerClass = function(typeName, baseType, interfaceType) {
     this.FullName = typeName;
@@ -80,7 +119,13 @@ System.EventHandler = function(target, method, timeout) {
         var args = new Array(2);
         args[0] = sender;
         args[1] = e;
-        if (typeof(timeout) == "number") { setTimeout(function() { return method.apply(target, args); }, timeout); } else { return method.apply(target, args); }
+        if (typeof(timeout) == "number") {
+            setTimeout(function() {
+                return method.apply(target, args);
+            }, timeout);
+        } else {
+            return method.apply(target, args);
+        }
     }
     this.Initialize = function() {
         this.Target = target;
@@ -164,17 +209,281 @@ System.Array.FillMultiDimensional = function(array, dimensions, value) {
         array[x] = value;
     return array;
 }
-System.Array.GetMultiDimensional = function(dimensions, value) { var array = new Array(dimensions[0]); return System.Array.FillMultiDimensional(array, dimensions.slice(1), value); }
-System.Array.Clear = function(array, index, length) { for (var i = 0; i < length; i++) array[i + index] = 0; }
+System.Array.GetMultiDimensional = function(dimensions, value) {
+    var array = new Array(dimensions[0]);
+    return System.Array.FillMultiDimensional(array, dimensions.slice(1), value);
+}
+System.Array.Clear = function(array, index, length) {
+    for (var i = 0; i < length; i++) array[i + index] = 0;
+}
 System.Buffer = function() {}
-System.Buffer.BlockCopy = function(src, srcOffset, dst, dstOffset, count) { for (var i = 0; i < count; i++) { dst[dstOffset + i] = src[srcOffset + i]; } }
+System.Buffer.BlockCopy = function(src, srcOffset, dst, dstOffset, count) {
+    for (var i = 0; i < count; i++) {
+        dst[dstOffset + i] = src[srcOffset + i];
+    }
+}
 System.Byte = function() {
     var dims = new Array();
-    for (var i = 0; i < arguments.length; i++) { dims.push(arguments[i]); }
+    for (var i = 0; i < arguments.length; i++) {
+        dims.push(arguments[i]);
+    }
     return System.Array.GetMultiDimensional(dims, 0);
 }
 System.UInt32 = System.Byte;
-System.Text.HtmlSymbolCodes = { 0x0022: "quot", 0x0026: "amp", 0x003c: "lt", 0x003e: "gt", 0x00a0: "nbsp", 0x00a1: "iexcl", 0x00a2: "cent", 0x00a3: "pound", 0x00a4: "curren", 0x00a5: "yen", 0x00a6: "brvbar", 0x00a7: "sect", 0x00a8: "uml", 0x00a9: "copy", 0x00aa: "ordf", 0x00ab: "laquo", 0x00ac: "not", 0x00ad: "shy", 0x00ae: "reg", 0x00af: "macr", 0x00b0: "deg", 0x00b1: "plusmn", 0x00b2: "sup2", 0x00b3: "sup3", 0x00b4: "acute", 0x00b5: "micro", 0x00b6: "para", 0x00b7: "middot", 0x00b8: "cedil", 0x00b9: "sup1", 0x00ba: "ordm", 0x00bb: "raquo", 0x00bc: "frac14", 0x00bd: "frac12", 0x00be: "frac34", 0x00bf: "iquest", 0x00c0: "Agrave", 0x00c1: "Aacute", 0x00c2: "Acirc", 0x00c3: "Atilde", 0x00c4: "Auml", 0x00c5: "Aring", 0x00c6: "AElig", 0x00c7: "Ccedil", 0x00c8: "Egrave", 0x00c9: "Eacute", 0x00ca: "Ecirc", 0x00cb: "Euml", 0x00cc: "Igrave", 0x00cd: "Iacute", 0x00ce: "Icirc", 0x00cf: "Iuml", 0x00d0: "ETH", 0x00d1: "Ntilde", 0x00d2: "Ograve", 0x00d3: "Oacute", 0x00d4: "Ocirc", 0x00d5: "Otilde", 0x00d6: "Ouml", 0x00d7: "times", 0x00d8: "Oslash", 0x00d9: "Ugrave", 0x00da: "Uacute", 0x00db: "Ucirc", 0x00dc: "Uuml", 0x00dd: "Yacute", 0x00de: "THORN", 0x00df: "szlig", 0x00e0: "agrave", 0x00e1: "aacute", 0x00e2: "acirc", 0x00e3: "atilde", 0x00e4: "auml", 0x00e5: "aring", 0x00e6: "aelig", 0x00e7: "ccedil", 0x00e8: "egrave", 0x00e9: "eacute", 0x00ea: "ecirc", 0x00eb: "euml", 0x00ec: "igrave", 0x00ed: "iacute", 0x00ee: "icirc", 0x00ef: "iuml", 0x00f0: "eth", 0x00f1: "ntilde", 0x00f2: "ograve", 0x00f3: "oacute", 0x00f4: "ocirc", 0x00f5: "otilde", 0x00f6: "ouml", 0x00f7: "divide", 0x00f8: "oslash", 0x00f9: "ugrave", 0x00fa: "uacute", 0x00fb: "ucirc", 0x00fc: "uuml", 0x00fd: "yacute", 0x00fe: "thorn", 0x00ff: "yuml", 0x0152: "OElig", 0x0153: "oelig", 0x0160: "Scaron", 0x0161: "scaron", 0x0178: "Yuml", 0x0192: "fnof", 0x02c6: "circ", 0x02dc: "tilde", 0x0391: "Alpha", 0x0392: "Beta", 0x0393: "Gamma", 0x0394: "Delta", 0x0395: "Epsilon", 0x0396: "Zeta", 0x0397: "Eta", 0x0398: "Theta", 0x0399: "Iota", 0x039a: "Kappa", 0x039b: "Lambda", 0x039c: "Mu", 0x039d: "Nu", 0x039e: "Xi", 0x039f: "Omicron", 0x03a0: "Pi", 0x03a1: "Rho", 0x03a3: "Sigma", 0x03a4: "Tau", 0x03a5: "Upsilon", 0x03a6: "Phi", 0x03a7: "Chi", 0x03a8: "Psi", 0x03a9: "Omega", 0x03b1: "alpha", 0x03b2: "beta", 0x03b3: "gamma", 0x03b4: "delta", 0x03b5: "epsilon", 0x03b6: "zeta", 0x03b7: "eta", 0x03b8: "theta", 0x03b9: "iota", 0x03ba: "kappa", 0x03bb: "lambda", 0x03bc: "mu", 0x03bd: "nu", 0x03be: "xi", 0x03bf: "omicron", 0x03c0: "pi", 0x03c1: "rho", 0x03c2: "sigmaf", 0x03c3: "sigma", 0x03c4: "tau", 0x03c5: "upsilon", 0x03c6: "phi", 0x03c7: "chi", 0x03c8: "psi", 0x03c9: "omega", 0x03d1: "thetasym", 0x03d2: "upsih", 0x03d6: "piv", 0x2002: "ensp", 0x2003: "emsp", 0x2009: "thinsp", 0x200c: "zwnj", 0x200d: "zwj", 0x200e: "lrm", 0x200f: "rlm", 0x2013: "ndash", 0x2014: "mdash", 0x2018: "lsquo", 0x2019: "rsquo", 0x201a: "sbquo", 0x201c: "ldquo", 0x201d: "rdquo", 0x201e: "bdquo", 0x2020: "dagger", 0x2021: "Dagger", 0x2022: "bull", 0x2026: "hellip", 0x2030: "permil", 0x2032: "prime", 0x2033: "Prime", 0x2039: "lsaquo", 0x203a: "rsaquo", 0x203e: "oline", 0x2044: "frasl", 0x20ac: "euro", 0x2111: "image", 0x2118: "weierp", 0x211c: "real", 0x2122: "trade", 0x2135: "alefsym", 0x2190: "larr", 0x2191: "uarr", 0x2192: "rarr", 0x2193: "darr", 0x2194: "harr", 0x21b5: "crarr", 0x21d0: "lArr", 0x21d1: "uArr", 0x21d2: "rArr", 0x21d3: "dArr", 0x21d4: "hArr", 0x2200: "forall", 0x2202: "part", 0x2203: "exist", 0x2205: "empty", 0x2207: "nabla", 0x2208: "isin", 0x2209: "notin", 0x220b: "ni", 0x220f: "prod", 0x2211: "sum", 0x2212: "minus", 0x2217: "lowast", 0x221a: "radic", 0x221d: "prop", 0x221e: "infin", 0x2220: "ang", 0x2227: "and", 0x2228: "or", 0x2229: "cap", 0x222a: "cup", 0x222b: "int", 0x2234: "there4", 0x223c: "sim", 0x2245: "cong", 0x2248: "asymp", 0x2260: "ne", 0x2261: "equiv", 0x2264: "le", 0x2265: "ge", 0x2282: "sub", 0x2283: "sup", 0x2284: "nsub", 0x2286: "sube", 0x2287: "supe", 0x2295: "oplus", 0x2297: "otimes", 0x22a5: "perp", 0x22c5: "sdot", 0x2308: "lceil", 0x2309: "rceil", 0x230a: "lfloor", 0x230b: "rfloor", 0x2329: "lang", 0x232a: "rang", 0x25ca: "loz", 0x2660: "spades", 0x2663: "clubs", 0x2665: "hearts", 0x2666: "diams" }
+System.Text.HtmlSymbolCodes = {
+    0x0022: "quot",
+    0x0026: "amp",
+    0x003c: "lt",
+    0x003e: "gt",
+    0x00a0: "nbsp",
+    0x00a1: "iexcl",
+    0x00a2: "cent",
+    0x00a3: "pound",
+    0x00a4: "curren",
+    0x00a5: "yen",
+    0x00a6: "brvbar",
+    0x00a7: "sect",
+    0x00a8: "uml",
+    0x00a9: "copy",
+    0x00aa: "ordf",
+    0x00ab: "laquo",
+    0x00ac: "not",
+    0x00ad: "shy",
+    0x00ae: "reg",
+    0x00af: "macr",
+    0x00b0: "deg",
+    0x00b1: "plusmn",
+    0x00b2: "sup2",
+    0x00b3: "sup3",
+    0x00b4: "acute",
+    0x00b5: "micro",
+    0x00b6: "para",
+    0x00b7: "middot",
+    0x00b8: "cedil",
+    0x00b9: "sup1",
+    0x00ba: "ordm",
+    0x00bb: "raquo",
+    0x00bc: "frac14",
+    0x00bd: "frac12",
+    0x00be: "frac34",
+    0x00bf: "iquest",
+    0x00c0: "Agrave",
+    0x00c1: "Aacute",
+    0x00c2: "Acirc",
+    0x00c3: "Atilde",
+    0x00c4: "Auml",
+    0x00c5: "Aring",
+    0x00c6: "AElig",
+    0x00c7: "Ccedil",
+    0x00c8: "Egrave",
+    0x00c9: "Eacute",
+    0x00ca: "Ecirc",
+    0x00cb: "Euml",
+    0x00cc: "Igrave",
+    0x00cd: "Iacute",
+    0x00ce: "Icirc",
+    0x00cf: "Iuml",
+    0x00d0: "ETH",
+    0x00d1: "Ntilde",
+    0x00d2: "Ograve",
+    0x00d3: "Oacute",
+    0x00d4: "Ocirc",
+    0x00d5: "Otilde",
+    0x00d6: "Ouml",
+    0x00d7: "times",
+    0x00d8: "Oslash",
+    0x00d9: "Ugrave",
+    0x00da: "Uacute",
+    0x00db: "Ucirc",
+    0x00dc: "Uuml",
+    0x00dd: "Yacute",
+    0x00de: "THORN",
+    0x00df: "szlig",
+    0x00e0: "agrave",
+    0x00e1: "aacute",
+    0x00e2: "acirc",
+    0x00e3: "atilde",
+    0x00e4: "auml",
+    0x00e5: "aring",
+    0x00e6: "aelig",
+    0x00e7: "ccedil",
+    0x00e8: "egrave",
+    0x00e9: "eacute",
+    0x00ea: "ecirc",
+    0x00eb: "euml",
+    0x00ec: "igrave",
+    0x00ed: "iacute",
+    0x00ee: "icirc",
+    0x00ef: "iuml",
+    0x00f0: "eth",
+    0x00f1: "ntilde",
+    0x00f2: "ograve",
+    0x00f3: "oacute",
+    0x00f4: "ocirc",
+    0x00f5: "otilde",
+    0x00f6: "ouml",
+    0x00f7: "divide",
+    0x00f8: "oslash",
+    0x00f9: "ugrave",
+    0x00fa: "uacute",
+    0x00fb: "ucirc",
+    0x00fc: "uuml",
+    0x00fd: "yacute",
+    0x00fe: "thorn",
+    0x00ff: "yuml",
+    0x0152: "OElig",
+    0x0153: "oelig",
+    0x0160: "Scaron",
+    0x0161: "scaron",
+    0x0178: "Yuml",
+    0x0192: "fnof",
+    0x02c6: "circ",
+    0x02dc: "tilde",
+    0x0391: "Alpha",
+    0x0392: "Beta",
+    0x0393: "Gamma",
+    0x0394: "Delta",
+    0x0395: "Epsilon",
+    0x0396: "Zeta",
+    0x0397: "Eta",
+    0x0398: "Theta",
+    0x0399: "Iota",
+    0x039a: "Kappa",
+    0x039b: "Lambda",
+    0x039c: "Mu",
+    0x039d: "Nu",
+    0x039e: "Xi",
+    0x039f: "Omicron",
+    0x03a0: "Pi",
+    0x03a1: "Rho",
+    0x03a3: "Sigma",
+    0x03a4: "Tau",
+    0x03a5: "Upsilon",
+    0x03a6: "Phi",
+    0x03a7: "Chi",
+    0x03a8: "Psi",
+    0x03a9: "Omega",
+    0x03b1: "alpha",
+    0x03b2: "beta",
+    0x03b3: "gamma",
+    0x03b4: "delta",
+    0x03b5: "epsilon",
+    0x03b6: "zeta",
+    0x03b7: "eta",
+    0x03b8: "theta",
+    0x03b9: "iota",
+    0x03ba: "kappa",
+    0x03bb: "lambda",
+    0x03bc: "mu",
+    0x03bd: "nu",
+    0x03be: "xi",
+    0x03bf: "omicron",
+    0x03c0: "pi",
+    0x03c1: "rho",
+    0x03c2: "sigmaf",
+    0x03c3: "sigma",
+    0x03c4: "tau",
+    0x03c5: "upsilon",
+    0x03c6: "phi",
+    0x03c7: "chi",
+    0x03c8: "psi",
+    0x03c9: "omega",
+    0x03d1: "thetasym",
+    0x03d2: "upsih",
+    0x03d6: "piv",
+    0x2002: "ensp",
+    0x2003: "emsp",
+    0x2009: "thinsp",
+    0x200c: "zwnj",
+    0x200d: "zwj",
+    0x200e: "lrm",
+    0x200f: "rlm",
+    0x2013: "ndash",
+    0x2014: "mdash",
+    0x2018: "lsquo",
+    0x2019: "rsquo",
+    0x201a: "sbquo",
+    0x201c: "ldquo",
+    0x201d: "rdquo",
+    0x201e: "bdquo",
+    0x2020: "dagger",
+    0x2021: "Dagger",
+    0x2022: "bull",
+    0x2026: "hellip",
+    0x2030: "permil",
+    0x2032: "prime",
+    0x2033: "Prime",
+    0x2039: "lsaquo",
+    0x203a: "rsaquo",
+    0x203e: "oline",
+    0x2044: "frasl",
+    0x20ac: "euro",
+    0x2111: "image",
+    0x2118: "weierp",
+    0x211c: "real",
+    0x2122: "trade",
+    0x2135: "alefsym",
+    0x2190: "larr",
+    0x2191: "uarr",
+    0x2192: "rarr",
+    0x2193: "darr",
+    0x2194: "harr",
+    0x21b5: "crarr",
+    0x21d0: "lArr",
+    0x21d1: "uArr",
+    0x21d2: "rArr",
+    0x21d3: "dArr",
+    0x21d4: "hArr",
+    0x2200: "forall",
+    0x2202: "part",
+    0x2203: "exist",
+    0x2205: "empty",
+    0x2207: "nabla",
+    0x2208: "isin",
+    0x2209: "notin",
+    0x220b: "ni",
+    0x220f: "prod",
+    0x2211: "sum",
+    0x2212: "minus",
+    0x2217: "lowast",
+    0x221a: "radic",
+    0x221d: "prop",
+    0x221e: "infin",
+    0x2220: "ang",
+    0x2227: "and",
+    0x2228: "or",
+    0x2229: "cap",
+    0x222a: "cup",
+    0x222b: "int",
+    0x2234: "there4",
+    0x223c: "sim",
+    0x2245: "cong",
+    0x2248: "asymp",
+    0x2260: "ne",
+    0x2261: "equiv",
+    0x2264: "le",
+    0x2265: "ge",
+    0x2282: "sub",
+    0x2283: "sup",
+    0x2284: "nsub",
+    0x2286: "sube",
+    0x2287: "supe",
+    0x2295: "oplus",
+    0x2297: "otimes",
+    0x22a5: "perp",
+    0x22c5: "sdot",
+    0x2308: "lceil",
+    0x2309: "rceil",
+    0x230a: "lfloor",
+    0x230b: "rfloor",
+    0x2329: "lang",
+    0x232a: "rang",
+    0x25ca: "loz",
+    0x2660: "spades",
+    0x2663: "clubs",
+    0x2665: "hearts",
+    0x2666: "diams"
+}
 System.Text.HtmlChars = {};
 for (var property in System.Text.HtmlSymbolCodes) {
     var name = System.Text.HtmlSymbolCodes[property];
@@ -197,17 +506,25 @@ System.IO.MemoryStream = function(buffer) {
         adSaveCreateOverWrite = 2;
     this.ToArray = function() {
         var array = new Array();
-        if (isServerSide) {} else { array = this.Buffer.slice(0, this.Buffer.length); }
+        if (isServerSide) {} else {
+            array = this.Buffer.slice(0, this.Buffer.length);
+        }
         return array;
     }
-    this.Flush = function() { if (isServerSide) {} else {} }
+    this.Flush = function() {
+        if (isServerSide) {} else {}
+    }
     this.Write = function(buffer, offset, count) {
         if (isServerSide) {} else {
-            for (var i = 0; i < count; i++) { this.Buffer[this.Position + i] = buffer[offset + i]; }
+            for (var i = 0; i < count; i++) {
+                this.Buffer[this.Position + i] = buffer[offset + i];
+            }
             this.Position += count;
         }
     }
-    this.Close = function() { if (isServerSide) { stream.Close(); } }
+    this.Close = function() {
+        if (isServerSide) { stream.Close(); }
+    }
     this.Initialize = function() {
         if (isServerSide) {
             stream = Server.CreateObject("ADODB.Stream");
@@ -223,8 +540,23 @@ System.IO.MemoryStream = function(buffer) {
     this.Initialize.apply(this, arguments);
 }
 System.Type.RegisterNamespace("System.Text");
-System.Text.ControlChars = { Tab: 0x9, Vt: 0xB, Ff: 0xC, Space: 0x20, Lf: 0xA, Bs: 0x8, Ht: 0x9, Dq: 0x22, Sq: 0x27, Bh: 0x5C }
-System.Text.UtfSignatures = { Utf16Le: 0xFFFF, Utf16Be: 0xFEFF, Utf8: 0xEFBBBF }
+System.Text.ControlChars = {
+    Tab: 0x9,
+    Vt: 0xB,
+    Ff: 0xC,
+    Space: 0x20,
+    Lf: 0xA,
+    Bs: 0x8,
+    Ht: 0x9,
+    Dq: 0x22,
+    Sq: 0x27,
+    Bh: 0x5C
+}
+System.Text.UtfSignatures = {
+    Utf16Le: 0xFFFF,
+    Utf16Be: 0xFEFF,
+    Utf8: 0xEFBBBF
+}
 System.Type.RegisterNamespace("System.Text.Encoding");
 System.Text.Encoding.UTF8Encoder = function() {
     this.Type = "System.Text.Encoding.UTF8Encoder";
@@ -385,8 +717,12 @@ System._bitConverter = function() {
                 }
         }
     }
-    this.ToInt32Le = function(value, startIndex) { return this.ToInt32ArrayLe(value, startIndex, 4)[0]; }
-    this.ToInt32Be = function(value, startIndex) { return this.ToInt32ArrayBe(value, startIndex, 4)[0]; }
+    this.ToInt32Le = function(value, startIndex) {
+        return this.ToInt32ArrayLe(value, startIndex, 4)[0];
+    }
+    this.ToInt32Be = function(value, startIndex) {
+        return this.ToInt32ArrayBe(value, startIndex, 4)[0];
+    }
     this.ToInt32 = this.ToInt32Le;
     this._GetBytesFromInt = function(value, typeCode, bigEndian) {
         var sizeBits = sBits[typeCode];
@@ -398,7 +734,9 @@ System._bitConverter = function() {
         }
         return bytes;
     }
-    this.GetBytesFromInt32Le = function(value) { return this._GetBytesFromInt(value, System.TypeCode.Int32, false); }
+    this.GetBytesFromInt32Le = function(value) {
+        return this._GetBytesFromInt(value, System.TypeCode.Int32, false);
+    }
 
     function _GetBytesFromIntArray(array, startIndex, count, typeCode, bigEndian) {
         var sizeBits = sBits[typeCode];
@@ -416,7 +754,9 @@ System._bitConverter = function() {
         }
         return bytes;
     }
-    this.GetBytesFromInt16ArrayBe = function(value, startIndex, count) { return _GetBytesFromIntArray(value, startIndex, count, System.TypeCode.Int16, true); }
+    this.GetBytesFromInt16ArrayBe = function(value, startIndex, count) {
+        return _GetBytesFromIntArray(value, startIndex, count, System.TypeCode.Int16, true);
+    }
 
     function _ToIntArray(bytes, startIndex, count, typeCode, bigEndian) {
         var sizeBits = sBits[typeCode];
@@ -435,8 +775,12 @@ System._bitConverter = function() {
         }
         return array;
     }
-    this.ToInt32ArrayLe = function(value, startIndex, count) { return _ToIntArray(value, startIndex, count, System.TypeCode.Int32, false); }
-    this.ToInt32ArrayBe = function(value, startIndex, count) { return _ToIntArray(value, startIndex, count, System.TypeCode.Int32, true); }
+    this.ToInt32ArrayLe = function(value, startIndex, count) {
+        return _ToIntArray(value, startIndex, count, System.TypeCode.Int32, false);
+    }
+    this.ToInt32ArrayBe = function(value, startIndex, count) {
+        return _ToIntArray(value, startIndex, count, System.TypeCode.Int32, true);
+    }
     this.SemDoubleToBytes = function(sign, exponent, mantissa) {
         var B = new Array(4);
         mantissa = Math.pow(2, 52) * mantissa;
@@ -492,14 +836,26 @@ System._bitConverter = function() {
             }
         }
         var array;
-        if (!Bin) { if (NumW == 32) array = this.SemSingleToBytes(sign, exponent, mantissa); if (NumW == 64) array = this.SemDoubleToBytes(sign, exponent, mantissa); } else { array = [Bin.a, Bin.b, Bin.c, Bin.d]; if (NumW == 64) array = this.GetBytesFromInt16ArrayBe(array, 0, array.length); }
+        if (!Bin) {
+
+            if (NumW == 32)
+                array = this.SemSingleToBytes(sign, exponent, mantissa);
+            if (NumW == 64)
+                array = this.SemDoubleToBytes(sign, exponent, mantissa);
+        } else {
+            array = [Bin.a, Bin.b, Bin.c, Bin.d];
+            if (NumW == 64)
+                array = this.GetBytesFromInt16ArrayBe(array, 0, array.length);
+        }
         return array.reverse();
     }
     this._isLittleEndian = function() {
         var bytes = this.GetBytes(-1.5, System.TypeCode.Double)
         return (bytes[0] == 0);
     }
-    this.Initialize = function() { this.IsLittleEndian = this._isLittleEndian(); }
+    this.Initialize = function() {
+        this.IsLittleEndian = this._isLittleEndian();
+    }
     this.Initialize.apply(this, arguments);
 }
 System.BitConverter = new System._bitConverter();
@@ -516,7 +872,8 @@ System.Security.Cryptography.Rfc2898DeriveBytes = function(password, salt, itera
     this.F = function(s, c, i) {
         var data = new Array(s.length + 4);
         System.Buffer.BlockCopy(s, 0, data, 0, s.length);
-        for (var b = 0; b < 4; b++) data[s.length + b] = 0;
+        for (var b = 0; b < 4; b++)
+            data[s.length + b] = 0;
         var int4 = System.BitConverter.GetBytes(i);
         System.Array.Reverse(int4, 0, 4);
         System.Buffer.BlockCopy(int4, 0, data, s.length, 4);
@@ -524,7 +881,9 @@ System.Security.Cryptography.Rfc2898DeriveBytes = function(password, salt, itera
         data = u1;
         for (var j = 1; j < c; j++) {
             var un = this.Hmac.ComputeHash(this.Password, data);
-            for (var k = 0; k < this.HmacLength; k++) { u1[k] = (u1[k] ^ un[k]) & 0xff; }
+            for (var k = 0; k < this.HmacLength; k++) {
+                u1[k] = (u1[k] ^ un[k]) & 0xff;
+            }
             data = un;
         }
         return u1;
@@ -538,7 +897,8 @@ System.Security.Cryptography.Rfc2898DeriveBytes = function(password, salt, itera
         if (_pos > 0) {
             var count = Math.min(this.HmacLength - _pos, cb);
             System.Buffer.BlockCopy(_buffer, _pos, result, 0, count);
-            if (count >= cb) return result;
+            if (count >= cb)
+                return result;
             _pos = 0;
             rpos = (rpos + count) % cb;
             r = cb - rpos;
@@ -550,7 +910,8 @@ System.Security.Cryptography.Rfc2898DeriveBytes = function(password, salt, itera
             var bpos = rpos;
             rpos = (rpos + _pos + count) % cb;
             _pos = ((count == this.HmacLength) ? 0 : count);
-            if ((bpos + count) >= cb) return result;
+            if ((bpos + count) >= cb)
+                return result;
         }
         return result;
     }
@@ -558,11 +919,14 @@ System.Security.Cryptography.Rfc2898DeriveBytes = function(password, salt, itera
         var password = arguments[0];
         var salt = arguments[1];
         var iterations = arguments[2];
-        if (typeof(password) == "string") password = System.Text.Encoding.UTF8.GetBytes(password);
-        if (typeof(salt) == "string") salt = System.Text.Encoding.UTF8.GetBytes(salt);
+        if (typeof(password) == "string")
+            password = System.Text.Encoding.UTF8.GetBytes(password);
+        if (typeof(salt) == "string")
+            salt = System.Text.Encoding.UTF8.GetBytes(salt);
         this.Password = password;
         this.Salt = salt
-        if (iterations) this.IterationCount = iterations;
+        if (iterations)
+            this.IterationCount = iterations;
         this.Hmac = new System.Security.Cryptography.HMACSHA1();
     }
     this.Initialize.apply(this, arguments);
@@ -604,15 +968,26 @@ System.Security.Cryptography.ICryptoTransform = function(algorithm, encryption, 
         System.Buffer.BlockCopy(output, 0, temp, 0, blockSizeByte);
     }
 
-    function CheckInput(inputBuffer, inputOffset, inputCount) { if (!inputBuffer) throw "inputBuffer is can't be null"; if (inputOffset < 0) throw "inputOffset is out of range"; if (inputCount < 0) throw "inputCount is out of range"; if (inputOffset > inputBuffer.length - inputCount) { throw "inputBuffer is out of range (overflow)"; } }
+    function CheckInput(inputBuffer, inputOffset, inputCount) {
+        if (!inputBuffer) throw "inputBuffer is can't be null";
+        if (inputOffset < 0) throw "inputOffset is out of range";
+        if (inputCount < 0) throw "inputCount is out of range";
+        if (inputOffset > inputBuffer.length - inputCount) {
+            throw "inputBuffer is out of range (overflow)";
+        }
+    }
     this.TransformBlock = function(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset) { CheckInput(inputBuffer, inputOffset, inputCount); return this._InternalTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset); }
 
-    function KeepLastBlock() { return ((!encrypt) && (algo.Padding != System.Security.Cryptography.PaddingMode.Zeros) && (algo.Padding != System.Security.Cryptography.PaddingMode.None)); }
+    function KeepLastBlock() {
+        return ((!encrypt) && (algo.Padding != System.Security.Cryptography.PaddingMode.Zeros) && (algo.Padding != System.Security.Cryptography.PaddingMode.None));
+    }
     this._InternalTransformBlock = function(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset) {
         var offs = inputOffset;
         var full = 0;
         if (inputCount != blockSizeByte) {
-            if ((inputCount % blockSizeByte) != 0) { throw new System.Security.Cryptography.CryptographicException("Invalid input block size."); }
+            if ((inputCount % blockSizeByte) != 0) {
+                throw new System.Security.Cryptography.CryptographicException("Invalid input block size.");
+            }
             full = inputCount / blockSizeByte;
         } else { full = 1; }
         if (KeepLastBlock()) full--;
@@ -646,13 +1021,22 @@ System.Security.Cryptography.ICryptoTransform = function(algorithm, encryption, 
         var newBlock = new Array();
         switch (algo.Padding) {
             case System.Security.Cryptography.PaddingMode.PKCS7:
-                for (var i = 0; i < paddedInput.length; i++) { paddedInput[i] = paddingSize; }
+                for (var i = 0; i < paddedInput.length; i++) {
+                    paddedInput[i] = paddingSize;
+                }
                 if (rem == 0) blocksCount = 2;
                 break;
         }
         var iBuffer = new System.Byte(blockSizeByte * blocksCount);
         var oBuffer = new System.Byte(blockSizeByte * blocksCount);
-        if (newBlock.length == 0) { System.Buffer.BlockCopy(inputBuffer, inputOffset, iBuffer, 0, inputCount); if ((rem > 0) || (rem == 0 && blocksCount == 2)) { System.Buffer.BlockCopy(paddedInput, 0, iBuffer, inputCount, paddingSize); } } else { System.Buffer.BlockCopy(newBlock, inputOffset, iBuffer, 0, inputCount + paddingSize); }
+        if (newBlock.length == 0) {
+            System.Buffer.BlockCopy(inputBuffer, inputOffset, iBuffer, 0, inputCount);
+            if ((rem > 0) || (rem == 0 && blocksCount == 2)) {
+                System.Buffer.BlockCopy(paddedInput, 0, iBuffer, inputCount, paddingSize);
+            }
+        } else {
+            System.Buffer.BlockCopy(newBlock, inputOffset, iBuffer, 0, inputCount + paddingSize);
+        }
         var result = {};
         result["blocksCount"] = blocksCount;
         result["iBuffer"] = iBuffer;
@@ -676,9 +1060,14 @@ System.Security.Cryptography.ICryptoTransform = function(algorithm, encryption, 
         return oBuffer;
     }
     this.TransformFinalBlock = function(inputBuffer, inputOffset, inputCount) {
-        if (m_disposed) throw new ObjectDisposedException("Object is disposed");
+        if (m_disposed)
+            throw new ObjectDisposedException("Object is disposed");
         CheckInput(inputBuffer, inputOffset, inputCount);
-        if (encrypt) { return this._FinalEncrypt(inputBuffer, inputOffset, inputCount); } else { return this._FinalDecrypt(inputBuffer, inputOffset, inputCount); }
+        if (encrypt) {
+            return this._FinalEncrypt(inputBuffer, inputOffset, inputCount);
+        } else {
+            return this._FinalDecrypt(inputBuffer, inputOffset, inputCount);
+        }
     }
     this.Initialize = function(algorithm, encryption) {
         algo = algorithm;
@@ -701,7 +1090,10 @@ System.Security.Cryptography.ICryptoTransform = function(algorithm, encryption, 
 }
 System.Security.Cryptography.RNGCryptoServiceProvider = function() {
     var rnd;
-    this.GetBytes = function(data) { var length = data.length; for (var i = 0; i < length; i++) { data[i] = rnd.Next(0, 256); } }
+    this.GetBytes = function(data) {
+        var length = data.length;
+        for (var i = 0; i < length; i++) { data[i] = rnd.Next(0, 256); }
+    }
     this.Initialize = function() { rnd = new System.Random(); }
     this.Initialize.apply(this, arguments);
 }
@@ -761,7 +1153,9 @@ System.Security.Cryptography.CryptoStream = function(stream, transform, mode) {
             }
         }
     }
-    this.Flush = function() { if (_stream != null) _stream.Flush(); }
+    this.Flush = function() {
+        if (_stream != null) _stream.Flush();
+    }
     this.FlushFinalBlock = function() {
         _flushedFinalBlock = true;
         var finalBuffer = _transform.TransformFinalBlock(_workingBlock, 0, _partialCount);
@@ -772,7 +1166,9 @@ System.Security.Cryptography.CryptoStream = function(stream, transform, mode) {
         }
         System.Array.Clear(finalBuffer, 0, finalBuffer.length);
     }
-    this.ToArray = function() { return stream.ToArray(); }
+    this.ToArray = function() {
+        return stream.ToArray();
+    }
     this.Close = function() {
         if ((!_flushedFinalBlock) && (_mode == System.Security.Cryptography.CryptoStreamMode.Write)) { this.FlushFinalBlock(); }
         if (_stream != null) _stream.Close();
@@ -795,7 +1191,9 @@ System.Security.Cryptography.HashAlgorithm = function() {
     this.HashValue = new System.Byte();
     this.State = 0;
     this.HashSize = this.HashSizeValue;
-    this._ComputeHash1 = function(buffer) { return this._ComputeHash2(buffer, 0, buffer.length); }
+    this._ComputeHash1 = function(buffer) {
+        return this._ComputeHash2(buffer, 0, buffer.length);
+    }
     this._ComputeHash2 = function(buffer, offset, count) {
         this.HashCore(buffer, offset, count);
         this.HashValue = this.HashFinal();
@@ -806,17 +1204,21 @@ System.Security.Cryptography.HashAlgorithm = function() {
     this.ComputeHash = function() {
         if (arguments.length == 1) {
             var value = arguments[0];
-            if (typeof(value) == "string") value = System.Text.Encoding.UTF8.GetBytes(value);
+            if (typeof(value) == "string")
+                value = System.Text.Encoding.UTF8.GetBytes(value);
             var args = new Array(0);
             args[0] = value;
             return this._ComputeHash1.apply(this, args);
         }
-        if (arguments.length == 3) return this._ComputeHash2.apply(this, arguments);
+        if (arguments.length == 3)
+            return this._ComputeHash2.apply(this, arguments);
     }
     this.HashCore = function(array, ibStart, cbSize) {}
     this.HashFinal = function() {}
     this.Initialize = function() {}
-    this.Hash = function() { return this.HashValue.Clone(); }
+    this.Hash = function() {
+        return this.HashValue.Clone();
+    }
 }
 System.Security.Cryptography.Utils = {};
 System.Security.Cryptography.CipherMode = { CBC: 1, ECB: 2, OFB: 3, CFB: 4, CTS: 5 }
@@ -1346,5 +1748,9 @@ function CipherStreamWrite(cryptor, input) {
 }
 
 function EncryptToBase64(password, s) { var bytes = System.Text.Encoding.Unicode.GetBytes(s); var encryptedBytes = Encrypt(password, bytes); var base64String = System.Convert.ToBase64String(encryptedBytes); return base64String; }
+
+function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
+
+function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
 
 function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
