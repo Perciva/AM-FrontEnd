@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,10 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input'; 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginPageComponent,
-  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -24,6 +20,10 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule
+  ],
+  declarations: [
+    AppComponent,
+    LoginPageComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
