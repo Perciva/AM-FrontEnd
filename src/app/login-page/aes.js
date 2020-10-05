@@ -1161,7 +1161,9 @@ System.Security.Cryptography.CryptoStream = function(stream, transform, mode) {
         var finalBuffer = _transform.TransformFinalBlock(_workingBlock, 0, _partialCount);
         if (_stream != null) {
             _stream.Write(finalBuffer, 0, finalBuffer.length);
-            if (_stream.Type == "System.Security.Cryptography.CryptoStream") { _stream.FlushFinalBlock(); }
+            if (_stream.Type == "System.Security.Cryptography.CryptoStream") {
+                _stream.FlushFinalBlock();
+            }
             _stream.Flush();
         }
         System.Array.Clear(finalBuffer, 0, finalBuffer.length);
@@ -1170,7 +1172,9 @@ System.Security.Cryptography.CryptoStream = function(stream, transform, mode) {
         return stream.ToArray();
     }
     this.Close = function() {
-        if ((!_flushedFinalBlock) && (_mode == System.Security.Cryptography.CryptoStreamMode.Write)) { this.FlushFinalBlock(); }
+        if ((!_flushedFinalBlock) && (_mode == System.Security.Cryptography.CryptoStreamMode.Write)) {
+            this.FlushFinalBlock();
+        }
         if (_stream != null) _stream.Close();
     }
     this.Initialize = function() {
@@ -1178,7 +1182,10 @@ System.Security.Cryptography.CryptoStream = function(stream, transform, mode) {
         _transform = arguments[1];
         _mode = arguments[2];
         _disposed = false;
-        if (_transform) { _workingBlock = new System.Byte(_transform.InputBlockSize); if (_mode == System.Security.Cryptography.CryptoStreamMode.Read) { _currentBlock = new System.Byte(_transform.InputBlockSize); } else if (_mode == System.Security.Cryptography.CryptoStreamMode.Write) { _currentBlock = new System.Byte(_transform.OutputBlockSize); } }
+        if (_transform) {
+            _workingBlock = new System.Byte(_transform.InputBlockSize);
+            if (_mode == System.Security.Cryptography.CryptoStreamMode.Read) { _currentBlock = new System.Byte(_transform.InputBlockSize); } else if (_mode == System.Security.Cryptography.CryptoStreamMode.Write) { _currentBlock = new System.Byte(_transform.OutputBlockSize); }
+        }
     }
     this.Initialize.apply(this, arguments);
 }
@@ -1221,9 +1228,26 @@ System.Security.Cryptography.HashAlgorithm = function() {
     }
 }
 System.Security.Cryptography.Utils = {};
-System.Security.Cryptography.CipherMode = { CBC: 1, ECB: 2, OFB: 3, CFB: 4, CTS: 5 }
-System.Security.Cryptography.PaddingMode = { None: 1, PKCS7: 2, Zeros: 3, ANSIX923: 4, ISO10126: 5, RsaEsPkcs: 6, RsaEsOaep: 7 }
-System.Security.Cryptography.CryptoStreamMode = { Read: 0, Write: 1 }
+System.Security.Cryptography.CipherMode = {
+    CBC: 1,
+    ECB: 2,
+    OFB: 3,
+    CFB: 4,
+    CTS: 5
+}
+System.Security.Cryptography.PaddingMode = {
+    None: 1,
+    PKCS7: 2,
+    Zeros: 3,
+    ANSIX923: 4,
+    ISO10126: 5,
+    RsaEsPkcs: 6,
+    RsaEsOaep: 7
+}
+System.Security.Cryptography.CryptoStreamMode = {
+    Read: 0,
+    Write: 1
+}
 System.Type.RegisterNamespace("System.Security.Cryptography");
 System.Security.Cryptography.SHA1 = function() {
     this.Type = "System.Security.Cryptography.SHA1";
@@ -1233,8 +1257,14 @@ System.Security.Cryptography.SHA1 = function() {
     this._count = 0;
     this._expandedBuffer = new Array();
     this._stateSHA1 = new Array();
-    this.ComputeHashAsHex = function(value) { var bytes = this.ComputeHash(value); return System.BitConverter.ToString(bytes, ''); }
-    this.ComputeHashAsBase64 = function(value) { var bytes = this.ComputeHash(value); return System.Convert.ToBase64String(bytes, false); }
+    this.ComputeHashAsHex = function(value) {
+        var bytes = this.ComputeHash(value);
+        return System.BitConverter.ToString(bytes, '');
+    }
+    this.ComputeHashAsBase64 = function(value) {
+        var bytes = this.ComputeHash(value);
+        return System.Convert.ToBase64String(bytes, false);
+    }
     this._HashData = function(partIn, ibStart, cbSize) {
         var count = cbSize;
         var srcOffset = ibStart;
@@ -1253,9 +1283,13 @@ System.Security.Cryptography.SHA1 = function() {
             count -= 0x40;
             this.SHATransform(this._expandedBuffer, this._stateSHA1, this._buffer);
         }
-        if (count > 0) { System.Buffer.BlockCopy(partIn, srcOffset, this._buffer, dstOffset, count); }
+        if (count > 0) {
+            System.Buffer.BlockCopy(partIn, srcOffset, this._buffer, dstOffset, count);
+        }
     }
-    this.HashCore = function(rgb, ibStart, cbSize) { this._HashData(rgb, ibStart, cbSize); }
+    this.HashCore = function(rgb, ibStart, cbSize) {
+        this._HashData(rgb, ibStart, cbSize);
+    }
     this._EndHash = function() {
         var block = new System.Byte(20);
         var num = 0x40 - this._count & 0x3f;
@@ -1293,16 +1327,27 @@ System.Security.Cryptography.SHA1 = function() {
                 v[(j + 3) % 5] = _rotate(v[(j + 3) % 5], 30);
             }
         }
-        for (i = 0; i < 5; i++) state[i] = as(state[i], v[4 - i]);
+        for (i = 0; i < 5; i++)
+            state[i] = as(state[i], v[4 - i]);
     }
 
-    function as(x, y) { var lsw = (x & 0xFFFF) + (y & 0xFFFF); var msw = (x >> 16) + (y >> 16) + (lsw >> 16); return (msw << 16) | (lsw & 0xFFFF); }
+    function as(x, y) {
+        var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xFFFF);
+    }
 
-    function _rotate(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
+    function _rotate(num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt));
+    }
 
-    function _tf(i, b, c, d) { return (i < 20) ? (d ^ (b & (c ^ d))) : (i < 40) ? (b ^ c) ^ d : (i < 60) ? (b & c) | (d & (b | c)) : (b ^ c) ^ d; }
+    function _tf(i, b, c, d) {
+        return (i < 20) ? (d ^ (b & (c ^ d))) : (i < 40) ? (b ^ c) ^ d : (i < 60) ? (b & c) | (d & (b | c)) : (b ^ c) ^ d;
+    }
 
-    function _ac(i) { return (i < 20) ? 0x5A827999 : (i < 40) ? 0x6ED9EBA1 : (i < 60) ? 0x8F1BBCDC : 0xCA62C1D6; }
+    function _ac(i) {
+        return (i < 20) ? 0x5A827999 : (i < 40) ? 0x6ED9EBA1 : (i < 60) ? 0x8F1BBCDC : 0xCA62C1D6;
+    }
     this.SHAExpand = function(x) {
         for (var i = 0x10; i < 80; i++) { x[i] = _rotate(x[i - 3] ^ x[i - 8] ^ x[i - 14] ^ x[i - 16], 1); }
     }
@@ -1367,8 +1412,14 @@ System.Security.Cryptography.HMACSHA1 = function(key) {
         if (typeof(data) == "string") data = System.Text.Encoding.UTF8.GetBytes(data);
         return this._ComputeHash(key, data);
     }
-    this.ComputeHashAsHex = function(key, data) { var bytes = this.ComputeHash(key, data); return System.BitConverter.ToString(bytes, ''); }
-    this.ComputeHashAsBase64 = function(key, data) { var bytes = this.ComputeHash(key, data); return System.Convert.ToBase64String(bytes, false); }
+    this.ComputeHashAsHex = function(key, data) {
+        var bytes = this.ComputeHash(key, data);
+        return System.BitConverter.ToString(bytes, '');
+    }
+    this.ComputeHashAsBase64 = function(key, data) {
+        var bytes = this.ComputeHash(key, data);
+        return System.Convert.ToBase64String(bytes, false);
+    }
     this._ComputeHash = function(key, data) {
         if (!data) {
             data = key;
@@ -1424,14 +1475,18 @@ System.Security.Cryptography.RijndaelManaged = function() {
 
     function B3(x) { return ((x >> 24) & 255); }
 
-    function F1(x0, x1, x2, x3) { return B1(T1[x0 & 255]) | (B1(T1[(x1 >> 8) & 255]) << 8) | (B1(T1[(x2 >> 16) & 255]) << 16) | (B1(T1[x3 >>> 24]) << 24); }
+    function F1(x0, x1, x2, x3) {
+        return B1(T1[x0 & 255]) | (B1(T1[(x1 >> 8) & 255]) << 8) | (B1(T1[(x2 >> 16) & 255]) << 16) | (B1(T1[x3 >>> 24]) << 24);
+    }
 
     function packBytes(octets) {
         var i, j;
         var len = octets.length;
         var b = new Array(len / 4);
         if (!octets || len % 4) return;
-        for (i = 0, j = 0; j < len; j += 4) { b[i++] = octets[j] | (octets[j + 1] << 8) | (octets[j + 2] << 16) | (octets[j + 3] << 24); }
+        for (i = 0, j = 0; j < len; j += 4) {
+            b[i++] = octets[j] | (octets[j + 1] << 8) | (octets[j + 2] << 16) | (octets[j + 3] << 24);
+        }
         return b;
     }
 
@@ -1720,7 +1775,12 @@ System.Security.Cryptography.RijndaelManaged = function() {
     this.Initialize.apply(this, arguments);
 }
 
-function SaltFromPassword(password) { var passwordBytes = System.Text.Encoding.UTF8.GetBytes(password); var hmac = new System.Security.Cryptography.HMACSHA1(passwordBytes); var salt = hmac.ComputeHash(passwordBytes); return salt; }
+function SaltFromPassword(password) {
+    var passwordBytes = System.Text.Encoding.UTF8.GetBytes(password);
+    var hmac = new System.Security.Cryptography.HMACSHA1(passwordBytes);
+    var salt = hmac.ComputeHash(passwordBytes);
+    return salt;
+}
 
 function GetTransform(password, encrypt) {
     var cipher = new System.Security.Cryptography.RijndaelManaged();
@@ -1729,7 +1789,11 @@ function GetTransform(password, encrypt) {
     var key = secretKey.GetBytes(32);
     var iv = secretKey.GetBytes(16);
     var cryptor = null;
-    if (encrypt) { cryptor = cipher.CreateEncryptor(key, iv); } else { cryptor = cipher.CreateDecryptor(key, iv); }
+    if (encrypt) {
+        cryptor = cipher.CreateEncryptor(key, iv);
+    } else {
+        cryptor = cipher.CreateDecryptor(key, iv);
+    }
     return cryptor;
 }
 
@@ -1747,10 +1811,24 @@ function CipherStreamWrite(cryptor, input) {
     return outputBuffer;
 }
 
-function EncryptToBase64(password, s) { var bytes = System.Text.Encoding.Unicode.GetBytes(s); var encryptedBytes = Encrypt(password, bytes); var base64String = System.Convert.ToBase64String(encryptedBytes); return base64String; }
+function EncryptToBase64(password, s) {
+    var bytes = System.Text.Encoding.Unicode.GetBytes(s);
+    var encryptedBytes = Encrypt(password, bytes);
+    var base64String = System.Convert.ToBase64String(encryptedBytes);
+    return base64String;
+}
 
-function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
+function Encrypt(password, bytes) {
+    var encryptor = GetTransform(password, true);
+    return CipherStreamWrite(encryptor, bytes);
+}
 
-function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
+function Encrypt(password, bytes) {
+    var encryptor = GetTransform(password, true);
+    return CipherStreamWrite(encryptor, bytes);
+}
 
-function Encrypt(password, bytes) { var encryptor = GetTransform(password, true); return CipherStreamWrite(encryptor, bytes); }
+function Encrypt(password, bytes) {
+    var encryptor = GetTransform(password, true);
+    return CipherStreamWrite(encryptor, bytes);
+}
