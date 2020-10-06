@@ -1,6 +1,17 @@
 $dark-grey:#676767;
 $shadow-color: #888888;
 $theme-color: rgb(0, 115, 255);
+.page {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $theme-color;
+}
+
 .login-box {
     // border: solid $dark-grey 1px;
     width: 350px;
