@@ -12,12 +12,15 @@ export class HeaderComponent implements OnInit {
 
   constructor() { }
   
+  
   selection: Selection[] = [
-    {value: 'Odd 19-20'},
+    {value: 'Compact 19-20'},
     {value: 'Even 19-20'},
-    {value: 'Compact 19-20'}
+    {value: 'Odd 19-20'}
   ];
-
+  
+  selected = this.selection[0].value;
+  
   ngOnInit(): void {
   }
 

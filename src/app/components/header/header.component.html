@@ -9,14 +9,42 @@
             Hi, Dummy
         </div>
         <div>
-            <mat-form-field appearance="fill" class="period-selection">
+            <mat-form-field class="period-selection">
                 <mat-label>Period</mat-label>
-                <mat-select>
+                <mat-select [(value)]="selected">
                     <mat-option *ngFor="let item of selection" [value]="item.value">
                         {{item.value}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
+    </div>
+</div>
+<div class="small-container">
+    <div class="navbar">
+        <a routerLink="/manage" routerLinkActive="active">
+            <div class="link">
+                Manage
+            </div>
+        </a>
+        <a routerLink="/#" routerLinkActive="active">
+            <div class="link">
+                Assistant Management
+            </div>
+        </a>
+        <a routerLink="/#" routerLinkActive="active">
+            <div class="link">
+                Report
+            </div>
+        </a>
+    </div>
+
+    <div class="Sign out">
+        <a routerLink="/#" routerLinkActive="active">
+            <div class="link">
+                Sign out
+            </div>
+            <mat-icon>exit_to_app</mat-icon>
+        </a>
     </div>
 </div>
