@@ -4,4 +4,16 @@
         <img src="/assets/logo.svg" alt="" class="img-logo">
     </div>
 
+    <div class="welcome-div">
+        <div>
+            Hi, Dummy
+        </div>
+        <div>
+            <mat-select>
+                <mat-option *ngFor="let item of selection" [value]="item.value">
+                    {{item.value}}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
 </div>
