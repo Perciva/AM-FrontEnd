@@ -5,15 +5,18 @@
     </div>
 
     <div class="welcome-div">
-        <div>
+        <div class="welcome-text">
             Hi, Dummy
         </div>
         <div>
-            <mat-select>
-                <mat-option *ngFor="let item of selection" [value]="item.value">
-                    {{item.value}}
-                </mat-option>
-            </mat-select>
+            <mat-form-field appearance="fill" class="period-selection">
+                <mat-label>Period</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let item of selection" [value]="item.value">
+                        {{item.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
 </div>

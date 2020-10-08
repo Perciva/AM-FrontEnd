@@ -9,9 +9,20 @@
 .welcome-div {
     display: flex;
     flex-direction: column;
-    width: 130px;
+    width: 150px;
     margin-top: auto;
-    padding: 10px;
+    margin-right: 10px;
+}
+
+.welcome-text {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+}
+
+.period-selection {
+    width: 150px;
+    background-color: white;
 }
 
 .img-ribbon {
