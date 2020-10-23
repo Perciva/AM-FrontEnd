@@ -1,9 +1,12 @@
+$dark-grey:#676767;
+$shadow-color: #888888;
+$theme-color: rgb(0, 115, 255);
 .big-container {
     width: 100%;
     height: 130px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid $dark-grey;
 }
 
 .img-ribbon {
@@ -36,7 +39,7 @@
 
 .small-container {
     display: flex;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid $dark-grey;
     padding: 10px 0;
     justify-content: space-between;
 }

@@ -17,6 +17,8 @@ export class LoginPageComponent implements OnInit {
     
 
     console.log(username + " " + password);
+
+    
   }
 
   ngOnInit(): void {

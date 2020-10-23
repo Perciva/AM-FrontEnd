@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, RoutingComponent } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./module/material/material.module";
 
 import { AppComponent } from './app.component';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { HeaderComponent } from './components/header/header.component'; 
+import { PageNotFoundComponent } from './components/utility/page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -20,8 +19,8 @@ import { HeaderComponent } from './components/header/header.component';
   ],
   declarations: [
     AppComponent,
-    LoginPageComponent,
-    HeaderComponent,
+    RoutingComponent,
+    PageNotFoundComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
