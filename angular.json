@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "AM-FrontEnd"
+  "defaultProject": "AM-FrontEnd",
+  "cli": {
+    "analytics": "6fa63a0b-4adf-459a-913b-2e3ec67d3d44"
+  }
 }
