@@ -22,21 +22,36 @@
 </div>
 <div class="small-container">
     <div class="navbar">
-        <a routerLink="/home/manage" routerLinkActive="active">
+        <button mat-button [matMenuTriggerFor]="manage">
             <div class="link">
                 Manage
             </div>
-        </a>
-        <a routerLink="/home/assistants" routerLinkActive="active">
+        </button>
+        <mat-menu #manage="matMenu">
+            <button mat-menu-item routerLink="/home/manage/period" routerLinkActive="active">Period</button>
+            <button mat-menu-item routerLink="/home/manage/leader" routerLinkActive="active">Leader</button>
+            <button mat-menu-item routerLink="/home/manage/assistant" routerLinkActive="active">Assistant</button>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="ast">
             <div class="link">
                 Assistant Management
             </div>
-        </a>
-        <a routerLink="/home/report" routerLinkActive="active">
+        </button>
+        <mat-menu #ast="matMenu">
+            <button mat-menu-item routerLink="/home/assistant-management/work-shift" routerLinkActive="active">Work Shift</button>
+            <button mat-menu-item routerLink="/home/assistant-management/holiday" routerLinkActive="active">Holiday</button>
+            <button mat-menu-item routerLink="/home/assistant-management/special-shift" routerLinkActive="active">Special Shift</button>
+            <button mat-menu-item routerLink="/home/assistant-management/attendance" routerLinkActive="active">Attendance</button>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="report">
             <div class="link">
                 Report
             </div>
-        </a>
+        </button>
+        <mat-menu #report="matMenu">
+            <button mat-menu-item routerLink="/home/report/attendance" routerLinkActive="active">Attendance</button>
+            <button mat-menu-item routerLink="/home/report/summary" routerLinkActive="active">Summary</button>
+        </mat-menu>
     </div>
 
     <div class="Sign out">
