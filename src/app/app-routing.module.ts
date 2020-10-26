@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { PageNotFoundComponent } from './components/utility/page-not-found/page-not-found.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { ManagePageComponent } from './manage/manage-page/manage-page.component';
+import { AssistantsPageComponent } from './assistants/assistants-page/assistants-page.component';
 
 const routes: Routes = [
   { 
@@ -16,7 +18,17 @@ const routes: Routes = [
   },
   { 
     path: 'home', 
-    component: HeaderComponent 
+    component: HeaderComponent ,
+    children:[
+      {
+        path: 'manage', 
+        component: ManagePageComponent ,
+      },
+      {
+        path: 'assistants', 
+        component: AssistantsPageComponent ,
+      }
+    ]
   },
   { 
     path: '**', 
@@ -35,5 +47,7 @@ export class AppRoutingModule { }
 export const RoutingComponent = [
   LoginPageComponent,
   HeaderComponent,
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  ManagePageComponent,
+  AssistantsPageComponent
 ]

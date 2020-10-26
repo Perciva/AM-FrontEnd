@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./module/material/material.module";
 
 import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from './components/utility/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './components/utility/page-not-found/page-not-found.component'; 
 
 @NgModule({
   imports: [
@@ -20,7 +20,6 @@ import { PageNotFoundComponent } from './components/utility/page-not-found/page-
   declarations: [
     AppComponent,
     RoutingComponent,
-    PageNotFoundComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
