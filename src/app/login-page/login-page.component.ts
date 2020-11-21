@@ -8,15 +8,15 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(private router: Router) { 
+  constructor(private router: Router) {
   }
 
-  doLogin(){
+  doLogin() {
     var username = ((document.getElementById("txtUsername") as HTMLInputElement).value);
     var password = ((document.getElementById("txtPassword") as HTMLInputElement).value);
 
-    
 
+    // console.log(EncryptToBase64(password,username));
     console.log(username + " " + password);
 
     this.router.navigate(['home']);
