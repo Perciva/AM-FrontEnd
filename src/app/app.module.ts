@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { Apollo } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AppRoutingModule, RoutingComponent } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,7 +19,7 @@ import { SpecialShiftComponent } from './assistants/special-shift/special-shift.
 import { AttendanceComponent } from './assistants/attendance/attendance.component';
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
-import { authentication } from './service/authentication.service';
+import { GraphQLModule } from './graphql.module';
 
 
 @NgModule({
@@ -26,6 +29,7 @@ import { authentication } from './service/authentication.service';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    GraphQLModule,
   ],
   declarations: [
     AppComponent,
@@ -40,7 +44,9 @@ import { authentication } from './service/authentication.service';
     SummaryComponent,
     ReportAttendanceComponent,
   ],
-  providers: [authentication],
+  providers: [],
   bootstrap: [AppComponent]
 })  
-export class AppModule { }
+
+export class AppModule {
+}
