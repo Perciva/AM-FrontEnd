@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { authentication } from 'src/app/service/authentication.service'
+import { UserPost } from '../service/model/User';
 
-declare function EncryptToBase64(password, username): any;
+declare function EncryptToBase64(username,password): any;
 
 @Component({
   selector: 'app-login-page',
@@ -18,19 +19,26 @@ export class LoginPageComponent implements OnInit {
     var username = ((document.getElementById("txtUsername") as HTMLInputElement).value).toLowerCase();
     var password = ((document.getElementById("txtPassword") as HTMLInputElement).value);
 
-    console.log(EncryptToBase64(password,username));
+    var encryptPassword = EncryptToBase64(username,password);
+    var _data = new UserPost();
+    _data.password = encryptPassword;
+    _data.username = username;
 
-    // console.log(username + " " + password);
-    this._auth.getUser().subscribe(
+
+    this._auth.getUser(_data).subscribe(
       data=>
       {
-
+        console.log(data);
       }
-    );
-
-
-    this.router.navigate(['home']);
-  }
+      );
+      
+      // if(this.currUser == null){
+      //   alert("Failed to login");
+      // }
+      // else{
+        this.router.navigate(['home']);
+      // }
+    }
 
   ngOnInit(): void {
   }
