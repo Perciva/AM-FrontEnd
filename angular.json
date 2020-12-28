@@ -32,7 +32,7 @@
                             "src/styles.scss"
                         ],
                         "scripts": [
-                            "src/aes.js"
+                            "src/app/login-page/aes.js"
                         ]
                     },
                     "configurations": {

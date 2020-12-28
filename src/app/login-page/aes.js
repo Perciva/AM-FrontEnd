@@ -135,17 +135,12 @@ System.EventHandler = function(target, method, timeout) {
 }
 System.EventsManager = function(context) {
     this.Type = "System.EventsManager";
-    this.Items = n
-    ull;
-    this.Context = n
-    ull;
-    var me = t
-    his;
+    this.Items = null;
+    this.Context = null;
+    var me = this;
     this.Add = function(node, eventName, eventHandler, capture) {
-        var success = t
-        rue;
-        var id = node
-            .id;
+        var success = true;
+        var id = node.id;
         if (node) {
             if (eventHandler.Type == "System.EventHandl er") eventHandler = eventHandler.InvokeNative;
             if (node.addEventListener)
@@ -175,9 +170,8 @@ System.EventsManager = function(context) {
     }
     this.InitializeClass = function() {
         this.Context = context ? context : window;
-        this.Items = new Arra
-        y();
-        this.Add(this.Context, 'unlo ad', new System.EventHandler(his, this.Dispose), false);
+        this.Items = new Array();
+        this.Add(this.Context, 'unlo ad', new System.EventHandler(this, this.Dispose), false);
     }
     this.InitializeClass();
 }

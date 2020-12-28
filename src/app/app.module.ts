@@ -16,6 +16,7 @@ import { SpecialShiftComponent } from './assistants/special-shift/special-shift.
 import { AttendanceComponent } from './assistants/attendance/attendance.component';
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
+import { authentication } from './service/authentication.service';
 
 
 @NgModule({
@@ -39,7 +40,7 @@ import { ReportAttendanceComponent } from './report/report-attendance/report-att
     SummaryComponent,
     ReportAttendanceComponent,
   ],
-  providers: [],
+  providers: [authentication],
   bootstrap: [AppComponent]
 })  
 export class AppModule { }
