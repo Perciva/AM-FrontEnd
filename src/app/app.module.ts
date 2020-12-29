@@ -24,7 +24,6 @@ import { ReportAttendanceComponent } from './report/report-attendance/report-att
 
 @NgModule({
   imports: [
-    MaterialModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -32,6 +31,7 @@ import { ReportAttendanceComponent } from './report/report-attendance/report-att
     GraphQLModule,
     ReactiveFormsModule,
     NgbModule,
+    MaterialModule,
   ],
   declarations: [
     AppComponent,
