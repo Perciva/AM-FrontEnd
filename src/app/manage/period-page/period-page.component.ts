@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddPeriodDialogComponent } from '../dialog/add-period-dialog/add-period-dialog.component';
 
 @Component({
   selector: 'app-period-page',
@@ -9,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class PeriodPageComponent implements AfterViewInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   displayedColumns: string[] = ['description', 'startDate', 'endDate', 'action'];
   dataSource = new MatTableDataSource<Period>(ELEMENT_DATA);
@@ -18,6 +20,13 @@ export class PeriodPageComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AddPeriodDialogComponent, {
+      width: '500px',
+      data: {}
+    });
   }
 }
 
