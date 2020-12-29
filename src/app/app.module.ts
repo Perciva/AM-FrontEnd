@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { Apollo } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { GraphQLModule } from './graphql.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule, RoutingComponent } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,8 +20,6 @@ import { SpecialShiftComponent } from './assistants/special-shift/special-shift.
 import { AttendanceComponent } from './assistants/attendance/attendance.component';
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
-import { GraphQLModule } from './graphql.module';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -33,6 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     GraphQLModule,
     ReactiveFormsModule,
+    NgbModule,
   ],
   declarations: [
     AppComponent,

@@ -25,3 +25,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+
+## Install Bootstrap to Angular
+https://www.bootstrapdash.com/use-bootstrap-4-with-angular/#:~:text=Angular%20is%20generally%20used%20when%20developing%20single%20page,Bootstrap%20with%20angular%2C%20due%20to%20Bootstrap%E2%80%99s%20jQuery%20dependency.
