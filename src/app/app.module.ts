@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./module/material/material.module";
 
 import { AppComponent } from './app.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 import { PeriodPageComponent } from './manage/period-page/period-page.component';
 import { LeaderPageComponent } from './manage/leader-page/leader-page.component';
 import { AssistantPageComponent } from './manage/assistant-page/assistant-page.component';
@@ -20,6 +21,7 @@ import { AttendanceComponent } from './assistants/attendance/attendance.componen
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
 import { GraphQLModule } from './graphql.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -30,10 +32,12 @@ import { GraphQLModule } from './graphql.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     GraphQLModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,
     RoutingComponent,
+    LoginPageComponent,
     PeriodPageComponent,
     LeaderPageComponent,
     AssistantPageComponent,

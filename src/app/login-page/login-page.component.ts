@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticateService } from '../service/authenticate.service' 
+import { GlobalConstants } from '../common/global-variable'
+import { Subscription } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnInit {
-currUser;
-  constructor(private router: Router, private authenticate: AuthenticateService) {
+
+export class LoginPageComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription[] = [];
+  loginForm: FormGroup;
+  
+  constructor(private formBuilder: FormBuilder, private router: Router, private authenticate: AuthenticateService) {
   }
 
   doLogin() {
@@ -17,16 +23,18 @@ currUser;
     var password = ((document.getElementById("txtPassword") as HTMLInputElement).value);
 
 
-    this.currUser = this.authenticate.GetUser(username, password)
+    const querySubscription = this.authenticate.GetUser(username, password)
     .subscribe(async data => {
       await this.saveData(data.data.GetUser);
     });
+
+    this.subscriptions = [...this.subscriptions, querySubscription];
   }
   
   saveData(data){
-    this.currUser = data;
+    GlobalConstants.currUser = data;
     console.log(data);
-    if(this.currUser){
+    if(GlobalConstants.currUser){
       this.router.navigate(['/home']);
     }
     else{
@@ -35,7 +43,24 @@ currUser;
   }
 
   ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      txtUsername: ['', Validators.required],
+      txtPassword: ['', Validators.required]
+    });
   }
 
+  onKey(event: any) { 
+    if(event.key == 'Enter'){
+      this.doLogin();
+    }
+  }
+
+  ngOnDestroy(): void {
+    for (let sub of this.subscriptions) {
+      if (sub && sub.unsubscribe) {
+        sub.unsubscribe();
+      }
+    }
+  }
 
 }
