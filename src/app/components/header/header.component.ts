@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { GlobalConstants } from '../../common/global-variable';
 
 interface Selection {
   value: string;
@@ -9,6 +10,7 @@ interface Selection {
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  User_name: string;
 
   constructor() { }
   
@@ -22,6 +24,13 @@ export class HeaderComponent implements OnInit {
   selected = this.selection[0].value;
   
   ngOnInit(): void {
+    
+    if(GlobalConstants.CURR_USER != null){
+      this.User_name = GlobalConstants.CURR_USER.UserName;
+    }
+    else{
+      this.User_name = "Dummy";
+    }
   }
 
 }

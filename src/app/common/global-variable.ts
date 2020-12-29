@@ -1,3 +1,3 @@
 export class GlobalConstants {
-    public static currUser = null;
+    public static CURR_USER = null;
 }

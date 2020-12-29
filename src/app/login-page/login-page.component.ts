@@ -32,9 +32,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
   
   saveData(data){
-    GlobalConstants.currUser = data;
+    GlobalConstants.CURR_USER = data;
     console.log(data);
-    if(GlobalConstants.currUser){
+    if(GlobalConstants.CURR_USER){
       this.router.navigate(['/home']);
     }
     else{
