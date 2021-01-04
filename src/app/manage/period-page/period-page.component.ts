@@ -14,7 +14,7 @@ export class PeriodPageComponent implements AfterViewInit {
   constructor(public dialog: MatDialog) { }
 
   displayedColumns: string[] = ['description', 'startDate', 'endDate', 'action'];
-  dataSource = new MatTableDataSource<Period>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodData>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -27,18 +27,23 @@ export class PeriodPageComponent implements AfterViewInit {
       width: '500px',
       data: {}
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 }
 
-export interface Period {
+export interface PeriodData {
   description: string;
   startDate: string;
   endDate: string;
 }
 
-const ELEMENT_DATA: Period[] = [
+const ELEMENT_DATA: PeriodData[] = [
   {description: '20-2 Post Acceptance', startDate: '2020-08-14' , endDate: '2020-09-12'},
-  {description: 'Compact, 2019-2020', startDate: '2020-07-113' , endDate: '2020-09-13'},
+  {description: 'Compact, 2019-2020', startDate: '2020-07-13' , endDate: '2020-09-13'},
   {description: 'Even, 2019-2020', startDate: '2020-02-17' , endDate: '2020-07-12'},
   {description: '20-1 Post Acceptance', startDate: '2020-02-07' , endDate: '2020-02-16'},
   {description: 'Odd, 2019-2020', startDate: '2019-09-16' , endDate: '2020-02-16'},
