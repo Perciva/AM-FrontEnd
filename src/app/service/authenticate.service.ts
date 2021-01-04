@@ -18,12 +18,15 @@ export class AuthenticateService {
     .query<any>({
       query: gql`
         query($username: String!, $password: String!) {
-          GetUser(username: $username, password: $password){
-            Major
-            Name
-            Role
-            UserId
-            UserName
+          GetUser(username: $username, password: $password) {
+            UserData{
+              Major
+              Name
+              Role
+              UserId
+              UserName
+            }
+            Token
           }
         }
       `,

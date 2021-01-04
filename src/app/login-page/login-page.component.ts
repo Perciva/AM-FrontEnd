@@ -5,6 +5,9 @@ import { GlobalConstants } from '../common/global-variable'
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+declare function encrypt(word): any;
+declare function decrypt(word): any;
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -32,9 +35,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
   
   saveData(data){
-    GlobalConstants.CURR_USER = data;
-    console.log(data);
-    if(GlobalConstants.CURR_USER){
+    GlobalConstants.CURR_USER = encrypt(JSON.stringify(data.UserData));
+    GlobalConstants.TOKEN = encrypt(data.Token);
+    localStorage.setItem("User", GlobalConstants.CURR_USER);
+    sessionStorage.setItem("Token", GlobalConstants.TOKEN);
+    if(GlobalConstants.TOKEN != null){
       this.router.navigate(['/home']);
     }
     else{
