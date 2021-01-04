@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 declare function encrypt(word): any;
-declare function decrypt(word): any;
 
 @Component({
   selector: 'app-login-page',
@@ -35,11 +34,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
   
   saveData(data){
-    GlobalConstants.CURR_USER = encrypt(JSON.stringify(data.UserData));
-    GlobalConstants.TOKEN = encrypt(data.Token);
-    localStorage.setItem("User", GlobalConstants.CURR_USER);
-    sessionStorage.setItem("Token", GlobalConstants.TOKEN);
-    if(GlobalConstants.TOKEN != null){
+    sessionStorage.setItem(GlobalConstants.USER, encrypt(JSON.stringify(data.UserData)));
+    sessionStorage.setItem(GlobalConstants.TOKEN, encrypt(data.Token));
+    if(data.Token != null){
       this.router.navigate(['/home']);
     }
     else{

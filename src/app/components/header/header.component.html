@@ -55,12 +55,14 @@
     </div>
 
     <div class="Signout">
-        <a routerLink="/" routerLinkActive="active">
-            <div class="link">
-                Sign out
-            </div>
-            <mat-icon>exit_to_app</mat-icon>
-        </a>
+        <button class="btn btn-light" (click)="signOut()">
+            <a>
+                <div class="link">
+                    Sign out
+                </div>
+                <mat-icon>exit_to_app</mat-icon>
+            </a>
+        </button>
     </div>
 </div>
 

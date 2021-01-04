@@ -1,4 +1,4 @@
 export class GlobalConstants {
-    public static CURR_USER = null;
-    public static TOKEN = null;
+    public static USER = "USER";
+    public static TOKEN = "TOKEN";
 }

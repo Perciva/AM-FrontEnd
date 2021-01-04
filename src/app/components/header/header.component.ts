@@ -1,5 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { GlobalConstants } from '../../common/global-variable';
+
+declare function decrypt(word): any;
 
 interface Selection {
   value: string;
@@ -12,7 +15,7 @@ interface Selection {
 export class HeaderComponent implements OnInit {
   User_name: string;
 
-  constructor() { }
+  constructor(private router: Router) { }
   
   
   selection: Selection[] = [
@@ -24,13 +27,19 @@ export class HeaderComponent implements OnInit {
   selected = this.selection[0].value;
   
   ngOnInit(): void {
-    
-    if(GlobalConstants.CURR_USER != null){
-      this.User_name = GlobalConstants.CURR_USER.UserName;
+    var user = JSON.parse(decrypt(sessionStorage.getItem(GlobalConstants.USER)));
+    if(user != null){
+      this.User_name = user.UserName;
     }
     else{
       this.User_name = "Dummy";
     }
+  }
+
+  signOut(): void{
+    sessionStorage.removeItem(GlobalConstants.USER);
+    sessionStorage.removeItem(GlobalConstants.TOKEN);
+    this.router.navigate(["/"]);
   }
 
 }
