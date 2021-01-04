@@ -24,6 +24,11 @@ import { ReportAttendanceComponent } from './report/report-attendance/report-att
 
 @NgModule({
   imports: [
+<<<<<<< Updated upstream
+=======
+    MaterialModule,
+    BrowserAnimationsModule,
+>>>>>>> Stashed changes
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -31,7 +36,11 @@ import { ReportAttendanceComponent } from './report/report-attendance/report-att
     GraphQLModule,
     ReactiveFormsModule,
     NgbModule,
+<<<<<<< Updated upstream
     MaterialModule,
+=======
+    FormsModule,
+>>>>>>> Stashed changes
   ],
   declarations: [
     AppComponent,
