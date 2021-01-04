@@ -32,7 +32,8 @@
                             "src/styles.scss"
                         ],
                         "scripts": [
-                            "src/app/login-page/aes.js"
+                            "src/app/js/aes.js",
+                            "src/app/js/Encryptor.js"
                         ]
                     },
                     "configurations": {
