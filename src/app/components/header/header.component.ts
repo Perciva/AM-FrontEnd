@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   selected = this.selection[0].value;
   
   ngOnInit(): void {
-    var user = JSON.parse(decrypt(sessionStorage.getItem(GlobalConstants.USER)));
+    var user = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.USER)));
     if(user != null){
       this.User_name = user.UserName;
     }
@@ -37,8 +37,7 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut(): void{
-    sessionStorage.removeItem(GlobalConstants.USER);
-    sessionStorage.removeItem(GlobalConstants.TOKEN);
+    localStorage.clear();
     this.router.navigate(["/"]);
   }
 

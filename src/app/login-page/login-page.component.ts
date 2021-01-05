@@ -34,8 +34,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
   
   saveData(data){
-    sessionStorage.setItem(GlobalConstants.USER, encrypt(JSON.stringify(data.UserData)));
-    sessionStorage.setItem(GlobalConstants.TOKEN, encrypt(data.Token));
+    localStorage.setItem(GlobalConstants.USER, encrypt(JSON.stringify(data.UserData)));
+    localStorage.setItem(GlobalConstants.TOKEN, encrypt(data.Token));
     if(data.Token != null){
       this.router.navigate(['/home']);
     }
