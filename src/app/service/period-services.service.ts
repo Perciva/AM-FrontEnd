@@ -47,4 +47,35 @@ export class PeriodService {
       }
     });
   }
+  
+  UpdatePeriods(id: number, description: string, start: string, end: string){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($id: Int!, $description: String!, $start: String!, $end: String!) {
+          UpdatePeriod(id:$id, description: $description, start: $start, end: $end)
+        }
+      `,
+      variables: {
+        "id": id,
+        "description": description,
+        "start": start,
+        "end": end,
+      }
+    });
+  }
+  
+  DeletePeriods(id: number){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($id: Int!) {
+          DeletePeriod(id:$id)
+        }
+      `,
+      variables: {
+        "id": id
+      }
+    });
+  }
 }
