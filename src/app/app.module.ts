@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,13 +21,14 @@ import { AttendanceComponent } from './assistants/attendance/attendance.componen
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
 import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-period-dialog.component';
+import { TokenInterceptor } from './common/TokenInterceptor';
 
 
 @NgModule({
   imports: [
+    BrowserModule,
     MaterialModule,
     BrowserAnimationsModule,
-    BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     GraphQLModule,
@@ -51,7 +52,9 @@ import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-
     ReportAttendanceComponent,
     AddPeriodDialogComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })  
 

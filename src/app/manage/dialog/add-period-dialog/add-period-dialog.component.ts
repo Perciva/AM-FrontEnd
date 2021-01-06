@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';3
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';import { PeriodService } from 'src/app/service/period-services.service';
+3
 import { PeriodData } from '../../period-page/period-page.component'
 
 
@@ -10,12 +11,15 @@ import { PeriodData } from '../../period-page/period-page.component'
   styleUrls: ['./add-period-dialog.component.scss']
 })
 export class AddPeriodDialogComponent{
-  selectedPeriod: string;
-  otherPeriod: string;
-  selectedYear: string;
-  addPeriodGroup: FormGroup;
-  startDate = new FormControl('');
-  endDate = new FormControl('');
+  selectedPeriod;
+  otherPeriod;
+  selectedYear;
+  startDate;
+  endDate;
+
+  thisPeriod;
+  thisOther;
+  thisYear;
 
   years: String[] = [
     "2023-2024",
@@ -27,50 +31,58 @@ export class AddPeriodDialogComponent{
   ];
 
   constructor(public dialogRef: MatDialogRef<AddPeriodDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PeriodData, fb: FormBuilder) {
-      this.addPeriodGroup = fb.group({
-        periods: new FormControl('', [Validators.required]),
-        otherPeriod: new FormControl('', [Validators.required]),
-        selectedYear: new FormControl('', [Validators.required]),
-        startDate: new FormControl('', [Validators.required]),
-        endDate: new FormControl('', [Validators.required]),
-      });
+    @Inject(MAT_DIALOG_DATA) public data: PeriodData, 
+    private periodService: PeriodService) {
+        this.selectedPeriod= new FormControl('', [Validators.required]);
+        this.otherPeriod= new FormControl('', [Validators.required]);
+        this.selectedYear= new FormControl('', [Validators.required]);
+        this.startDate= new FormControl('', [Validators.required]);
+        this.endDate= new FormControl('', [Validators.required]);
     }
 
   isOtherPeriod(): boolean{
-    if(this.selectedPeriod === "Other")
+    if(this.thisPeriod == "Other")
       return true;
-    this.otherPeriod = null;
+    this.thisOther = null;
     return false;
   }
 
   isSelectedPeriod(): boolean{
-    if(this.selectedPeriod == null || this.selectedPeriod === "Other")
-      return false;
-    return true;
+    if(this.thisPeriod != null && this.thisPeriod != "Other")
+      return true;
+    return false;
   }
 
   doAddPeriod(){
     var period;
+    console.log("Period " + this.thisPeriod)
+    console.log("Year " + this.thisYear)
+    console.log("Other " + this.thisOther)
+    console.log("Start " + this.startDate.value)
+    console.log("End " + this.endDate.value)
+    console.log("===================")
     if(
-      this.selectedPeriod == null ||
-      this.startDate.value == "" || 
-      this.endDate.value == "" ||
-      (this.selectedPeriod==="Other" && this.otherPeriod == null) ||
-      (this.selectedPeriod != null && this.selectedPeriod !="Other" && this.selectedYear == null)
+        this.thisPeriod == null ||
+        this.startDate.value == "" || 
+        this.endDate.value == "" ||
+        (this.thisPeriod==="Other" && this.thisOther == null) ||
+        (this.thisPeriod != null && this.thisPeriod !="Other" && this.thisYear == null) 
       ){
         alert("Some Field Empty");
       return;
     }
 
-    if(this.selectedPeriod==="Other"){
+    if(this.thisPeriod==="Other"){
       period = this.otherPeriod;
     }
     else{
       if(this.years != null){
-        period = this.selectedPeriod + ", " + this.years;
+        period = this.thisPeriod + ", " + this.years;
       }
     }
+
+    var x = this.periodService.InsertPeriods(period, this.startDate.value, this.endDate.value);
+    console.log("Status Insert " + x);
 
     this.dialogRef.close();
   }

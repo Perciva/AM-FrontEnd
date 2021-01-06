@@ -8,7 +8,7 @@ declare function decrypt(word): any;
 @Injectable({
   providedIn: 'root'
 })
-export class PeriodServicesService {
+export class PeriodService {
 
   constructor( private apollo: Apollo) { }
 
@@ -29,10 +29,10 @@ export class PeriodServicesService {
   }
   
   InsertPeriods(description: string, start: string, end: string){
-    var token = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.TOKEN)));
-    var httpOptions = {
-      headers: new HttpHeaders({ 'Content-Authorization': 'Bearer ' + token })
-    };
+    // var token = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.TOKEN)));
+    // var httpOptions = {
+    //   headers: new HttpHeaders({ 'Content-Authorization': 'Bearer ' + token })
+    // };
     return this.apollo
     .mutate<any>({
       mutation: gql`
