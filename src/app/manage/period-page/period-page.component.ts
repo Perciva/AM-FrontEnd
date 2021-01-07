@@ -8,8 +8,8 @@ import { AddPeriodDialogComponent } from '../dialog/add-period-dialog/add-period
 export interface PeriodData {
   id: number;
   description: string;
-  startDate: string;
-  endDate: string;
+  start: string;
+  end: string;
 }
 
 @Component({
@@ -30,16 +30,22 @@ export class PeriodPageComponent implements AfterViewInit {
 
    insertData(data){
      this.ELEMENT_DATA = data.data.GetAllPeriods;
+     this.ELEMENT_DATA.forEach(element => {
+       console.log(element)
+     });
      console.log(this.ELEMENT_DATA)
+     this.dataSource = new MatTableDataSource<PeriodData>(this.ELEMENT_DATA);
+     this.dataSource.paginator = this.paginator;
    }
 
   displayedColumns: string[] = ['description', 'startDate', 'endDate', 'action'];
   dataSource = new MatTableDataSource<PeriodData>(this.ELEMENT_DATA);
-
+  
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    
   }
 
   openDialog(): void {
@@ -52,5 +58,9 @@ export class PeriodPageComponent implements AfterViewInit {
       console.log('The dialog was closed');
       console.log(result)
     });
+  }
+
+  doUpdate(val){
+    console.log(val);
   }
 }
