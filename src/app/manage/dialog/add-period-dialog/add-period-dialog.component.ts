@@ -73,18 +73,18 @@ export class AddPeriodDialogComponent{
     }
 
     if(this.thisPeriod==="Other"){
-      period = this.otherPeriod;
+      period = this.thisOther;
     }
     else{
-      if(this.years != null){
-        period = this.thisPeriod + ", " + this.years;
-      }
+      period = this.thisPeriod + ", " + this.thisYear;
     }
 
-    var x = this.periodService.InsertPeriods(period, this.startDate.value, this.endDate.value);
-    console.log("Status Insert " + x);
+    this.periodService.InsertPeriods(period, this.startDate.value, this.endDate.value).
+    subscribe(async data => {
+      await this.dialogRef.close();
+    });
 
-    this.dialogRef.close();
+    
   }
 
 }

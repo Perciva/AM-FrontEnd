@@ -19,6 +19,7 @@ export class PeriodService {
       query: gql`
         query {
           GetAllPeriods {
+            id
             description
             start
             end

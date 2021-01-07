@@ -9,17 +9,23 @@ declare function decrypt(word): any;
 
 const uri = 'http://127.0.0.1:5000/graphql'; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+  const basic = setContext((operation, context) => ({
+    headers: {
+      Accept: 'charset=utf-8'
+    }
+  }));
+
   var token = decrypt(localStorage.getItem(GlobalConstants.TOKEN));
   const auth = setContext((operation, context) => {
     if (token)
       return {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ` + token
         }
       };
   });
 
-  const link = ApolloLink.from([auth, httpLink.create({ uri })]);
+  const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
 
   return {
     link: link,

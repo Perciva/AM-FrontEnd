@@ -21,7 +21,6 @@ import { AttendanceComponent } from './assistants/attendance/attendance.componen
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
 import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-period-dialog.component';
-import { TokenInterceptor } from './common/TokenInterceptor';
 
 
 @NgModule({
@@ -53,7 +52,6 @@ import { TokenInterceptor } from './common/TokenInterceptor';
     AddPeriodDialogComponent,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })  
