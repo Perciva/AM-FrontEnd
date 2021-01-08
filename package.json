@@ -30,6 +30,7 @@
     "bootstrap": "^4.5.3",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
+    "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

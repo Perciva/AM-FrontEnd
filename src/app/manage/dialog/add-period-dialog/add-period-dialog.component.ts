@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';import { PeriodService } from 'src/app/service/period-services.service';
-3
 import { PeriodData } from '../../period-page/period-page.component'
 
+var moment = require('moment'); // require
+moment().format(); 
 
 @Component({
   selector: 'app-add-period-dialog',
@@ -79,7 +80,10 @@ export class AddPeriodDialogComponent{
       period = this.thisPeriod + ", " + this.thisYear;
     }
 
-    this.periodService.InsertPeriods(period, this.startDate.value, this.endDate.value).
+    var start = moment(this.startDate.value).add(7, 'hours')._d;
+    var end = moment(this.endDate.value).add(7, 'hours')._d;
+
+    this.periodService.InsertPeriods(period, start, end).
     subscribe(async data => {
       await this.dialogRef.close();
     });

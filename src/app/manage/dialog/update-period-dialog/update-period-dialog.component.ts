@@ -4,11 +4,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PeriodService } from 'src/app/service/period-services.service';
 import { PeriodData } from '../../period-page/period-page.component';
 
+var moment = require('moment'); // require
+moment().format(); 
+
 @Component({
   selector: 'app-update-period-dialog',
   templateUrl: './update-period-dialog.component.html',
   styleUrls: ['./update-period-dialog.component.scss']
 })
+
 export class UpdatePeriodDialogComponent {
   selectedPeriod;
   otherPeriod;
@@ -79,8 +83,11 @@ export class UpdatePeriodDialogComponent {
       else{
         period = this.thisPeriod + ", " + this.thisYear;
       }
+
+      var start = moment(this.startDate.value).add(7, 'hours')._d;
+      var end = moment(this.endDate.value).add(7, 'hours')._d;
   
-      this.periodService.UpdatePeriods(this.periodData.id, period, this.startDate.value, this.endDate.value).
+      this.periodService.UpdatePeriods(this.periodData.id, period, start, end).
       subscribe(async data => {
         await this.afterUpdate(data);
       });
