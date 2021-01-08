@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center flex-column container">
+    <div class="font-weight-bold m-3">Update Periods</div>
+    <form class="d-flex flex-column" (ngSubmit)="doUpdatePeriod()">
+        <mat-form-field>
+            <mat-label for="periods">Periods</mat-label>
+            <mat-select required name="periods" [(ngModel)]="thisPeriod" [formControl]="selectedPeriod">
+                <mat-option value="Odd">Odd</mat-option>
+                <mat-option value="Even">Even</mat-option>
+                <mat-option value="Other">Other</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" *ngIf="isOtherPeriod()">
+            <input required matInput type="text" name="other" placeholder="Other" [(ngModel)]="thisOther" [formControl]="otherPeriod">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isSelectedPeriod()">    
+            <mat-label for="years">Years</mat-label>
+            <mat-select required name="years" [(ngModel)]="thisYear" [formControl]="selectedYear">
+                <mat-option *ngFor="let year of years" [value]="year">
+                    {{year}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>    
+            <input matInput required [matDatepicker]="picker1" placeholder="Start Date" [formControl]="startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 startView="year"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>    
+            <input matInput required [min]="startDate.value" [matDatepicker]="picker2" placeholder="End Date" [formControl]="endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 startView="year"></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
+    </form>
+    
+</div>
+

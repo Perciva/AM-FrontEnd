@@ -21,6 +21,7 @@ import { AttendanceComponent } from './assistants/attendance/attendance.componen
 import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
 import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-period-dialog.component';
+import { UpdatePeriodDialogComponent } from './manage/dialog/update-period-dialog/update-period-dialog.component';
 
 
 @NgModule({
@@ -50,9 +51,10 @@ import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-
     SummaryComponent,
     ReportAttendanceComponent,
     AddPeriodDialogComponent,
+    UpdatePeriodDialogComponent,
   ],
-  providers: [
-  ],
+    providers: [
+    ],
   bootstrap: [AppComponent]
 })  
 

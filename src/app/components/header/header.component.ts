@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
      data.data.GetAllPeriods.forEach(element => {
        this.selection.push({value: element.description})
      });
+     this.selection.reverse();
      this.selected = this.selection[0].value;
    }
   

@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { NavigationEnd, Router } from '@angular/router';
 import { PeriodService } from 'src/app/service/period-services.service';
+import { getTokenSourceMapRange } from 'typescript';
 import { AddPeriodDialogComponent } from '../dialog/add-period-dialog/add-period-dialog.component';
+import { UpdatePeriodDialogComponent } from '../dialog/update-period-dialog/update-period-dialog.component';
 
 export interface PeriodData {
   id: number;
@@ -18,23 +21,23 @@ export interface PeriodData {
   styleUrls: ['./period-page.component.scss']
 })
 
-export class PeriodPageComponent implements AfterViewInit {
+export class PeriodPageComponent implements AfterViewInit{
   ELEMENT_DATA: PeriodData[] = [];
+  mySub: any;
 
-  constructor(public dialog: MatDialog, private periodService: PeriodService) {
-    periodService.GetAllPeriods().subscribe(async data => {
+  constructor(public dialog: MatDialog, private periodService: PeriodService, private router: Router) {
+    this.mySub = this.periodService.GetAllPeriods().subscribe(async data => {
       await this.insertData(data);
     });
 
    }
 
    insertData(data){
-     this.ELEMENT_DATA = data.data.GetAllPeriods;
-     this.ELEMENT_DATA.forEach(element => {
-       console.log(element)
-     });
-     console.log(this.ELEMENT_DATA)
-     this.dataSource = new MatTableDataSource<PeriodData>(this.ELEMENT_DATA);
+    data.data.GetAllPeriods.forEach(element => {
+       this.ELEMENT_DATA.push(element)
+    });
+     this.ELEMENT_DATA.reverse();
+     this.dataSource.data = this.ELEMENT_DATA;
      this.dataSource.paginator = this.paginator;
    }
 
@@ -55,12 +58,36 @@ export class PeriodPageComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      location.reload();
       console.log('The dialog was closed');
       console.log(result)
     });
   }
 
-  doUpdate(val){
-    console.log(val);
+  doUpdate(x){
+    console.log(x);
+    const dialogRef = this.dialog.open(UpdatePeriodDialogComponent, {
+      width: '500px',
+      data: x
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
+
+  doDelete(x){
+    console.log(x);
+    this.periodService.DeletePeriods(x).subscribe(async data => {
+      await this.afterDelete(data);
+    });
+  }
+
+  afterDelete(data){
+    alert(data.data.DeletePeriod? "Delete Success":"Delete Failed");
+    location.reload();
+  }
+
 }
