@@ -6,6 +6,7 @@ import { GlobalConstants } from '../../common/global-variable';
 declare function decrypt(word): any;
 
 interface Selection {
+  id: number;
   value: string;
 }
 @Component({
@@ -25,7 +26,7 @@ export class HeaderComponent implements OnInit {
 
    insertData(data){
      data.data.GetAllPeriods.forEach(element => {
-       this.selection.push({value: element.description})
+       this.selection.push({id: element.id, value: element.description})
      });
      this.selection.reverse();
      this.selected = this.selection[0].value;
