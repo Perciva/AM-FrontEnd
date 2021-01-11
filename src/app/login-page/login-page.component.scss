@@ -12,6 +12,19 @@ $theme-color: rgb(0, 115, 255);
     background-color: $theme-color;
 }
 
+.logo-div{
+    height: 30%;
+}
+
+.img-ribbon {
+    padding-left: 20px;
+}
+
+.img-logo {
+    height: 100px;
+    padding: 15px;
+}
+
 .login-box {
     // border: solid $dark-grey 1px;
     width: 350px;
@@ -34,7 +47,7 @@ $theme-color: rgb(0, 115, 255);
 }
 
 .login-box .content .part {
-    padding-top: 15px;
+    padding-top: 3px;
 }
 
 input {
@@ -52,6 +65,7 @@ input {
 
 mat-form-field {
     width: 310px;
+    margin: 0;
 }
 
 h2 {
@@ -63,13 +77,4 @@ p {
     color: $shadow-color;
     margin: 0;
     padding: 0;
-}
-
-.img-ribbon {
-    padding-left: 20px;
-}
-
-.img-logo {
-    height: 75px;
-    padding: 15px;
 }
