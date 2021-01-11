@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit {
     this.selection.forEach(element => {
       if(element.value == this.selected){
         GlobalConstants.CURR_PERIOD = element;
+        this.router.navigate(["/home"]);
         return;
       }
     });
