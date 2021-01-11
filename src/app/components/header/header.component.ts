@@ -21,7 +21,6 @@ export class HeaderComponent implements OnInit {
     periodService.GetAllPeriods().subscribe(async data => {
       await this.insertData(data);
     });
-
    }
 
    insertData(data){
@@ -29,8 +28,10 @@ export class HeaderComponent implements OnInit {
        this.selection.push({id: element.id, value: element.description})
      });
      this.selection.reverse();
-     GlobalConstants.CURR_PERIOD = this.selection[0];
-     this.selected = this.selection[0].value;
+     if(this.selection != null){
+       GlobalConstants.CURR_PERIOD = this.selection[0];
+       this.selected = this.selection[0].value;
+     }
    }
   
   selection: Selection[] = [];

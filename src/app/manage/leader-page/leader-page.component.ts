@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { GlobalConstants } from 'src/app/common/global-variable';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
 import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/update-leader-dialog.component';
@@ -19,34 +20,40 @@ export interface LeaderData {
   templateUrl: './leader-page.component.html',
   styleUrls: ['./leader-page.component.scss']
 })
-export class LeaderPageComponent implements AfterViewInit{
+export class LeaderPageComponent implements OnInit{
   ELEMENT_DATA: LeaderData[] = [];
   mySub: any;
 
   constructor(public dialog: MatDialog, private leaderService: LeaderService, private router: Router) {
-    this.mySub = this.leaderService.GetAllLeader().subscribe(async data => {
+    
+   }
+   ngOnInit(){
+    var period_id = GlobalConstants.CURR_PERIOD == null ? -1 : GlobalConstants.CURR_PERIOD.id;
+    console.log("Curr Period_Id: " + period_id);
+    if(period_id < 1){
+      this.router.navigate(["/home"]);
+    }
+    this.mySub = this.leaderService.GetAllLeader(period_id).subscribe(async data => {
       await this.insertData(data);
     });
 
    }
 
    insertData(data){
-     console.log(data.data.GetAllLeader);
-    data.data.GetAllLeader.forEach(element => {
-       this.ELEMENT_DATA.push(element)
-    });
-     this.ELEMENT_DATA.reverse();
-     this.dataSource.data = this.ELEMENT_DATA;
-     this.dataSource.paginator = this.paginator;
+     console.log(data.data);
+     if(data.data.GetLeaderByPeriodId != null){
+       data.data.GetLeaderByPeriodId.forEach(element => {
+          this.ELEMENT_DATA.push(element)
+       });
+        this.dataSource.data = this.ELEMENT_DATA;
+     }
    }
 
   displayedColumns: string[] = ['initial', 'name', 'action'];
   dataSource = new MatTableDataSource<LeaderData>(this.ELEMENT_DATA);
   
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     
   }
 

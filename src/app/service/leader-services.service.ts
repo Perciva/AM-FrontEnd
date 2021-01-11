@@ -8,19 +8,23 @@ export class LeaderService {
 
   constructor( private apollo: Apollo) { }
 
-  GetAllLeader(){
+  GetAllLeader(period_id){
     return this.apollo
     .query<any>({
       query: gql`
-        query {
-          GetAllLeader {
-            id
-            period_id
-            initial
-            name
-          }
+      query($period_id:Int!) {
+        GetLeaderByPeriodId(period_id:$period_id) {
+          id
+          period_id
+          initial
+          name
         }
+      }
+           
       `,
+      variables: {
+        "period_id": period_id,
+      }
     });
   }
   
