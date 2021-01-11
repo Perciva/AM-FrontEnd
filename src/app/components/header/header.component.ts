@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
        this.selection.push({id: element.id, value: element.description})
      });
      this.selection.reverse();
+     GlobalConstants.CURR_PERIOD = this.selection[0];
      this.selected = this.selection[0].value;
    }
   
@@ -49,6 +50,15 @@ export class HeaderComponent implements OnInit {
   signOut(): void{
     localStorage.clear();
     this.router.navigate(["/"]);
+  }
+
+  onUpdate():void{
+    this.selection.forEach(element => {
+      if(element.value == this.selected){
+        GlobalConstants.CURR_PERIOD = element;
+        return;
+      }
+    });
   }
 
 }

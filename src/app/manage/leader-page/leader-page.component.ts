@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
+import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/update-leader-dialog.component';
 
 export interface LeaderData {
   id: number;
@@ -64,27 +65,28 @@ export class LeaderPageComponent implements AfterViewInit{
 
   doUpdate(x){
     console.log(x);
-    // const dialogRef = this.dialog.open(UpdatePeriodDialogComponent, {
-    //   width: '500px',
-    //   data: x
-    // });
+    const dialogRef = this.dialog.open(UpdateLeaderDialogComponent, {
+      width: '500px',
+      data: x
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   location.reload();
-    //   console.log('The dialog was closed');
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 
   doDelete(x){
     console.log(x);
-    // this.periodService.DeletePeriods(x).subscribe(async data => {
-    //   await this.afterDelete(data);
-    // });
+    this.leaderService.DeleteLeader(x).subscribe(async data => {
+      await this.afterDelete(data);
+    });
   }
 
   afterDelete(data){
-    alert(data.data.DeletePeriod? "Delete Success":"Delete Failed");
+    console.log(data)
+    // alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
     location.reload();
   }
 }
