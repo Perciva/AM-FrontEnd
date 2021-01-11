@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { LeaderService } from 'src/app/service/leader-services.service';
+import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
 
 export interface LeaderData {
   id: number;
@@ -49,16 +50,16 @@ export class LeaderPageComponent implements AfterViewInit{
   }
 
   openDialog(): void {
-    // const dialogRef = this.dialog.open(AddPeriodDialogComponent, {
-    //   width: '500px',
-    //   data: {}
-    // });
+    const dialogRef = this.dialog.open(AddLeaderDialogComponent, {
+      width: '500px',
+      data: {}
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   location.reload();
-    //   console.log('The dialog was closed');
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 
   doUpdate(x){

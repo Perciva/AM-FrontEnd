@@ -22,6 +22,8 @@ import { SummaryComponent } from './report/summary/summary.component';
 import { ReportAttendanceComponent } from './report/report-attendance/report-attendance.component';
 import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-period-dialog.component';
 import { UpdatePeriodDialogComponent } from './manage/dialog/update-period-dialog/update-period-dialog.component';
+import { AddLeaderDialogComponent } from './manage/dialog/add-leader-dialog/add-leader-dialog.component';
+import { UpdateLeaderDialogComponent } from './manage/dialog/update-leader-dialog/update-leader-dialog.component';
 
 
 @NgModule({
@@ -52,6 +54,8 @@ import { UpdatePeriodDialogComponent } from './manage/dialog/update-period-dialo
     ReportAttendanceComponent,
     AddPeriodDialogComponent,
     UpdatePeriodDialogComponent,
+    AddLeaderDialogComponent,
+    UpdateLeaderDialogComponent,
   ],
     providers: [
     ],
