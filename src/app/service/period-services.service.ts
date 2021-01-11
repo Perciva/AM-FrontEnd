@@ -1,9 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { GlobalConstants } from '../common/global-variable';
-
-declare function decrypt(word): any;
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +26,6 @@ export class PeriodService {
   }
   
   InsertPeriods(description: string, start: string, end: string){
-    // var token = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.TOKEN)));
-    // var httpOptions = {
-    //   headers: new HttpHeaders({ 'Content-Authorization': 'Bearer ' + token })
-    // };
     return this.apollo
     .mutate<any>({
       mutation: gql`
