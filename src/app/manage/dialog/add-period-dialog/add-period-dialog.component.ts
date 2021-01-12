@@ -1,9 +1,11 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';import { PeriodService } from 'src/app/service/period-services.service';
-import { PeriodData } from '../../period-page/period-page.component'
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { GlobalConstants } from 'src/app/common/global-variable';
+import { PeriodService } from 'src/app/service/period-services.service';
 
-var moment = require('moment'); // require
+
+var moment = require('moment');
 moment().format(); 
 
 @Component({
@@ -22,17 +24,9 @@ export class AddPeriodDialogComponent{
   thisOther;
   thisYear;
 
-  years: String[] = [
-    "2023-2024",
-    "2022-2023",
-    "2021-2022",
-    "2020-2021",
-    "2019-2020",
-    "2018-2019",
-  ];
+  years: String[] = GlobalConstants.YEAR;
 
   constructor(public dialogRef: MatDialogRef<AddPeriodDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PeriodData, 
     private periodService: PeriodService) {
         this.selectedPeriod= new FormControl('', [Validators.required]);
         this.otherPeriod= new FormControl('', [Validators.required]);
@@ -56,12 +50,6 @@ export class AddPeriodDialogComponent{
 
   doAddPeriod(){
     var period;
-    console.log("Period " + this.thisPeriod)
-    console.log("Year " + this.thisYear)
-    console.log("Other " + this.thisOther)
-    console.log("Start " + this.startDate.value)
-    console.log("End " + this.endDate.value)
-    console.log("===================")
     if(
         this.thisPeriod == null ||
         this.startDate.value == "" || 
