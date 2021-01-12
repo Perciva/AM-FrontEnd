@@ -12,8 +12,8 @@
             <mat-form-field class="period-selection">
                 <mat-label>Period</mat-label>
                 <mat-select [(value)]="selected" (selectionChange)="onUpdate()">
-                    <mat-option *ngFor="let item of selection" [value]="item.value">
-                        {{item.value}}
+                    <mat-option *ngFor="let item of selection" [value]="item.description">
+                        {{item.description}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

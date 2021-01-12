@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LeaderData } from 'src/app/common/leader-model';
 import { LeaderService } from 'src/app/service/leader-services.service';
-import { LeaderData } from '../../leader-page/leader-page.component';
 
 @Component({
   selector: 'app-update-leader-dialog',

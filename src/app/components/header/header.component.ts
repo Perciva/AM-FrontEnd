@@ -1,14 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PeriodData } from 'src/app/common/period-model';
 import { PeriodService } from 'src/app/service/period-services.service';
 import { GlobalConstants } from '../../common/global-variable';
 
 declare function decrypt(word): any;
 
-interface Selection {
-  id: number;
-  value: string;
-}
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -25,16 +22,16 @@ export class HeaderComponent implements OnInit {
 
    insertData(data){
      data.data.GetAllPeriods.forEach(element => {
-       this.selection.push({id: element.id, value: element.description})
+       this.selection.push(element)
      });
      this.selection.reverse();
      if(this.selection != null){
        GlobalConstants.CURR_PERIOD = this.selection[0];
-       this.selected = this.selection[0].value;
+       this.selected = this.selection[0].description;
      }
    }
   
-  selection: Selection[] = [];
+  selection: PeriodData[] = [];
   selected;
   
   
@@ -55,7 +52,7 @@ export class HeaderComponent implements OnInit {
 
   onUpdate():void{
     this.selection.forEach(element => {
-      if(element.value == this.selected){
+      if(element.description == this.selected){
         GlobalConstants.CURR_PERIOD = element;
         this.router.navigate(["/home"]);
         return;

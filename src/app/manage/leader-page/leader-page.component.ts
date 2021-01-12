@@ -4,16 +4,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-variable';
+import { LeaderData } from 'src/app/common/leader-model';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
 import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/update-leader-dialog.component';
 
-export interface LeaderData {
-  id: number;
-  period_id: number;
-  initial: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-leader-page',

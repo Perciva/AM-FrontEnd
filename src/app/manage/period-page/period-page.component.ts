@@ -2,18 +2,13 @@ import { AfterViewInit, Component, OnInit, ViewChild, OnDestroy } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { PeriodData } from 'src/app/common/period-model';
 import { PeriodService } from 'src/app/service/period-services.service';
-import { getTokenSourceMapRange } from 'typescript';
 import { AddPeriodDialogComponent } from '../dialog/add-period-dialog/add-period-dialog.component';
 import { UpdatePeriodDialogComponent } from '../dialog/update-period-dialog/update-period-dialog.component';
 
-export interface PeriodData {
-  id: number;
-  description: string;
-  start: string;
-  end: string;
-}
+
 
 @Component({
   selector: 'app-period-page',
