@@ -36,11 +36,16 @@ export class HeaderComponent implements OnInit {
   
   
   ngOnInit(): void {
-    var user = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.USER)));
-    if(user != null){
-      this.User_name = user.UserName;
-    }
-    else{
+    var user;
+    try {
+      user = JSON.parse(decrypt(localStorage.getItem(GlobalConstants.USER)));
+      if(user != null){
+        this.User_name = user.UserName;
+      }
+      else{
+        this.User_name = "Dummy";
+      }
+    } catch (error) {
       this.User_name = "Dummy";
     }
   }

@@ -1,1 +1,11 @@
-<p>assistant-page works!</p>
+<div class="container d-flex justify-content-center align-item-center p-2">
+    <div class="col-md-8 form-group"> 
+        <a href="https://drive.google.com/uc?export=download&id=1m88x9TnvwwAjG7MAEnrm8kO_wm9aoii4" target="_blank" rel="noopener noreferrer">
+            <button class="btn" style="width:100%"><i class="fa fa-download"></i>Download Template</button>
+        </a>
+        <div class="input-group my-2">
+            <input type="file" class="form-control" type="file" class="form-control" (change)="addfile($event)" placeholder="Upload excel" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">    
+        </div>
+    </div>   
+</div> 
+  
