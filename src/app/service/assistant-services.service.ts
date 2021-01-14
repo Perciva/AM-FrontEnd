@@ -7,8 +7,28 @@ import { Apollo, gql } from 'apollo-angular';
 export class AssistantService {
 
   constructor(private apollo: Apollo) { }
+
+  GetAllAssistant(period_id: number){
+    return this.apollo
+    .query<any>({
+      query: gql`
+      query($period_id:Int!) {
+        GetAssistantByPeriodId(period_id:$period_id) {
+          id
+          period_id
+          leader_id
+          initial
+          name
+        }
+      }
+      `,
+      variables:{
+        "period_id": period_id,
+      }
+    })
+  }
   
-  InsertAssistant(perios_id: number, leader_id: number, initial: string, name: string){
+  InsertAssistant(period_id: number, leader_id: number, initial: string, name: string){
     return this.apollo
     .mutate<any>({
       mutation: gql`
@@ -17,7 +37,7 @@ export class AssistantService {
         }      
       `,
       variables: {
-        "period_id": perios_id,
+        "period_id": period_id,
         "leader_id": leader_id,
         "initial": initial,
         "name": name,

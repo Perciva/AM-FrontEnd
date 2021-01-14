@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { AssistantService } from 'src/app/service/assistant-services.service';
 import * as XLSX from 'xlsx';
@@ -13,10 +17,35 @@ export class AssistantPageComponent implements OnInit {
   file:File;
   arrayBuffer:any;
   fileList:any;
+  
+  ELEMENT_DATA: AssistantData[] = [];
+  mySub: any;
+  
+  displayedColumns: string[] = ['initial', 'name', 'leader', 'action'];
+  dataSource = new MatTableDataSource<AssistantData>(this.ELEMENT_DATA);
+  
+  constructor(private assistantService: AssistantService, public dialog: MatDialog, private router: Router) {   }
 
-  constructor(private assistantService: AssistantService) { }
+   ngOnInit(){
+    var period_id = GlobalConstants.CURR_PERIOD == null ? -1 : GlobalConstants.CURR_PERIOD.id;
+    console.log("Curr Period_Id: " + period_id);
+    if(period_id < 1){
+      this.router.navigate(["/home"]);
+    }
+    this.mySub = this.assistantService.GetAllAssistant(period_id).subscribe(async data => {
+      await this.insertData(data);
+    });
 
-  ngOnInit(): void {
+   }
+   
+   insertData(data){
+    console.log(data.data);
+    if(data.data.GetAssistantByPeriodId != null){
+      data.data.GetAssistantByPeriodId.forEach(element => {
+         this.ELEMENT_DATA.push(element)
+      });
+       this.dataSource.data = this.ELEMENT_DATA;
+    }
   }
 
   addfile(event) {
@@ -46,5 +75,46 @@ export class AssistantPageComponent implements OnInit {
       });
 
     }
+  }
+
+  
+  openDialog(): void {
+    // const dialogRef = this.dialog.open(AddLeaderDialogComponent, {
+    //   width: '500px',
+    //   data: {}
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   location.reload();
+    //   console.log('The dialog was closed');
+    //   console.log(result)
+    // });
+  }
+
+  doUpdate(x){
+    console.log(x);
+    // const dialogRef = this.dialog.open(UpdateLeaderDialogComponent, {
+    //   width: '500px',
+    //   data: x
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   location.reload();
+    //   console.log('The dialog was closed');
+    //   console.log(result)
+    // });
+  }
+
+  doDelete(x){
+    console.log(x);
+    this.assistantService.DeleteAssistant(x).subscribe(async data => {
+      await this.afterDelete(data);
+    });
+  }
+
+  afterDelete(data){
+    console.log(data)
+    alert(data.data.DeleteAssistant? "Delete Success":"Delete Failed");
+    location.reload();
   }
 }
