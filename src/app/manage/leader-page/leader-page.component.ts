@@ -46,11 +46,6 @@ export class LeaderPageComponent implements OnInit{
 
   displayedColumns: string[] = ['initial', 'name', 'action'];
   dataSource = new MatTableDataSource<LeaderData>(this.ELEMENT_DATA);
-  
-  
-  ngAfterViewInit() {
-    
-  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddLeaderDialogComponent, {
