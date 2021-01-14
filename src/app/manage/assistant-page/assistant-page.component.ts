@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { AssistantService } from 'src/app/service/assistant-services.service';
 import * as XLSX from 'xlsx';
 import { AddAssistantDialogComponent } from '../dialog/add-assistant-dialog/add-assistant-dialog.component';
+import { UpdateAssistantDialogComponent } from '../dialog/update-assistant-dialog/update-assistant-dialog.component';
 
 @Component({
   selector: 'app-assistant-page',
@@ -101,16 +101,16 @@ export class AssistantPageComponent implements OnInit {
 
   doUpdate(x){
     console.log(x);
-    // const dialogRef = this.dialog.open(UpdateLeaderDialogComponent, {
-    //   width: '500px',
-    //   data: x
-    // });
+    const dialogRef = this.dialog.open(UpdateAssistantDialogComponent, {
+      width: '500px',
+      data: x.id
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   location.reload();
-    //   console.log('The dialog was closed');
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 
   doDelete(x){

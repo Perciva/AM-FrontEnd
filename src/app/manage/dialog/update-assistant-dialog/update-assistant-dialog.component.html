@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-center flex-column container">
+    <div class="font-weight-bold m-3">Update Assistant</div>
+    <form class="d-flex flex-column" (ngSubmit)="doUpdateAssistant()">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Initial" [(ngModel)]="initial" [formControl]="formInitial">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Name" [(ngModel)]="name" [formControl]="formName">
+        </mat-form-field>
+
+        <mat-form-field class="period-selection">
+            <mat-label>Leader</mat-label>
+            <mat-select [(value)]="selected" [formControl]="formLeader">
+                <mat-option *ngFor="let item of selection" [value]="item.id">
+                    {{item.initial}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
+    </form>
+    
+</div>
+
