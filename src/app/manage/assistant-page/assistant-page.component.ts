@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -72,14 +73,33 @@ export class AssistantPageComponent implements OnInit {
         var temp = element["Leader Initial"];
         initial.push(element["Full Initial"]);
         leader.push(temp);
-        name.push(element["Nama"]);
+        name.push(element["Name"]);
         
       });
+      
+      this.FLAG_DONE= 1;
+      this.CURR_PROG= 0;
       for(var i = 0; i < initial.length; i++){
-        this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe();
+        this.CURR_PROG++;
+        this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe(
+          async data =>{
+            await this.removeFlag()
+          }
+        );
       }
+      this.FLAG_DONE = 0;
+    }
+  }
+
+  CURR_PROG = 0;
+  FLAG_DONE = 0;
+
+  removeFlag(){
+    this.CURR_PROG--;
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
       location.reload();
     }
+
   }
 
   

@@ -33,12 +33,9 @@ export class LeaderPageComponent implements OnInit{
     this.mySub = this.leaderService.GetAllLeader(this.period_id).subscribe(async data => {
       await this.insertData(data);
     });
-    
-   }
-   ngOnInit(){
+  }
 
-   }
-
+  ngOnInit(){ }
    
   addfile(event) {
     this.file= event.target.files[0]; 
@@ -56,11 +53,28 @@ export class LeaderPageComponent implements OnInit{
       var worksheet = workbook.Sheets[first_sheet_name];
       var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
 
+      this.CURR_PROG = 0;
+      this.FLAG_DONE = 1;
       arraylist.forEach(element => {
         var initial = element["Initial"];
         var leader = element["Name"];
-        this.leaderService.InsertLeader(period_id, initial, leader).subscribe();
-      });
+        this.CURR_PROG++;
+        this.leaderService.InsertLeader(period_id, initial, leader).subscribe(
+          async data =>{
+            await this.removeFlag();
+          }
+        );
+      })
+      this.FLAG_DONE=0;
+    }
+  }
+
+  CURR_PROG = 0;
+  FLAG_DONE = 0;
+
+  removeFlag(){
+    this.CURR_PROG--;
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
       location.reload();
     }
   }
