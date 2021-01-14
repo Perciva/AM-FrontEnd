@@ -6,3 +6,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import '~bootstrap/dist/css/bootstrap.css';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 @import url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/wtf-forms.css");
+
+/* Scroll Bar */
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: navy lightblue;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 4px;
+    height: 0px;
+}
+
+*::-webkit-scrollbar-track {
+    background: skyblue;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: navy;
+    border-radius: 20px;
+}
