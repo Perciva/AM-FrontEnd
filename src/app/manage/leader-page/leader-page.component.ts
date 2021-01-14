@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-variable';
@@ -8,6 +7,7 @@ import { LeaderData } from 'src/app/common/leader-model';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
 import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/update-leader-dialog.component';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -19,6 +19,10 @@ export class LeaderPageComponent implements OnInit{
   ELEMENT_DATA: LeaderData[] = [];
   mySub: any;
   period_id = -1;
+
+  title= 'XlsRead';
+  file:File;
+  arrayBuffer:any;
 
   constructor(public dialog: MatDialog, private leaderService: LeaderService, private router: Router) {
     this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
@@ -34,6 +38,32 @@ export class LeaderPageComponent implements OnInit{
    ngOnInit(){
 
    }
+
+   
+  addfile(event) {
+    this.file= event.target.files[0]; 
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(this.file); 
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      var data = new Uint8Array(this.arrayBuffer);
+      var arr = new Array();
+      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+      var bstr = arr.join("");
+      var workbook = XLSX.read(bstr, {type:"binary"});
+      var first_sheet_name = "Leader";
+      var worksheet = workbook.Sheets[first_sheet_name];
+      var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
+
+      arraylist.forEach(element => {
+        var initial = element["Initial"];
+        var leader = element["Name"];
+        this.leaderService.InsertLeader(period_id, initial, leader).subscribe();
+      });
+      location.reload();
+    }
+  }
 
    insertData(data){
      console.log(data.data);

@@ -18,7 +18,6 @@ export class AssistantPageComponent implements OnInit {
   title= 'XlsRead';
   file:File;
   arrayBuffer:any;
-  fileList:any;
   
   ELEMENT_DATA: AssistantData[] = [];
   mySub: any;
@@ -75,13 +74,11 @@ export class AssistantPageComponent implements OnInit {
         leader.push(temp);
         name.push(element["Nama"]);
         
-
       });
       for(var i = 0; i < initial.length; i++){
         this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe();
-
       }
-      
+      location.reload();
     }
   }
 

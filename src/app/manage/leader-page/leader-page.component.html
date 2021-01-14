@@ -1,3 +1,12 @@
+<div class="container d-flex justify-content-center align-item-center p-2 my-2">
+    <div class="col-md-8 form-group"> 
+        <div class="file my-2 w-100">
+            <input type="file" id="inputGroupFile" class="form-control" (change)="addfile($event)" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">    
+            <label class="file-custom" for="inputGroupFile"></label>
+        </div>
+    </div>   
+</div> 
+
 <div class="data">
     <div class="container d-flex justify-content-end m-2">
         <button class="btn btn-light" (click) = "openDialog()">
