@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { AssistantService } from 'src/app/service/assistant-services.service';
 import * as XLSX from 'xlsx';
+import { AddAssistantDialogComponent } from '../dialog/add-assistant-dialog/add-assistant-dialog.component';
 
 @Component({
   selector: 'app-assistant-page',
@@ -27,7 +29,7 @@ export class AssistantPageComponent implements OnInit {
   constructor(private assistantService: AssistantService, public dialog: MatDialog, private router: Router) {   }
 
    ngOnInit(){
-    var period_id = GlobalConstants.CURR_PERIOD == null ? -1 : GlobalConstants.CURR_PERIOD.id;
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     console.log("Curr Period_Id: " + period_id);
     if(period_id < 1){
       this.router.navigate(["/home"]);
@@ -57,38 +59,44 @@ export class AssistantPageComponent implements OnInit {
       var data = new Uint8Array(this.arrayBuffer);
       var arr = new Array();
       for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      var period_id = GlobalConstants.CURR_PERIOD.id;
+      var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
       var bstr = arr.join("");
       var workbook = XLSX.read(bstr, {type:"binary"});
       var first_sheet_name = "Anak Bina";
       var worksheet = workbook.Sheets[first_sheet_name];
       var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
-      arraylist.forEach(element => {
-        var initial = element["Full Initial"];
-        var leader = element["Leader Initial"];
-        var name = element["Nama"];
-        console.log(element["AM_Format"])
-        this.assistantService.InsertAssistant(period_id, 1, initial, name).subscribe(
-          async data => {
-          }
-        )
-      });
+      var initial = [];
+      var leader = [];
+      var name = [];
 
+      arraylist.forEach(element => {
+        var temp = element["Leader Initial"];
+        initial.push(element["Full Initial"]);
+        leader.push(temp);
+        name.push(element["Nama"]);
+        
+
+      });
+      for(var i = 0; i < initial.length; i++){
+        this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe();
+
+      }
+      
     }
   }
 
   
   openDialog(): void {
-    // const dialogRef = this.dialog.open(AddLeaderDialogComponent, {
-    //   width: '500px',
-    //   data: {}
-    // });
+    const dialogRef = this.dialog.open(AddAssistantDialogComponent, {
+      width: '500px',
+      data: {}
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   location.reload();
-    //   console.log('The dialog was closed');
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 
   doUpdate(x){

@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PeriodData } from 'src/app/common/period-model';
 import { PeriodService } from 'src/app/service/period-services.service';
@@ -18,18 +19,28 @@ export class HeaderComponent implements OnInit {
     periodService.GetAllPeriods().subscribe(async data => {
       await this.insertData(data);
     });
-   }
-
-   insertData(data){
-     data.data.GetAllPeriods.forEach(element => {
-       this.selection.push(element)
-     });
-     this.selection.reverse();
-     if(this.selection != null){
-       GlobalConstants.CURR_PERIOD = this.selection[0];
-       this.selected = this.selection[0].description;
-     }
-   }
+  }
+  
+  insertData(data){
+    data.data.GetAllPeriods.forEach(element => {
+      this.selection.push(element)
+    });
+    this.selection.reverse();
+    var period;
+    period = localStorage.getItem(GlobalConstants.CURR_PERIOD);
+    if(period != null){
+      period = parseInt(period);
+      this.selection.forEach(element => {
+        if(element.id == period){
+          this.selected = element.description;
+        }
+      });
+    }
+    else{
+      this.selected = this.selection[0].description;
+      localStorage.setItem(GlobalConstants.CURR_PERIOD, this.selection[0].id.toString());
+    }
+  }
   
   selection: PeriodData[] = [];
   selected;
@@ -58,9 +69,8 @@ export class HeaderComponent implements OnInit {
   onUpdate():void{
     this.selection.forEach(element => {
       if(element.description == this.selected){
-        GlobalConstants.CURR_PERIOD = element;
+        localStorage.setItem(GlobalConstants.CURR_PERIOD, element.id.toString());
         this.router.navigate(["/home"]);
-        return;
       }
     });
   }

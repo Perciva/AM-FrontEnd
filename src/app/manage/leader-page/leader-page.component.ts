@@ -18,19 +18,20 @@ import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/upda
 export class LeaderPageComponent implements OnInit{
   ELEMENT_DATA: LeaderData[] = [];
   mySub: any;
+  period_id = -1;
 
   constructor(public dialog: MatDialog, private leaderService: LeaderService, private router: Router) {
+    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    console.log("Curr Period_Id: " + this.period_id);
+    if(this.period_id == null){
+      this.router.navigate(["/home"]);
+    }
+    // this.mySub = this.leaderService.GetAllLeader(this.period_id).subscribe(async data => {
+    //   await this.insertData(data);
+    // });
     
    }
    ngOnInit(){
-    var period_id = GlobalConstants.CURR_PERIOD == null ? -1 : GlobalConstants.CURR_PERIOD.id;
-    console.log("Curr Period_Id: " + period_id);
-    if(period_id < 1){
-      this.router.navigate(["/home"]);
-    }
-    this.mySub = this.leaderService.GetAllLeader(period_id).subscribe(async data => {
-      await this.insertData(data);
-    });
 
    }
 
@@ -83,7 +84,7 @@ export class LeaderPageComponent implements OnInit{
 
   afterDelete(data){
     console.log(data)
-    // alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
+    alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
     location.reload();
   }
 }

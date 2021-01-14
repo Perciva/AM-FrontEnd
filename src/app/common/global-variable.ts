@@ -1,7 +1,7 @@
 export class GlobalConstants {
     public static USER = "USER";
     public static TOKEN = "TOKEN";
-    public static CURR_PERIOD;
+    public static CURR_PERIOD = "CURR_PERIOD";
 
     public static YEAR: String[] = [
       "2023-2024",
