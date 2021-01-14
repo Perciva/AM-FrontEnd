@@ -26,9 +26,9 @@ export class LeaderPageComponent implements OnInit{
     if(this.period_id == null){
       this.router.navigate(["/home"]);
     }
-    // this.mySub = this.leaderService.GetAllLeader(this.period_id).subscribe(async data => {
-    //   await this.insertData(data);
-    // });
+    this.mySub = this.leaderService.GetAllLeader(this.period_id).subscribe(async data => {
+      await this.insertData(data);
+    });
     
    }
    ngOnInit(){
