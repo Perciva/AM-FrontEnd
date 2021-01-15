@@ -27,6 +27,27 @@ export class LeaderService {
       }
     });
   }
+
+  GetAllLeaderByInitial(period_id, initial_id){
+    return this.apollo
+    .query<any>({
+      query: gql`
+      query($period_id:Int!, $initial_id:String!) {
+        GetLeaderByInitial(period_id:$period_id, initial_id:$initial_id) {
+          id
+          period_id
+          initial
+          name
+        }
+      }
+           
+      `,
+      variables: {
+        "period_id": period_id,
+        "initial_id": initial_id,
+      }
+    });
+  }
   
   InsertLeader(period_id: number, initial: string, name: string){
     return this.apollo

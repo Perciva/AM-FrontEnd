@@ -23,7 +23,7 @@ export class AddLeaderDialogComponent {
   }
 
   doAddLeader(){
-    var period_id = GlobalConstants.CURR_PERIOD.id;
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     if(this.name == null || this.initial == null){
       alert("Some Field Empty");
     }

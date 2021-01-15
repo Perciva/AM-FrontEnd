@@ -24,6 +24,8 @@ import { AddPeriodDialogComponent } from './manage/dialog/add-period-dialog/add-
 import { UpdatePeriodDialogComponent } from './manage/dialog/update-period-dialog/update-period-dialog.component';
 import { AddLeaderDialogComponent } from './manage/dialog/add-leader-dialog/add-leader-dialog.component';
 import { UpdateLeaderDialogComponent } from './manage/dialog/update-leader-dialog/update-leader-dialog.component';
+import { AddAssistantDialogComponent } from './manage/dialog/add-assistant-dialog/add-assistant-dialog.component';
+import { UpdateAssistantDialogComponent } from './manage/dialog/update-assistant-dialog/update-assistant-dialog.component';
 
 
 @NgModule({
@@ -56,6 +58,8 @@ import { UpdateLeaderDialogComponent } from './manage/dialog/update-leader-dialo
     UpdatePeriodDialogComponent,
     AddLeaderDialogComponent,
     UpdateLeaderDialogComponent,
+    AddAssistantDialogComponent,
+    UpdateAssistantDialogComponent,
   ],
     providers: [
     ],

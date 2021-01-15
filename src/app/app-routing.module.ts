@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { PageNotFoundComponent } from './components/utility/page-not-found/page-not-found.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { ManagePageComponent } from './manage/manage-page/manage-page.component';
 import { AssistantsPageComponent } from './assistants/assistants-page/assistants-page.component';
 import { PeriodPageComponent } from './manage/period-page/period-page.component';
 import { LeaderPageComponent } from './manage/leader-page/leader-page.component';
@@ -86,7 +85,6 @@ export const RoutingComponent = [
   LoginPageComponent,
   HeaderComponent,
   PageNotFoundComponent,
-  ManagePageComponent,
   AssistantsPageComponent,
   PeriodPageComponent,
   LeaderPageComponent,

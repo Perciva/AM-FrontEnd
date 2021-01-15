@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManagePageComponent } from './manage-page.component';
+import { AddAssistantDialogComponent } from './add-assistant-dialog.component';
 
-describe('ManagePageComponent', () => {
-  let component: ManagePageComponent;
-  let fixture: ComponentFixture<ManagePageComponent>;
+describe('AddAssistantDialogComponent', () => {
+  let component: AddAssistantDialogComponent;
+  let fixture: ComponentFixture<AddAssistantDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManagePageComponent ]
+      declarations: [ AddAssistantDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManagePageComponent);
+    fixture = TestBed.createComponent(AddAssistantDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

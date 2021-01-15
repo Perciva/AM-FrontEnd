@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-variable';
@@ -8,6 +7,7 @@ import { LeaderData } from 'src/app/common/leader-model';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { AddLeaderDialogComponent } from '../dialog/add-leader-dialog/add-leader-dialog.component';
 import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/update-leader-dialog.component';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -18,21 +18,66 @@ import { UpdateLeaderDialogComponent } from '../dialog/update-leader-dialog/upda
 export class LeaderPageComponent implements OnInit{
   ELEMENT_DATA: LeaderData[] = [];
   mySub: any;
+  period_id = -1;
+
+  title= 'XlsRead';
+  file:File;
+  arrayBuffer:any;
 
   constructor(public dialog: MatDialog, private leaderService: LeaderService, private router: Router) {
-    
-   }
-   ngOnInit(){
-    var period_id = GlobalConstants.CURR_PERIOD == null ? -1 : GlobalConstants.CURR_PERIOD.id;
-    console.log("Curr Period_Id: " + period_id);
-    if(period_id < 1){
+    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    console.log("Curr Period_Id: " + this.period_id);
+    if(this.period_id == null){
       this.router.navigate(["/home"]);
     }
-    this.mySub = this.leaderService.GetAllLeader(period_id).subscribe(async data => {
+    this.mySub = this.leaderService.GetAllLeader(this.period_id).subscribe(async data => {
       await this.insertData(data);
     });
+  }
 
-   }
+  ngOnInit(){ }
+   
+  addfile(event) {
+    this.file= event.target.files[0]; 
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(this.file); 
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      var data = new Uint8Array(this.arrayBuffer);
+      var arr = new Array();
+      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+      var bstr = arr.join("");
+      var workbook = XLSX.read(bstr, {type:"binary"});
+      var first_sheet_name = "Leader";
+      var worksheet = workbook.Sheets[first_sheet_name];
+      var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
+
+      this.CURR_PROG = 0;
+      this.FLAG_DONE = 1;
+      arraylist.forEach(element => {
+        var initial = element["Initial"];
+        var leader = element["Name"];
+        this.CURR_PROG++;
+        this.leaderService.InsertLeader(period_id, initial, leader).subscribe(
+          async data =>{
+            await this.removeFlag();
+          }
+        );
+      })
+      this.FLAG_DONE=0;
+    }
+  }
+
+  CURR_PROG = 0;
+  FLAG_DONE = 0;
+
+  removeFlag(){
+    this.CURR_PROG--;
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
+      location.reload();
+    }
+  }
 
    insertData(data){
      console.log(data.data);
@@ -46,11 +91,6 @@ export class LeaderPageComponent implements OnInit{
 
   displayedColumns: string[] = ['initial', 'name', 'action'];
   dataSource = new MatTableDataSource<LeaderData>(this.ELEMENT_DATA);
-  
-  
-  ngAfterViewInit() {
-    
-  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddLeaderDialogComponent, {
@@ -88,7 +128,7 @@ export class LeaderPageComponent implements OnInit{
 
   afterDelete(data){
     console.log(data)
-    // alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
+    alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
     location.reload();
   }
 }
