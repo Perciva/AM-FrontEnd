@@ -1,0 +1,34 @@
+<div class="d-flex justify-content-center flex-column container">
+    <div class="font-weight-bold m-3">Add Shift</div>
+    <form class="d-flex flex-column" (ngSubmit)="doAddShift()">
+        <mat-form-field class="example-full-width">
+            <mat-label for="selectDay">Day</mat-label>
+            <mat-select name="selectDay" [(value)]="selectedDay" [formControl]="formDay">
+                <mat-option *ngFor="let item of selectionDay" [value]="item.value">
+                    {{item.text}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <mat-label for="selectShift">Shift</mat-label>
+            <mat-select name="selectShift" [(value)]="selectedShift" [formControl]="formShift">
+                <mat-option *ngFor="let item of selectionShift" [value]="item">
+                    {{item}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" *ngIf="isSelectedCustom()">
+            <input matInput name="timeIn" type="time" placeholder="In" [(ngModel)]="timeIn" [formControl]="formTimeIn">
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width" *ngIf="isSelectedCustom()">
+            <input matInput name="timeOut" type="time" placeholder="Out" [(ngModel)]="timeOut" [formControl]="formTimeOut">
+        </mat-form-field>
+
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
+    </form>
+    
+</div>
+

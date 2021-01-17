@@ -26,6 +26,7 @@ import { AddLeaderDialogComponent } from './manage/dialog/add-leader-dialog/add-
 import { UpdateLeaderDialogComponent } from './manage/dialog/update-leader-dialog/update-leader-dialog.component';
 import { AddAssistantDialogComponent } from './manage/dialog/add-assistant-dialog/add-assistant-dialog.component';
 import { UpdateAssistantDialogComponent } from './manage/dialog/update-assistant-dialog/update-assistant-dialog.component';
+import { AddShiftDialogComponent } from './assistants/dialog/add-shift-dialog/add-shift-dialog.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { UpdateAssistantDialogComponent } from './manage/dialog/update-assistant
     UpdateLeaderDialogComponent,
     AddAssistantDialogComponent,
     UpdateAssistantDialogComponent,
+    AddShiftDialogComponent,
   ],
     providers: [
     ],
