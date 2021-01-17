@@ -1,7 +1,10 @@
+import { LeaderData } from "./leader-model";
+import { PeriodData } from "./period-model";
+
 export interface AssistantData {
     id: number;
-    period_id: number;
-    leader: string;
+    period: PeriodData;
+    leader: LeaderData;
     initial: string;
     name: string;
 }
