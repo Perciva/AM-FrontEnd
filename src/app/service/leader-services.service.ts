@@ -12,10 +12,15 @@ export class LeaderService {
     return this.apollo
     .query<any>({
       query: gql`
-      query($period_id:Int!) {
-        GetLeaderByPeriodId(period_id:$period_id) {
+      query($period_id:Int!){
+        GetLeaderByPeriodId(period_id:$period_id){
           id
-          period_id
+          period{
+            id
+            description
+            start
+            end
+          }
           initial
           name
         }
@@ -28,14 +33,19 @@ export class LeaderService {
     });
   }
 
-  GetAllLeaderByInitial(period_id, initial_id){
+  GetLeaderByInitialAndPeriod(period_id, initial){
     return this.apollo
     .query<any>({
       query: gql`
-      query($period_id:Int!, $initial_id:String!) {
-        GetLeaderByInitial(period_id:$period_id, initial_id:$initial_id) {
+      query($period_id:Int!, $initial:String!) {
+        GetLeaderByInitialAndPeriod(period_id:$period_id, initial:$initial) {
           id
-          period_id
+          period{
+            id
+            description
+            start
+            end
+          }
           initial
           name
         }
@@ -44,7 +54,7 @@ export class LeaderService {
       `,
       variables: {
         "period_id": period_id,
-        "initial_id": initial_id,
+        "initial": initial,
       }
     });
   }

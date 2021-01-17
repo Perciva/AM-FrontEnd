@@ -15,8 +15,17 @@ export class AssistantService {
       query($period_id:Int!) {
         GetAssistantByPeriodId(period_id:$period_id) {
           id
-          period_id
-          leader_id
+          period{
+            id
+            description
+            start
+            end
+          }
+          leader{
+            id
+            initial
+            name
+          }
           initial
           name
         }

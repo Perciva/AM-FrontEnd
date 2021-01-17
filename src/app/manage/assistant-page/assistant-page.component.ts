@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { AssistantService } from 'src/app/service/assistant-services.service';
+import { LeaderService } from 'src/app/service/leader-services.service';
 import * as XLSX from 'xlsx';
 import { AddAssistantDialogComponent } from '../dialog/add-assistant-dialog/add-assistant-dialog.component';
 import { UpdateAssistantDialogComponent } from '../dialog/update-assistant-dialog/update-assistant-dialog.component';
@@ -26,11 +27,12 @@ export class AssistantPageComponent implements OnInit {
   displayedColumns: string[] = ['initial', 'name', 'leader', 'action'];
   dataSource = new MatTableDataSource<AssistantData>(this.ELEMENT_DATA);
   
-  constructor(private assistantService: AssistantService, public dialog: MatDialog, private router: Router) {   }
+  constructor(private assistantService: AssistantService, public dialog: MatDialog,
+     private router: Router, private leaderService: LeaderService) {   }
 
    ngOnInit(){
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-    console.log("Curr Period_Id: " + period_id);
+    // console.log("Curr Period_Id: " + period_id);
     if(period_id < 1){
       this.router.navigate(["/home"]);
     }
@@ -41,7 +43,7 @@ export class AssistantPageComponent implements OnInit {
    }
    
    insertData(data){
-    console.log(data.data);
+    // console.log(data.data);
     if(data.data.GetAssistantByPeriodId != null){
       data.data.GetAssistantByPeriodId.forEach(element => {
          this.ELEMENT_DATA.push(element)
@@ -81,11 +83,17 @@ export class AssistantPageComponent implements OnInit {
       this.CURR_PROG= 0;
       for(var i = 0; i < initial.length; i++){
         this.CURR_PROG++;
-        this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe(
-          async data =>{
-            await this.removeFlag()
-          }
-        );
+        // this.leaderService.GetLeaderByInitialAndPeriod(period_id, leader[i]).subscribe(
+        //   async data=>{
+        //     // await console.log(data.data)
+        //     // await console.log(i);
+        //     await this.assistantService.InsertAssistant(period_id, data.data.GetLeaderByInitialAndPeriod.id, initial[i], name[i]).subscribe(
+        //       async data1 =>{
+        //         // await this.removeFlag()
+        //       }
+        //     );
+        //   }
+        // )
       }
       this.FLAG_DONE = 0;
     }
@@ -97,7 +105,7 @@ export class AssistantPageComponent implements OnInit {
   removeFlag(){
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
-      location.reload();
+      // location.reload();
     }
 
   }
@@ -111,13 +119,13 @@ export class AssistantPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       location.reload();
-      console.log('The dialog was closed');
-      console.log(result)
+      // console.log('The dialog was closed');
+      // console.log(result)
     });
   }
 
   doUpdate(x){
-    console.log(x);
+    // console.log(x);
     const dialogRef = this.dialog.open(UpdateAssistantDialogComponent, {
       width: '500px',
       data: x.id
@@ -131,14 +139,14 @@ export class AssistantPageComponent implements OnInit {
   }
 
   doDelete(x){
-    console.log(x);
+    // console.log(x);
     this.assistantService.DeleteAssistant(x).subscribe(async data => {
       await this.afterDelete(data);
     });
   }
 
   afterDelete(data){
-    console.log(data)
+    // console.log(data)
     alert(data.data.DeleteAssistant? "Delete Success":"Delete Failed");
     location.reload();
   }
