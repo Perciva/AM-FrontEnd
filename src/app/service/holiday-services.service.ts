@@ -27,6 +27,35 @@ export class HolidayServicesService {
     });
   }
 
+  InsertHoliday(period_id: number, description: string, date: string){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($period_id: Int!, $description: String!, $date: String!) {
+          InsertHoliday(period_id:$period_id, description: $description, date: $date)
+        }
+      `,
+      variables: {
+        "period_id": period_id,
+        "description": description,
+        "date": date
+      }
+    });
+  }
 
-  
+  DeleteHoliday(id: number){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($id: Int!) {
+          DeleteHoliday(id: $id)
+        }   
+      `,
+      variables: {
+        "id": id
+      }
+    });
+  }
+
+
 }
