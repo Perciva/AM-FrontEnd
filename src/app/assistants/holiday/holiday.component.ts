@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { GlobalConstants } from 'src/app/common/global-variable';
 import { HolidayData } from 'src/app/common/holiday-model';
 import { HolidayServicesService } from 'src/app/service/holiday-services.service';
 import { DialogHolidayComponent } from '../dialog/dialog-holiday/dialog-holiday.component';
@@ -15,7 +17,12 @@ export class HolidayComponent implements OnInit {
   mySub: any;
   period_id = -1;
 
-  constructor(public dialog: MatDialog, private holidayService: HolidayServicesService) { 
+  constructor(public dialog: MatDialog, private holidayService: HolidayServicesService, private router: Router) { 
+    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    console.log("Curr Period_Id: " + this.period_id);
+    if(this.period_id == null){
+      this.router.navigate(["/home"]);
+    }
     this.mySub = this.holidayService.GetAllHoliday(this.period_id).subscribe(async data => {
       await this.insertData(data);
     });
@@ -29,8 +36,8 @@ export class HolidayComponent implements OnInit {
 
   insertData(data){
     console.log(data.data);
-    if(data.data.GetLeaderByPeriodId != null){
-      data.data.GetLeaderByPeriodId.forEach(element => {
+    if(data.data.GetHolidayByPeriodId != null){
+      data.data.GetHolidayByPeriodId.forEach(element => {
          this.ELEMENT_DATA.push(element)
       });
        this.dataSource.data = this.ELEMENT_DATA;
