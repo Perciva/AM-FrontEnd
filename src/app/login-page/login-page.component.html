@@ -27,6 +27,11 @@
                 <div class="part form-group">
                     <input type="submit" class="submit-button" value="Login" >
                 </div>
+                <div *ngIf="isErr">
+                    <div class="btn-danger p-2">
+                        {{err}}
+                    </div>
+                </div>
             </form>
         </div>
     </div>

@@ -16,6 +16,8 @@ declare function encrypt(word): any;
 export class LoginPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   loginForm: FormGroup;
+  isErr = false;
+  err;
   
   constructor(private formBuilder: FormBuilder, private router: Router, private authenticate: AuthenticateService) {
   }
@@ -40,7 +42,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home']);
     }
     else{
-      alert('Failed to login');
+      this.isErr = true;
+      this.err = 'Failed to login';
     }
   }
 
