@@ -54,6 +54,24 @@ export class AssistantService {
     });
   }
   
+  InsertAssistantByLeaderInitial(period_id: number, leader_initial: string, initial: string, name: string){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($period_id: Int!, $leader_initial: String!, $initial: String!, $name: String!) {
+          InsertAssistantByLeaderInitial(period_id: $period_id, leader_initial: $leader_initial, initial: $initial, name: $name)
+        }
+         
+      `,
+      variables: {
+        "period_id": period_id,
+        "leader_initial": leader_initial,
+        "initial": initial,
+        "name": name,
+      }
+    });
+  }
+  
   UpdateAssistant(id: number, leader_id: number, initial: string, name: string){
     return this.apollo
     .mutate<any>({

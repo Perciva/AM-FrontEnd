@@ -83,17 +83,11 @@ export class AssistantPageComponent implements OnInit {
       this.CURR_PROG= 0;
       for(var i = 0; i < initial.length; i++){
         this.CURR_PROG++;
-        // this.leaderService.GetLeaderByInitialAndPeriod(period_id, leader[i]).subscribe(
-        //   async data=>{
-        //     // await console.log(data.data)
-        //     // await console.log(i);
-        //     await this.assistantService.InsertAssistant(period_id, data.data.GetLeaderByInitialAndPeriod.id, initial[i], name[i]).subscribe(
-        //       async data1 =>{
-        //         // await this.removeFlag()
-        //       }
-        //     );
-        //   }
-        // )
+        this.assistantService.InsertAssistantByLeaderInitial(period_id,leader[i], initial[i], name[i]).subscribe(
+          async data1 =>{
+            await this.removeFlag()
+          }
+        );
       }
       this.FLAG_DONE = 0;
     }
@@ -105,7 +99,7 @@ export class AssistantPageComponent implements OnInit {
   removeFlag(){
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
-      // location.reload();
+      location.reload();
     }
 
   }

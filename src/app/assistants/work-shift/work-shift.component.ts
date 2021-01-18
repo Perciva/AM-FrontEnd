@@ -1,14 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { AssistantService } from 'src/app/service/assistant-services.service';
+import { ShiftService } from 'src/app/service/shift-services.service';
 import * as XLSX from 'xlsx';
 import { ShiftData } from '../../common/shift-model'
 import { AddShiftDialogComponent } from '../dialog/add-shift-dialog/add-shift-dialog.component';
+import { UpdateShiftDialogComponent } from '../dialog/update-shift-dialog/update-shift-dialog.component';
 
 @Component({
   selector: 'app-work-shift',
@@ -20,15 +22,7 @@ export class WorkShiftComponent implements OnInit {
   file:File;
   arrayBuffer:any;
   
-  ELEMENT_DATA: ShiftData[] = [
-    {id:1 ,assistant_id: 1, day:1, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:2 ,assistant_id: 1, day:2, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:3 ,assistant_id: 1, day:3, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:4 ,assistant_id: 1, day:4, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:5 ,assistant_id: 1, day:5, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:6 ,assistant_id: 1, day:6, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-    {id:7 ,assistant_id: 1, day:7, in: {hours: 11, minutes: 12}, out: {hours: 11, minutes: 12}},
-  ];
+  ELEMENT_DATA: ShiftData[] = [];
   assistants: AssistantData[] = [];
   selection = new SelectionModel<ShiftData>(true, []);
   selected;
@@ -37,7 +31,10 @@ export class WorkShiftComponent implements OnInit {
   displayedColumns: string[] = ['select', 'initial', 'day', 'in', 'out', 'action'];
   dataSource = new MatTableDataSource<ShiftData>(this.ELEMENT_DATA);
   
-  constructor(private assistantService: AssistantService, private router: Router, public dialog: MatDialog) { }
+  constructor(private assistantService: AssistantService, 
+    private shiftService: ShiftService,
+    private router: Router, public dialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
@@ -48,7 +45,7 @@ export class WorkShiftComponent implements OnInit {
     this.mySub = this.assistantService.GetAllAssistant(period_id).subscribe(async data => {
       await this.insertAssistantData(data);
     });
-
+    // this.retrieveNewShift();
    }
    
   insertAssistantData(data){
@@ -119,7 +116,7 @@ export class WorkShiftComponent implements OnInit {
   removeFlag(){
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
-      location.reload();
+      this.retrieveNewShift();
     }
 
   }
@@ -133,6 +130,7 @@ export class WorkShiftComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       location.reload();
+      // this.retrieveNewShift();
       console.log('The dialog was closed');
       console.log(result)
     });
@@ -140,54 +138,52 @@ export class WorkShiftComponent implements OnInit {
 
   doUpdate(x){
     console.log(x);
-    // const dialogRef = this.dialog.open(UpdateAssistantDialogComponent, {
-    //   width: '500px',
-    //   data: x.id
-    // });
+    const dialogRef = this.dialog.open(UpdateShiftDialogComponent, {
+      width: '500px',
+      data: { ast_id: this.selected, shift_id: x.id}
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   location.reload();
-    //   console.log('The dialog was closed');
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      // this.retrieveNewShift();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
   }
 
   doDelete(x){
     console.log(x);
-    // this.assistantService.DeleteAssistant(x).subscribe(async data => {
-    //   await this.afterDelete(data);
-    // });
+    this.shiftService.DeleteShift(x).subscribe(
+      async data =>{
+        await this.afterDelete(data)
+      }
+    );
   }
 
   afterDelete(data){
     console.log(data)
-    alert(data.data.DeleteAssistant? "Delete Success":"Delete Failed");
+    alert(data.data.DeleteShift? "Delete Success":"Delete Failed");
     location.reload();
   }
 
   doDeleteAllShift(){
     console.log(this.selected);
-    //TODO Delete get all shift and delete it
-    // this.assistantService.DeleteAssistant(x).subscribe(async data => {
-    //   await this.afterDelete(data);
-    // });
+    this.shiftService.DeleteAllAssistantShifts(this.selected).subscribe();
+    this.retrieveNewShift();
   }
 
-   /** Whether the number of selected elements matches the total number of rows. */
    isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  /** The label for the checkbox on the passed row */
   checkboxLabel(row?: ShiftData): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
@@ -200,13 +196,41 @@ export class WorkShiftComponent implements OnInit {
       alert("None item Selected");
     } 
     else{
-      alert("Are you sure want to delete?")
-      this.ELEMENT_DATA.forEach(row =>{
-        console.log(row.id + " ?? " + this.selection.isSelected(row));
-        if(this.selection.isSelected(row)){
-          //Remove by row.id
-        }
-      })
+      if(confirm("Are you sure want to delete?")){
+        this.FLAG_DONE= 1;
+        this.CURR_PROG= 0;
+        this.ELEMENT_DATA.forEach(row =>{
+          console.log(row.id + " ?? " + this.selection.isSelected(row));
+          if(this.selection.isSelected(row)){
+            //Remove by row.id
+            this.CURR_PROG++;
+            this.shiftService.DeleteShift(row.id).subscribe(
+              async data =>{
+                await this.removeFlag()
+              }
+            );
+          }
+        })
+        this.FLAG_DONE = 0;
+
+      }
+      
     }
   }
+
+
+  retrieveNewShift(){
+    console.log(this.selected)
+    this.shiftService.GetAssistantShifts(this.selected).subscribe(async res => {
+      await this.refresh(res);
+    });
+  }
+
+  refresh(res){
+    this.ELEMENT_DATA = res.data.GetAssistantShifts;
+    this.dataSource = new MatTableDataSource<ShiftData>(this.ELEMENT_DATA);
+    this.changeDetectorRefs.detectChanges();
+    this.dataSource.data = this.dataSource.data;
+  }
+
 }

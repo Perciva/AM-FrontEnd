@@ -1,15 +1,6 @@
 <div class="d-flex justify-content-center flex-column container">
-    <div class="font-weight-bold m-3">Add Shift</div>
-    <form class="d-flex flex-column" (ngSubmit)="doAddShift()">
-        <mat-form-field class="example-full-width">
-            <mat-label>Assistant</mat-label>
-            <mat-select [(value)]="selected">
-                <mat-option *ngFor="let assistant of assistants" [value]="assistant.id">
-                    {{assistant.initial}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
+    <div class="font-weight-bold m-3">Update Shift</div>
+    <form class="d-flex flex-column" (ngSubmit)="doUpdateShift()">
         <mat-form-field class="example-full-width">
             <mat-label for="selectDay">Day</mat-label>
             <mat-select name="selectDay" [(value)]="selectedDay" [formControl]="formDay">
@@ -35,8 +26,8 @@
         <mat-form-field class="example-full-width" *ngIf="isSelectedCustom()">
             <input matInput name="timeOut" type="time" placeholder="Out" [(ngModel)]="timeOut" [formControl]="formTimeOut">
         </mat-form-field>
-        
-        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
+
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Update</button>
     </form>
     
 </div>

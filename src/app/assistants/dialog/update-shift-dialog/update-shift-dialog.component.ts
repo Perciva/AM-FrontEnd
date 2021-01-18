@@ -1,17 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
-import { AssistantService } from 'src/app/service/assistant-services.service';
+import { UpdateAssistantDialogComponent } from 'src/app/manage/dialog/update-assistant-dialog/update-assistant-dialog.component';
 import { ShiftService } from 'src/app/service/shift-services.service';
 
 @Component({
-  selector: 'app-add-shift-dialog',
-  templateUrl: './add-shift-dialog.component.html',
-  styleUrls: ['./add-shift-dialog.component.scss']
+  selector: 'app-update-shift-dialog',
+  templateUrl: './update-shift-dialog.component.html',
+  styleUrls: ['./update-shift-dialog.component.scss']
 })
-export class AddShiftDialogComponent {
+export class UpdateShiftDialogComponent {
   period_id;
 
   selectedDay;
@@ -31,42 +30,34 @@ export class AddShiftDialogComponent {
     'Custom',
   ];
 
-  timeIn: string;
-  timeOut: string;
+  timeIn;
+  timeOut;
   formDay;
   formShift;
   formTimeIn;
   formTimeOut;
   
-  assistants: AssistantData[] = [];
+  selection: [] = [];
   selected;
 
-  constructor(public dialogRef: MatDialogRef<AddShiftDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private assistantId: number,
-    private assistantService: AssistantService,
-    private shiftService: ShiftService) { 
+  ast_id;
+  shift_id;
+
+  constructor(public dialogRef: MatDialogRef<UpdateAssistantDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data , private shiftService: ShiftService) { 
     this.formDay= new FormControl('', [Validators.required]);
     this.formShift= new FormControl('', [Validators.required]);
     this.formTimeIn= new FormControl('', [Validators.required]);
     this.formTimeOut= new FormControl('', [Validators.required]);
     
     this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-    this.assistantService.GetAllAssistant(this.period_id).subscribe(async data => {
-      await this.insertAssistantData(data);
-    });
-    // this.retrieveNewShift();
-   }
-   
-  insertAssistantData(data){
-    console.log(data.data);
-    if(data.data.GetAssistantByPeriodId != null){
-      data.data.GetAssistantByPeriodId.forEach(element => {
-         this.assistants.push(element)
-      });
-    }
-  }
 
-  doAddShift(){
+    this.ast_id = data.ast_id;
+    this.shift_id = data.shift_id;
+    console.log("Ast id " + this.ast_id + " >> Shift " + this.shift_id);
+   }
+
+  doUpdateShift(){
     if(this.selectedDay == null || this.selectedShift == null ||
       (this.selectedShift == "Custom" && (this.timeIn == "" || this.timeOut == ""))
     ){
@@ -94,7 +85,7 @@ export class AddShiftDialogComponent {
       console.log("Time In : " + this.timeIn);
       console.log("Time Out : " + this.timeOut);
 
-      this.shiftService.InsertShift (this.selected, this.selectedDay, this.timeIn, this.timeOut)
+      this.shiftService.UpdateShift (this.shift_id, this.ast_id, this.selectedDay, this.timeIn, this.timeOut)
       .subscribe(async data => {
         await this.dialogRef.close();
       });
