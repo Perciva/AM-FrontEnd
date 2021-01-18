@@ -33,8 +33,10 @@ export class UpdatePeriodDialogComponent {
       this.selectedPeriod= new FormControl('', [Validators.required]);
       this.otherPeriod= new FormControl('', [Validators.required]);
       this.selectedYear= new FormControl('', [Validators.required]);
-      this.startDate= new FormControl('', [Validators.required]);
-      this.endDate= new FormControl('', [Validators.required]);
+      this.startDate= new FormControl(periodData.start, [Validators.required]);
+      this.endDate= new FormControl(periodData.end, [Validators.required]);
+      this.thisPeriod = "Other";
+      this.thisOther = periodData.description;
     }
 
 

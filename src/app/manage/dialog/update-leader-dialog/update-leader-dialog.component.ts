@@ -21,6 +21,8 @@ export class UpdateLeaderDialogComponent {
      private leaderService: LeaderService) { 
     this.formInitial= new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     this.formName= new FormControl('', [Validators.required]);
+    this.initial = leaderData.initial;
+    this.name = leaderData.name;
   }
 
   doUpdateLeader(){

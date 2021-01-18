@@ -24,17 +24,20 @@ export class UpdateAssistantDialogComponent{
   selected;
 
   constructor(public dialogRef: MatDialogRef<UpdateAssistantDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private assistantId: number, 
+    @Inject(MAT_DIALOG_DATA) private assistantData: AssistantData, 
      private assistantService: AssistantService, private leaderService: LeaderService) { 
     this.formInitial= new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     this.formName= new FormControl('', [Validators.required]);
     this.formLeader= new FormControl('', [Validators.required]);
+
+    this.initial = assistantData.initial;
+    this.name = assistantData.name;
     
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     leaderService.GetAllLeader(period_id).subscribe(async data => {
       await this.insertData(data);
     });
-   }
+  }
 
    insertData(data){
      console.log(data.data)
@@ -54,7 +57,7 @@ export class UpdateAssistantDialogComponent{
       alert("Initial must 6 character");
     }
     else{
-      this.assistantService.UpdateAssistant (this.assistantId, this.selected, this.initial, this.name)
+      this.assistantService.UpdateAssistant (this.assistantData.id, this.selected, this.initial, this.name)
       .subscribe(async data => {
         await this.dialogRef.close();
       });

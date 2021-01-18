@@ -122,7 +122,7 @@ export class AssistantPageComponent implements OnInit {
     // console.log(x);
     const dialogRef = this.dialog.open(UpdateAssistantDialogComponent, {
       width: '500px',
-      data: x.id
+      data: x
     });
 
     dialogRef.afterClosed().subscribe(result => {

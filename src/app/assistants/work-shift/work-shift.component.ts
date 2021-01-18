@@ -140,7 +140,7 @@ export class WorkShiftComponent implements OnInit {
     console.log(x);
     const dialogRef = this.dialog.open(UpdateShiftDialogComponent, {
       width: '500px',
-      data: { ast_id: this.selected, shift_id: x.id}
+      data: { ast_id: this.selected, shift: x}
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -45,15 +45,21 @@ export class UpdateShiftDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<UpdateAssistantDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data , private shiftService: ShiftService) { 
-    this.formDay= new FormControl('', [Validators.required]);
-    this.formShift= new FormControl('', [Validators.required]);
+    this.formDay= new FormControl(data.shift.day, [Validators.required]);
+    this.formShift= new FormControl("Custom", [Validators.required]);
     this.formTimeIn= new FormControl('', [Validators.required]);
     this.formTimeOut= new FormControl('', [Validators.required]);
     
     this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
 
     this.ast_id = data.ast_id;
-    this.shift_id = data.shift_id;
+    this.shift_id = data.shift.id;
+    console.log(data);
+
+    this.selectedDay = data.shift.day;
+    this.selectedShift = "Custom";
+    this.timeIn = data.shift._in;
+    this.timeOut = data.shift._out;
     console.log("Ast id " + this.ast_id + " >> Shift " + this.shift_id);
    }
 
