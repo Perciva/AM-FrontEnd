@@ -24,3 +24,13 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+.search-input{
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+    input{
+        text-align: center;
+        border-bottom-color: black;
+        border-bottom-width: 5px;
+    }
+}

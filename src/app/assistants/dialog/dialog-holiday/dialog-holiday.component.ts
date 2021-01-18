@@ -28,17 +28,17 @@ export class DialogHolidayComponent implements OnInit {
 
   doAddHoliday(){
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-    // if(this.description == null || this.date == null){
-    //   alert("Some Field Empty");
-    // }
-    // else{
+    if(this.description == null || this.formDate.value == null){
+      alert("Some Field Empty");
+    }
+    else{
       var exactDate = moment(this.formDate.value).add(7, 'hours')._d;
-      this.holidayService.InsertHoliday(period_id, this.description, '2020-02-02')
+      this.holidayService.InsertHoliday(period_id, this.description, exactDate)
       .subscribe(async data => {
         await this.dialogRef.close();
       });
 
-    // }
+    }
   }
 
 }
