@@ -6,6 +6,7 @@ import { GlobalConstants } from 'src/app/common/global-variable';
 import { HolidayData } from 'src/app/common/holiday-model';
 import { HolidayServicesService } from 'src/app/service/holiday-services.service';
 import { DialogHolidayComponent } from '../dialog/dialog-holiday/dialog-holiday.component';
+import { UpdateHolidayDialogComponent } from '../dialog/update-holiday-dialog/update-holiday-dialog.component';
 
 @Component({
   selector: 'app-holiday',
@@ -48,6 +49,33 @@ export class HolidayComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogHolidayComponent, {
       width: '500px',
       data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      console.log('The dialog was closed');
+      console.log(result)
+    });
+  }
+
+  doDelete(x){
+    console.log(x);
+    this.holidayService.DeleteHoliday(x).subscribe(async data => {
+      await this.afterDelete(data);
+    });
+  }
+
+  afterDelete(data){
+    console.log(data)
+    alert(data.data.DeleteHoliday? "Delete Success":"Delete Failed");
+    location.reload();
+  }
+
+  doUpdate(x){
+    console.log(x);
+    const dialogRef = this.dialog.open(UpdateHolidayDialogComponent, {
+      width: '500px',
+      data: x
     });
 
     dialogRef.afterClosed().subscribe(result => {

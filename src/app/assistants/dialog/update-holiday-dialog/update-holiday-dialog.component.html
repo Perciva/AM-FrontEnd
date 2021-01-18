@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-center flex-column container">
-    <div class="font-weight-bold m-3">Add Holiday</div>
-    <form class="d-flex flex-column" (ngSubmit)="doAddHoliday()">
+    <div class="font-weight-bold m-3">Update Holiday</div>
+    <form class="d-flex flex-column">
         <mat-form-field class="example-full-width">
-            <input matInput placeholder="Description" [(ngModel)]="description" [formControl]="formDescription">
+            <input matInput placeholder="Description">
         </mat-form-field>
 
         <mat-form-field>    
-            <input matInput required [matDatepicker]="picker1" placeholder="Date" [(ngModel)]="description" [formControl]="formDate">
+            <input matInput required [matDatepicker]="picker1" placeholder="Date" [formControl]="Date">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1 startView="year"></mat-datepicker>
         </mat-form-field>
