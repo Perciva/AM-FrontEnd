@@ -27,6 +27,7 @@ import { UpdateLeaderDialogComponent } from './manage/dialog/update-leader-dialo
 import { AddAssistantDialogComponent } from './manage/dialog/add-assistant-dialog/add-assistant-dialog.component';
 import { UpdateAssistantDialogComponent } from './manage/dialog/update-assistant-dialog/update-assistant-dialog.component';
 import { DialogHolidayComponent } from './assistants/dialog/dialog-holiday/dialog-holiday.component';
+import { UpdateHolidayDialogComponent } from './assistants/dialog/update-holiday-dialog/update-holiday-dialog.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { DialogHolidayComponent } from './assistants/dialog/dialog-holiday/dialo
     UpdateLeaderDialogComponent,
     AddAssistantDialogComponent,
     UpdateAssistantDialogComponent,
-    DialogHolidayComponent
+    DialogHolidayComponent,
+    UpdateHolidayDialogComponent
   ],
     providers: [
     ],

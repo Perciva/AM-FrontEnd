@@ -57,5 +57,21 @@ export class HolidayServicesService {
     });
   }
 
+  UpdateHoliday(id: number, description: string, date: string){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($id: Int!, $description: String!, $date: String!) {
+          UpdateHoliday(id: $id, description: $description, date: $date)
+        }  
+      `,
+      variables: {
+        "id": id,
+        "description": description,
+        "date": date,
+      }
+    });
+  }
+
 
 }
