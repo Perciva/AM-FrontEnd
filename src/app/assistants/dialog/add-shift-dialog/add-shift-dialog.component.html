@@ -29,11 +29,11 @@
         </mat-form-field>
 
         <mat-form-field class="example-full-width" *ngIf="isSelectedCustom()">
-            <input matInput name="timeIn" type="time" placeholder="In" [(ngModel)]="timeIn" [formControl]="formTimeIn">
+            <input matInput name="timeIn" type="time" placeholder="In" [(ngModel)]="timeIn" [formControl]="formTimeIn" step="1">
         </mat-form-field>
         
         <mat-form-field class="example-full-width" *ngIf="isSelectedCustom()">
-            <input matInput name="timeOut" type="time" placeholder="Out" [(ngModel)]="timeOut" [formControl]="formTimeOut">
+            <input matInput name="timeOut" type="time" placeholder="Out" [(ngModel)]="timeOut" [formControl]="formTimeOut" step="1">
         </mat-form-field>
         
         <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
