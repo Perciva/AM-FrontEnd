@@ -56,7 +56,7 @@ export class LeaderPageComponent implements OnInit{
       this.CURR_PROG = 0;
       this.FLAG_DONE = 1;
       arraylist.forEach(element => {
-        var initial = element["Initial"];
+        var initial = element["Initial+Gen"];
         var leader = element["Name"];
         this.CURR_PROG++;
         this.leaderService.InsertLeader(period_id, initial, leader).subscribe(

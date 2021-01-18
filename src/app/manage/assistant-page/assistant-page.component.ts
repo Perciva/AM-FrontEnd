@@ -72,8 +72,8 @@ export class AssistantPageComponent implements OnInit {
       var name = [];
 
       arraylist.forEach(element => {
-        var temp = element["Leader Initial"];
-        initial.push(element["Full Initial"]);
+        var temp = element["Leader Initial + Gen"];
+        initial.push(element["Initial + Gen"]);
         leader.push(temp);
         name.push(element["Name"]);
         
