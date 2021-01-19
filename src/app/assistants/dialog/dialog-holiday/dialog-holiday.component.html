@@ -6,7 +6,7 @@
         </mat-form-field>
 
         <mat-form-field>    
-            <input matInput required [matDatepicker]="picker1" placeholder="Date" [(ngModel)]="description" [formControl]="formDate">
+            <input matInput required [matDatepicker]="picker1" placeholder="Date" [(ngModel)]="date" [formControl]="formDate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1 startView="year"></mat-datepicker>
         </mat-form-field>

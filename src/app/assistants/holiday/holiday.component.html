@@ -4,7 +4,11 @@
             <i class="bi bi-plus-circle-fill m-1"></i> Holiday
         </button>
     </div>
+
     <div class="mat-elevation-z8">
+        <div class="search-input">
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
+        </div>
         <table mat-table [dataSource]="dataSource">
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
