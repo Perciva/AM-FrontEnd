@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { HolidayData } from 'src/app/common/holiday-model';
 import { HolidayServicesService } from 'src/app/service/holiday-services.service';
-import { DialogHolidayComponent } from '../dialog/dialog-holiday/dialog-holiday.component';
+import { AddDialogHolidayComponent } from '../dialog/add-dialog-holiday/add-dialog-holiday.component';
 import { UpdateHolidayDialogComponent } from '../dialog/update-holiday-dialog/update-holiday-dialog.component';
 
 @Component({
@@ -46,7 +46,7 @@ export class HolidayComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogHolidayComponent, {
+    const dialogRef = this.dialog.open(AddDialogHolidayComponent, {
       width: '500px',
       data: {}
     });

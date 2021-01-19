@@ -28,7 +28,7 @@ import { AddAssistantDialogComponent } from './manage/dialog/add-assistant-dialo
 import { UpdateAssistantDialogComponent } from './manage/dialog/update-assistant-dialog/update-assistant-dialog.component';
 import { AddShiftDialogComponent } from './assistants/dialog/add-shift-dialog/add-shift-dialog.component';
 import { UpdateShiftDialogComponent } from './assistants/dialog/update-shift-dialog/update-shift-dialog.component';
-import { DialogHolidayComponent } from './assistants/dialog/dialog-holiday/dialog-holiday.component';
+import { AddDialogHolidayComponent } from './assistants/dialog/add-dialog-holiday/add-dialog-holiday.component';
 import { UpdateHolidayDialogComponent } from './assistants/dialog/update-holiday-dialog/update-holiday-dialog.component';
 
 
@@ -66,7 +66,7 @@ import { UpdateHolidayDialogComponent } from './assistants/dialog/update-holiday
     UpdateAssistantDialogComponent,
     AddShiftDialogComponent,
     UpdateShiftDialogComponent,
-    DialogHolidayComponent,
+    AddDialogHolidayComponent,
     UpdateHolidayDialogComponent,
   ],
     providers: [

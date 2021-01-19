@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogHolidayComponent } from './dialog-holiday.component';
+import { DialogHolidayComponent } from './add-dialog-holiday.component';
 
 describe('DialogHolidayComponent', () => {
   let component: DialogHolidayComponent;

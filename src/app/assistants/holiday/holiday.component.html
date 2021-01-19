@@ -1,12 +1,12 @@
 <div class="data">
-    <div class="container d-flex justify-content-end m-2">
-        <button class="btn btn-light" (click) = "openDialog()">
-            <i class="bi bi-plus-circle-fill m-1"></i> Holiday
-        </button>
-    </div>
-
-    <div class="mat-elevation-z8">
-        <div class="search-input">
+    
+    <div class="mat-elevation-z8" style="margin-top: 50px;">
+        <div class="container d-flex justify-content-end m-2">
+            <button class="btn btn-light" (click) = "openDialog()">
+                <i class="bi bi-plus-circle-fill m-1"></i> Holiday
+            </button>
+        </div>
+        <div class="search-input p-1" style="border-bottom: solid black 1px; width: 80%;">
             <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
         </div>
         <table mat-table [dataSource]="dataSource">
