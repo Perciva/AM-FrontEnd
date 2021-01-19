@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+
+import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlobalConstants } from 'src/app/common/global-variable';
+import { SpecialShiftData } from 'src/app/common/special-shift-model';
 
 var moment = require('moment');
 moment().format(); 
 
 @Component({
-  selector: 'app-add-special-shift-dialog',
-  templateUrl: './add-special-shift-dialog.component.html',
-  styleUrls: ['./add-special-shift-dialog.component.scss']
+  selector: 'app-update-special-shift-dialog',
+  templateUrl: './update-special-shift-dialog.component.html',
+  styleUrls: ['./update-special-shift-dialog.component.scss']
 })
-export class AddSpecialShiftDialogComponent {
+export class UpdateSpecialShiftDialogComponent{
   period_id;
   day;
   timeIn;
@@ -24,14 +26,20 @@ export class AddSpecialShiftDialogComponent {
   formAssistants;
   formDescription;
 
-  constructor(public dialogRef: MatDialogRef<AddSpecialShiftDialogComponent>
+  constructor(public dialogRef: MatDialogRef<UpdateSpecialShiftDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: SpecialShiftData
     ) { 
     this.formDay= new FormControl('', [Validators.required]);
     this.formTimeIn= new FormControl('', [Validators.required]);
     this.formTimeOut= new FormControl('', [Validators.required]);
     this.formAssistants = new FormControl('', [Validators.required]);
     this.formDescription = new FormControl('', [Validators.required]);
-    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    this.period_id = data.period_id;
+    this.day = data.date;
+    this.timeIn = data._in;
+    this.timeOut = data._out;
+    this.assistants = data.assistant_ids;
+    this.description = data.description;
   }
 
   myFilter = (d: Date): boolean => {

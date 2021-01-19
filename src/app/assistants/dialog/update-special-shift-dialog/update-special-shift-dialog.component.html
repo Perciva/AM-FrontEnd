@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center flex-column container">
-    <div class="font-weight-bold m-3">Add Special Shift</div>
+    <div class="font-weight-bold m-3">Update Special Shift</div>
     <form class="d-flex flex-column" (ngSubmit)="doAddShift()">
         <mat-form-field class="example-full-width">
             <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="dateStart" placeholder="Choose a date" [(ngModel)]="day" [formControl]="formDay">
@@ -26,7 +26,7 @@
             <input matInput placeholder="Description" [(ngModel)]="description" [formControl]="formDescription">
         </mat-form-field>
 
-        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Add</button>
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Update</button>
     </form>
     
 </div>

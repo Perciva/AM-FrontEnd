@@ -1,1 +1,58 @@
-<p>special-shift works!</p>
+<div class="data">
+    <div class="mat-elevation-z8" style="margin-top: 50px;">
+        <div class="container d-flex justify-content-end m-2">
+            <button class="btn btn-light" (click) = "openDialog()">
+                <i class="bi bi-plus-circle-fill m-1"></i> Special Shift
+            </button>
+        </div>
+        <div class="search-input p-1" style="border-bottom: solid black 1px; width: 80%;">
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
+        </div>
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="in">
+                <th mat-header-cell *matHeaderCellDef> In </th>
+                <td mat-cell *matCellDef="let element"> {{element._in}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="out">
+                <th mat-header-cell *matHeaderCellDef> Out </th>
+                <td mat-cell *matCellDef="let element"> {{element._out}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assistants">
+                <th mat-header-cell *matHeaderCellDef> Assistants </th>
+                <td mat-cell *matCellDef="let element"> {{element.assistant_ids}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        
+                        <button class="btn btn-warning mx-1" type="button"  (click)="doUpdate(element)">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button class="btn btn-danger mx-1" type="button" (click)="doDelete(element.id)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                        <input type="hidden" value="{{element.id}}" id="Element_ID">
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+</div>
