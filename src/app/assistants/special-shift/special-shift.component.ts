@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { SpecialShiftData } from 'src/app/common/special-shift-model';
+import { SpecialShiftService } from 'src/app/service/special-shift-services.service';
 import { AddSpecialShiftDialogComponent } from '../dialog/add-special-shift-dialog/add-special-shift-dialog.component';
 import { UpdateSpecialShiftDialogComponent } from '../dialog/update-special-shift-dialog/update-special-shift-dialog.component';
 
@@ -14,26 +15,26 @@ import { UpdateSpecialShiftDialogComponent } from '../dialog/update-special-shif
 })
 export class SpecialShiftComponent{
   ELEMENT_DATA: SpecialShiftData[] = [
-    {id: 1, period_id: 1, date:"2021-06-10", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
-    {id: 2, period_id: 1, date:"2021-06-12", _in: "09:05:00", _out: "17:00:00", assistant_ids: "JE19-2,MV19-2,EV19-1", description: "Testing"},
-    {id: 3, period_id: 1, date:"2021-06-13", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
-    {id: 4, period_id: 1, date:"2021-06-14", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
-    {id: 5, period_id: 1, date:"2021-06-15", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
-    {id: 6, period_id: 1, date:"2021-06-16", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
-    {id: 7, period_id: 1, date:"2021-06-17", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 1, period_id: 1, date:"2021-06-10", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 2, period_id: 1, date:"2021-06-12", _in: "09:05:00", _out: "17:00:00", assistant_ids: "JE19-2,MV19-2,EV19-1", description: "Testing"},
+    // {id: 3, period_id: 1, date:"2021-06-13", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 4, period_id: 1, date:"2021-06-14", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 5, period_id: 1, date:"2021-06-15", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 6, period_id: 1, date:"2021-06-16", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
+    // {id: 7, period_id: 1, date:"2021-06-17", _in: "09:05:00", _out: "17:00:00", assistant_ids: "ALL", description: "Testing"},
   ];
   mySub: any;
   period_id = -1;
 
-  constructor(public dialog: MatDialog, private router: Router) { 
+  constructor(public dialog: MatDialog, private router: Router, private specialShiftService: SpecialShiftService) { 
     this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     console.log("Curr Period_Id: " + this.period_id);
     if(this.period_id == null){
       this.router.navigate(["/home"]);
     }
-    // this.mySub = this.holidayService.GetAllHoliday(this.period_id).subscribe(async data => {
-    //   await this.insertData(data);
-    // });
+    this.mySub = this.specialShiftService.GetSpecialShifts(this.period_id).subscribe(async data => {
+      await this.insertData(data);
+    });
   }
 
   displayedColumns: string[] = ['date', 'in', 'out', 'assistants', 'description', 'action'];
@@ -41,12 +42,12 @@ export class SpecialShiftComponent{
 
   insertData(data){
     console.log(data.data);
-    // if(data.data.GetHolidayByPeriodId != null){
-    //   data.data.GetHolidayByPeriodId.forEach(element => {
-    //      this.ELEMENT_DATA.push(element)
-    //   });
-    //    this.dataSource.data = this.ELEMENT_DATA;
-    // }
+    if(data.data.GetSpecialShiftByPeriodId != null){
+      data.data.GetSpecialShiftByPeriodId.forEach(element => {
+         this.ELEMENT_DATA.push(element)
+      });
+       this.dataSource.data = this.ELEMENT_DATA;
+    }
   }
 
   openDialog(): void {
@@ -65,9 +66,9 @@ export class SpecialShiftComponent{
 
   doDelete(x){
     console.log(x);
-    // this.holidayService.DeleteHoliday(x).subscribe(async data => {
-    //   await this.afterDelete(data);
-    // });
+    this.specialShiftService.DeleteSpecialShift(x).subscribe(async data => {
+      await this.afterDelete(data);
+    });
   }
 
   afterDelete(data){

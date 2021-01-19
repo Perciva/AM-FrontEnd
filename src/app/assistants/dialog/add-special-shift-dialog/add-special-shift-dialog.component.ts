@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { GlobalConstants } from 'src/app/common/global-variable';
+import { SpecialShiftService } from 'src/app/service/special-shift-services.service';
 
 var moment = require('moment');
 moment().format(); 
@@ -24,7 +25,8 @@ export class AddSpecialShiftDialogComponent {
   formAssistants;
   formDescription;
 
-  constructor(public dialogRef: MatDialogRef<AddSpecialShiftDialogComponent>
+  constructor(public dialogRef: MatDialogRef<AddSpecialShiftDialogComponent>,
+    private specialShiftService: SpecialShiftService
     ) { 
     this.formDay= new FormControl('', [Validators.required]);
     this.formTimeIn= new FormControl('', [Validators.required]);
@@ -52,5 +54,12 @@ export class AddSpecialShiftDialogComponent {
     console.log("Out " + this.timeOut)
     console.log("Assistant " + this.assistants)
     console.log("Description " + this.description)
+
+    this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
+    .subscribe(
+      async data =>{
+        await this.dialogRef.close();
+      }
+    );
   }
 }

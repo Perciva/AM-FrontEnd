@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { SpecialShiftData } from 'src/app/common/special-shift-model';
+import { SpecialShiftService } from 'src/app/service/special-shift-services.service';
 
 var moment = require('moment');
 moment().format(); 
@@ -27,7 +28,8 @@ export class UpdateSpecialShiftDialogComponent{
   formDescription;
 
   constructor(public dialogRef: MatDialogRef<UpdateSpecialShiftDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: SpecialShiftData
+    @Inject(MAT_DIALOG_DATA) private data: SpecialShiftData,
+    private specialShiftService: SpecialShiftService
     ) { 
     this.formDay= new FormControl('', [Validators.required]);
     this.formTimeIn= new FormControl('', [Validators.required]);
@@ -47,7 +49,7 @@ export class UpdateSpecialShiftDialogComponent{
     return day !== 0;
   }
 
-  doAddShift(){
+  doUpdateShift(){
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
       alert("Missing Values")
       return;
@@ -60,5 +62,12 @@ export class UpdateSpecialShiftDialogComponent{
     console.log("Out " + this.timeOut)
     console.log("Assistant " + this.assistants)
     console.log("Description " + this.description)
+
+    this.specialShiftService.UpdateSpecialShift(this.data.id, this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
+    .subscribe(
+      async data =>{
+        await this.dialogRef.close();
+      }
+    );
   }
 }

@@ -66,7 +66,7 @@ export class ShiftService {
     return this.apollo
     .mutate<any>({
       mutation: gql`
-        mutation($assistant_initial: Int!,$day:Int! $_in: String!, $_out: String!) {
+        mutation($assistant_initial: String!,$day:Int! $_in: String!, $_out: String!) {
           InsertShiftByAssistantInitial(assistant_initial: $assistant_initial, day: $day, _in: $_in, _out: $_out)
         }
          
