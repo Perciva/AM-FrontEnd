@@ -1,8 +1,9 @@
+import { PeriodService } from "../service/period-services.service";
 import { PeriodData } from "./period-model"
 
 export interface SpecialShiftData{
     id: number;
-    period_id: number;
+    period: PeriodData;
     description: string;
     assistant_ids: string;
     date: string;

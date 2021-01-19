@@ -36,7 +36,7 @@ export class UpdateSpecialShiftDialogComponent{
     this.formTimeOut= new FormControl('', [Validators.required]);
     this.formAssistants = new FormControl('', [Validators.required]);
     this.formDescription = new FormControl('', [Validators.required]);
-    this.period_id = data.period_id;
+    this.period_id = data.period.id;
     this.day = data.date;
     this.timeIn = data._in;
     this.timeOut = data._out;
