@@ -9,7 +9,6 @@ export class PeriodService {
   constructor( private apollo: Apollo) { }
 
   GetAllPeriods(){
-
     return this.apollo
     .query<any>({
       query: gql`
@@ -22,6 +21,25 @@ export class PeriodService {
           }
         }
       `,
+    });
+  }
+
+  GetPeriodById(period_id: number){
+    return this.apollo
+    .query<any>({
+      query: gql`
+        query($period_id: Int!) {
+          GetPeriodById(period_id: $period_id) {
+            id
+            description
+            start
+            end
+          }
+        }
+      `,
+      variables: {
+        "period_id": period_id,
+      }
     });
   }
   
