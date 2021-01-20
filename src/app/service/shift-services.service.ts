@@ -61,6 +61,24 @@ export class ShiftService {
       }
     });
   }
+  
+  InsertShiftByAssistantInitial(assistant_initial: string, day: number, _in: string, _out: string){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+        mutation($assistant_initial: String!,$day:Int! $_in: String!, $_out: String!) {
+          InsertShiftByAssistantInitial(assistant_initial: $assistant_initial, day: $day, _in: $_in, _out: $_out)
+        }
+         
+      `,
+      variables: {
+        "assistant_initial": assistant_initial,
+        "day": day,
+        "_in": _in,
+        "_out": _out,
+      }
+    });
+  }
 
   
   UpdateShift(id: number, assistant_id: number, day: number, _in: string, _out: string){

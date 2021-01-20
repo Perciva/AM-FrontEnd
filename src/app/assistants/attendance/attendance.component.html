@@ -1,12 +1,15 @@
 <div class="data">
     <div class="container d-flex justify-content-start m-2">
-        <label>Insert Attendances</label>
+        <label class="title">Insert Attendances</label>
     </div>
     <div class="container d-flex justify-content-start m-2">
-        <textarea></textarea>
+        <label class="title-csv">CSV</label>
     </div>
     <div class="container d-flex justify-content-start m-2">
-        <button class="btn btn-light">
+        <textarea cols="70" rows="4" [(ngModel)]="str" [formControl]="formStr"></textarea>
+    </div>
+    <div class="container d-flex justify-content-start m-2">
+        <button class="btn btn-light" (click)="doAddAttendance()">
             <i class="bi bi-plus-circle-fill m-1"></i> Add
         </button>
     </div>

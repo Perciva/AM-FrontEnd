@@ -89,22 +89,23 @@ export class WorkShiftComponent implements OnInit {
       var out_clock = [];
 
       arraylist.forEach(element => {
-        var temp = element["Initial"] + element["Angkatan"];
+        var temp = element["Initial"] + element["Gen"];
         initial.push(temp);
-        day.push(element["Hari"]);
-        in_clock.push(element["Jam Masuk"]);
-        out_clock.push(element["Jam Pulang"]);        
+        day.push(element["Day"]);
+        in_clock.push(element["Clock In"]);
+        out_clock.push(element["Clock Out"]);
       });
       
       this.FLAG_DONE= 1;
       this.CURR_PROG= 0;
       for(var i = 0; i < initial.length; i++){
+        console.log(initial[i]);
         this.CURR_PROG++;
-        // this.assistantService.InsertAssistant(period_id, 1, initial[i], name[i]).subscribe(
-        //   async data =>{
-        //     await this.removeFlag()
-        //   }
-        // );
+        this.shiftService.InsertShiftByAssistantInitial(initial[i], day[i], in_clock[i], out_clock[i]).subscribe(
+          async data =>{
+            await this.removeFlag()
+          }
+        );
       }
       this.FLAG_DONE = 0;
     }
@@ -117,8 +118,8 @@ export class WorkShiftComponent implements OnInit {
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
       this.retrieveNewShift();
+      alert("Done");
     }
-
   }
 
   

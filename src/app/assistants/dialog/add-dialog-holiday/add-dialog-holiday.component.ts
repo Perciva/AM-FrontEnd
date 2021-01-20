@@ -7,17 +7,17 @@ import { HolidayServicesService } from 'src/app/service/holiday-services.service
 var moment = require('moment');
 moment().format(); 
 @Component({
-  selector: 'app-dialog-holiday',
-  templateUrl: './dialog-holiday.component.html',
-  styleUrls: ['./dialog-holiday.component.scss']
+  selector: 'app-add-dialog-holiday',
+  templateUrl: './add-dialog-holiday.component.html',
+  styleUrls: ['./add-dialog-holiday.component.scss']
 })
-export class DialogHolidayComponent implements OnInit {
+export class AddDialogHolidayComponent implements OnInit {
   description: string;
   date: string;
   formDescription;
   formDate;
 
-  constructor(public dialogRef: MatDialogRef<DialogHolidayComponent>,
+  constructor(public dialogRef: MatDialogRef<AddDialogHolidayComponent>,
     private holidayService: HolidayServicesService) {
       this.formDescription= new FormControl('', [Validators.required]);
       this.formDate= new FormControl('', [Validators.required]);

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssistantsPageComponent } from './assistants-page.component';
+import { DialogHolidayComponent } from './add-dialog-holiday.component';
 
-describe('AssistantsPageComponent', () => {
-  let component: AssistantsPageComponent;
-  let fixture: ComponentFixture<AssistantsPageComponent>;
+describe('DialogHolidayComponent', () => {
+  let component: DialogHolidayComponent;
+  let fixture: ComponentFixture<DialogHolidayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssistantsPageComponent ]
+      declarations: [ DialogHolidayComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssistantsPageComponent);
+    fixture = TestBed.createComponent(DialogHolidayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

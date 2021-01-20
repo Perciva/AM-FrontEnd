@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+
+import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlobalConstants } from 'src/app/common/global-variable';
+import { SpecialShiftData } from 'src/app/common/special-shift-model';
 import { SpecialShiftService } from 'src/app/service/special-shift-services.service';
 
 var moment = require('moment');
 moment().format(); 
 
 @Component({
-  selector: 'app-add-special-shift-dialog',
-  templateUrl: './add-special-shift-dialog.component.html',
-  styleUrls: ['./add-special-shift-dialog.component.scss']
+  selector: 'app-update-special-shift-dialog',
+  templateUrl: './update-special-shift-dialog.component.html',
+  styleUrls: ['./update-special-shift-dialog.component.scss']
 })
-export class AddSpecialShiftDialogComponent {
+export class UpdateSpecialShiftDialogComponent{
   period_id;
   day;
   timeIn;
@@ -26,7 +28,8 @@ export class AddSpecialShiftDialogComponent {
   formDescription;
   error;
 
-  constructor(public dialogRef: MatDialogRef<AddSpecialShiftDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<UpdateSpecialShiftDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: SpecialShiftData,
     private specialShiftService: SpecialShiftService
     ) { 
     this.formDay= new FormControl('', [Validators.required]);
@@ -34,7 +37,12 @@ export class AddSpecialShiftDialogComponent {
     this.formTimeOut= new FormControl('', [Validators.required]);
     this.formAssistants = new FormControl('', [Validators.required]);
     this.formDescription = new FormControl('', [Validators.required]);
-    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    this.period_id = data.period.id;
+    this.day = data.date;
+    this.timeIn = data._in;
+    this.timeOut = data._out;
+    this.assistants = data.assistant_ids;
+    this.description = data.description;
   }
 
   myFilter = (d: Date): boolean => {
@@ -42,7 +50,7 @@ export class AddSpecialShiftDialogComponent {
     return day !== 0;
   }
 
-  doAddShift(){
+  doUpdateShift(){
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
       alert("Missing Values")
       return;
@@ -56,12 +64,11 @@ export class AddSpecialShiftDialogComponent {
     console.log("Assistant " + this.assistants)
     console.log("Description " + this.description)
 
-    this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
+    this.specialShiftService.UpdateSpecialShift(this.data.id, this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
     .subscribe(
       async data =>{
-        console.log(data.data.InsertSpecialShift)
-        if(data.data.InsertSpecialShift != null && data.data.InsertSpecialShift != "Success"){
-          this.error = data.data.InsertSpecialShift.split(",");
+        if(data.data.UpdateSpecialShift != null && data.data.UpdateSpecialShift != "Success"){
+          this.error = data.data.UpdateSpecialShift.split(",");
         }
         else{
           await this.dialogRef.close();
