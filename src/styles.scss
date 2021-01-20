@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { padding: 0; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @import '~bootstrap/dist/css/bootstrap.css';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
@@ -11,7 +11,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Works on Firefox */
 * {
     scrollbar-width: thin;
-    scrollbar-color: navy lightblue;
+    scrollbar-color: skyblue darkgrey;
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -21,10 +21,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 *::-webkit-scrollbar-track {
-    background: skyblue;
+    background: darkgrey;
+    border-radius: 20px;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: navy;
+    background-color: skyblue;
     border-radius: 20px;
 }
