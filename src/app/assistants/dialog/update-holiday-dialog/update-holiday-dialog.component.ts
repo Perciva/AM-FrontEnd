@@ -23,6 +23,8 @@ export class UpdateHolidayDialogComponent implements OnInit {
     private holidayService: HolidayServicesService) {
       this.formDescription= new FormControl('', [Validators.required]);
       this.formDate= new FormControl('', [Validators.required]);
+      this.description = holidayData.description;
+      this.date = holidayData.date;
      }
 
   ngOnInit(): void {
