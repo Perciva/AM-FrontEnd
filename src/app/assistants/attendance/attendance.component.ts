@@ -11,7 +11,7 @@ import { InsertAttendanceServiceService } from 'src/app/service/insert-attendanc
   styleUrls: ['./attendance.component.scss']
 })
 export class AttendanceComponent implements OnInit {
-  ELEMENT_DATA: AttendanceData[] = [];
+  public ELEMENT_DATA: AttendanceData[] = [];
   mySub: any;
   str: string;
   formStr;
@@ -20,34 +20,66 @@ export class AttendanceComponent implements OnInit {
   date: string;
   _in: string;
   _out: string;
+
+  strArrayComma:any;
+  strArrayEnter:any;
+
+  err:any;
+
+  loaded:Boolean = false;
   
   displayedColumns: string[] = ['initial', 'date', 'in', 'out'];
-  dataSource = new MatTableDataSource<AttendanceData>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
-  constructor(private insertAttendanceService: InsertAttendanceServiceService, private router: Router) {
+  constructor(private insertAttendanceService: InsertAttendanceServiceService) {
     this.formStr= new FormControl('', [Validators.required]);
-   }
+  }
+
+  previewData(data){
+    this.loaded = true;
+    console.log(data);
+    this.strArrayEnter = data.split('\n');
+    var temp= [];
+    this.strArrayEnter.forEach(element => {
+      this.strArrayComma = element.split(',');
+      temp.push({
+        assistant_initial: this.strArrayComma[0],
+        date: this.strArrayComma[1],
+        _in: this.strArrayComma[2],
+        _out: this.strArrayComma[3]
+      })
+      
+    });
+    this.dataSource = new MatTableDataSource<AttendanceData>(temp);
+    console.log(this.ELEMENT_DATA)
+  }
 
   doAddAttendance(){
-    var strArrayComma;
-    var strArrayEnter;
     this.str = this.formStr.value;
 
     console.log(this.str);
 
     if(this.str.includes('\n')){
-      strArrayEnter = this.str.split('n');
+      this.strArrayEnter = this.str.split('\n');
     }else{
-      strArrayComma = this.str.split(',');
-
-      this.insertAttendanceService.InsertAttendance(strArrayComma[0], strArrayComma[1], strArrayComma[2], strArrayComma[3])
+      this.strArrayComma = this.str.split(',');
+      this.err =null;
+      this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
       .subscribe(async data => {
-        await this.router.navigate(["/home"]);
+        await this.afterAdd(data);
+
       });
     }
 
-      
+  }
 
+
+  afterAdd(data){
+    console.log(data)
+    // alert(data.data.InsertAttendance? "Data Saved":"Failed to Save Data");
+    this.err = data.data.InsertAttendance;
+
+    // location.reload();
   }
 
   ngOnInit(): void {
