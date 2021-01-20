@@ -1,1 +1,117 @@
-<p>summary works!</p>
+<div class="data" style="margin-top: 50px">
+  <div class="mat-elevation-z8 p-1">
+    <h1>Attendance Summary Report</h1>
+    <div class="d-flex">
+      <mat-form-field class="mx-1">
+        <mat-label for="leader-id">Leader</mat-label>
+        <mat-select [(ngModel)]="leaderId">
+          <mat-option [value]="0" id="">ALL</mat-option>
+          <mat-option *ngFor="let leader of leaders" [value]="leader.id" id="leader-id">
+            {{leader.initial}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="mx-1">
+        <mat-label for="ast-id">Assistant</mat-label>
+        <mat-select [(ngModel)]="astId">
+          <mat-option [value]="0" id="">ALL</mat-option>
+          <mat-option *ngFor="let ast of assistants" [value]="ast.id" id="ast-id">
+            {{ast.initial}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="mx-1">
+        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" placeholder="Start Date" [(ngModel)]="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    
+    <button class="btn btn-light m-1" (click)="viewData()">
+      View
+    </button>
+  </div>
+</div>
+
+<div class="data" *ngIf="isOpen()">
+  <div class="mat-elevation-z8 p-2">
+    <h1>Summary Report</h1>
+    <button class="btn btn-outline-dark m-2" (click)="exportAsXLSX()">
+      Generate Excel
+    </button>
+    <table mat-table [dataSource]="assistants">
+      <ng-container matColumnDef="leader">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Leader </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="assistant">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Name </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Data </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="ITM">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Ijin Telat Masuk </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="LAM">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Lupa Absen Masuk </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="TAM">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Telat Absen Masuk </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="TM">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi Masuk </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="IP">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Izin Pulang </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="LAP">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Lupa Absen Pulang </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="TP">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi Pulang </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="CT">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Cuti </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="SK">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Sakit </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="TL">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="AL">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Alpha </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="unverified">
+        <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Unverified </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> Test </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
