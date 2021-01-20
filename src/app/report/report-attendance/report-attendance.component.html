@@ -1,1 +1,141 @@
-<p>report-attendance works!</p>
+<div class="data" style="margin-top: 50px">
+    <div class="mat-elevation-z8 p-1">
+       <h1>Attendance Report</h1>
+       <div class="d-flex">
+            <mat-form-field class="mx-1">
+                <input matInput [matDatepicker]="picker" [min]="minDate" [max]="endDate" placeholder="Start Date" [(ngModel)]="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="mx-1">
+                <input matInput [matDatepicker]="picker1" [min]="startDate" [max]="maxDate" placeholder="End Date" [(ngModel)]="endDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+       </div>
+       <mat-form-field>
+           <mat-label for="ast-id">Assistant</mat-label>
+           <mat-select [(ngModel)]="astId">
+               <mat-option *ngFor="let ast of assistants" [value]="ast.id" id="ast-id">
+                   {{ast.initial}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button class="btn btn-light m-1" (click)="viewData()">
+            View
+        </button>
+
+        <div class=" w-100 p-2" *ngIf="isError()">
+            <div class="btn-danger w-100 p-2 d-flex justify-content-center align-item-center">
+                <div>
+                    Choose any Assistant
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data" *ngIf="isOpen()">
+    <div class="mat-elevation-z8 p-2">
+       <h1>Attendance Report For {{ast_initial}}</h1>
+       <table mat-table [dataSource]="assistants">
+        <ng-container matColumnDef="date" sticky>
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> 2020-01-01 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="day">
+          <th mat-header-cell *matHeaderCellDef> Day </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef class="text-break"> Description </th>
+          <td mat-cell *matCellDef="let element" class="text-break"> - </td>
+        </ng-container>
+
+        <ng-container matColumnDef="working_hour">
+          <th mat-header-cell *matHeaderCellDef class="text-break wHour"> Working Hour </th>
+          <td mat-cell *matCellDef="let element" class="text-break wHour"> 07:20:00 - 15:00:00 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="in">
+          <th mat-header-cell *matHeaderCellDef class="text-break"> In </th>
+          <td mat-cell *matCellDef="let element" class="text-break"> 07:00:00 </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="in_permission">
+          <th mat-header-cell *matHeaderCellDef> In Permission </th>
+          <td mat-cell *matCellDef="let element" class="text-break" style="padding: 5px;"> 
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                        In
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="text-break">
+                        -
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="out">
+          <th mat-header-cell *matHeaderCellDef class="text-break"> Out </th>
+          <td mat-cell *matCellDef="let element" class="text-break"> 20:00:00 </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="out_permission">
+          <th mat-header-cell *matHeaderCellDef class="text-break"> Out Permission </th>
+          <td mat-cell *matCellDef="let element" class="text-break" style="padding: 5px;"> 
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                        Out
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="text-break">
+                        -
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="other" sticky>
+          <th mat-header-cell *matHeaderCellDef class="text-break"> Other </th>
+          <td mat-cell *matCellDef="let element" class="text-break" style="padding: 5px;"> 
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                        Cuti
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="text-break">
+                        Ijin Kedukaan
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let element"> 
+            <button class="btn btn-warning mx-1" type="button"  (click)="doUpdate(element)">
+                <i class="bi bi-pencil-fill"></i>
+            </button>    
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
+    </div>
+</div>
