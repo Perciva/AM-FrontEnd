@@ -67,8 +67,8 @@ export class UpdateSpecialShiftDialogComponent{
     this.specialShiftService.UpdateSpecialShift(this.data.id, this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
     .subscribe(
       async data =>{
-        if(data.data.InsertSpecialShift != null){
-          this.error = data.data.InsertSpecialShift.split(",");
+        if(data.data.UpdateSpecialShift != null && data.data.UpdateSpecialShift != "Success"){
+          this.error = data.data.UpdateSpecialShift.split(",");
         }
         else{
           await this.dialogRef.close();

@@ -59,7 +59,8 @@ export class AddSpecialShiftDialogComponent {
     this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
     .subscribe(
       async data =>{
-        if(data.data.InsertSpecialShift != null){
+        console.log(data.data.InsertSpecialShift)
+        if(data.data.InsertSpecialShift != null && data.data.InsertSpecialShift != "Success"){
           this.error = data.data.InsertSpecialShift.split(",");
         }
         else{

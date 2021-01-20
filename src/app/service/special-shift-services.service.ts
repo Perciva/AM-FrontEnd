@@ -109,7 +109,7 @@ export class SpecialShiftService {
     .mutate<any>({
       mutation: gql`
         mutation($id: Int!) {
-          DeleteShift(id: $id)
+          DeleteSpecialShift(id: $id)
         }      
       `,
       variables: {

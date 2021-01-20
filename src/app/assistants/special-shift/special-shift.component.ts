@@ -73,7 +73,7 @@ export class SpecialShiftComponent{
 
   afterDelete(data){
     console.log(data)
-    alert(data.data.DeleteHoliday? "Delete Success":"Delete Failed");
+    alert(data.data.DeleteSpecialShift);
     location.reload();
   }
 

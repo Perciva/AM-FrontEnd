@@ -19,7 +19,7 @@
             <textarea matInput placeholder="Assistants" [(ngModel)]="assistants" [formControl]="formAssistants"></textarea>
         </mat-form-field>
         <div style="font-size: smaller;" class="mb-2">
-            Example: <b>'ALL'</b> or <b>'AA00-1'</b> or <b>'AA00-1,AB00-1'</b>
+            Example: <b>'ALL'</b> or <b>'AA00-1'</b> or <b>'AA00-1, AB00-1'</b>
         </div>
 
         <mat-form-field class="example-full-width">
@@ -27,7 +27,7 @@
         </mat-form-field>
 
         <button mat-button type="submit" class="submit-button" cdkFocusInitial>Update</button>
-        
+
         <div *ngIf="error != null" class="my-1">
             <div class="btn-danger p-1" *ngFor="let item of error">
                 <div>{{item}}</div>
