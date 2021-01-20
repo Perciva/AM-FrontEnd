@@ -1,0 +1,37 @@
+table {
+    width: 98%;
+    overflow: auto;
+}
+
+.mat-elevation-z8 {
+    width: 90vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+ng-container {
+    overflow-x: auto;
+    margin: 10px !important;
+}
+
+td,
+th {
+    max-width: 4.7vw;
+    min-width: 4.7vw;
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.data {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
