@@ -1,14 +1,26 @@
 table {
-    width: 90%;
+    width: 95%;
 }
 
 .mat-elevation-z8 {
-    width: 80vw;
+    width: 90vw;
     margin: 0;
     padding: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
+}
+
+ng-container {
+    overflow-x: auto;
+    margin: 10px !important;
+}
+
+td,
+th {
+    max-width: 200px;
+    padding: 5px;
+    margin: 10px !important;
 }
 
 .data {

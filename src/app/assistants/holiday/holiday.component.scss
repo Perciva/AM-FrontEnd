@@ -11,8 +11,16 @@ table {
     align-items: center;
 }
 
-.testing{
-    width: 500px !important;
+ng-container {
+    overflow-x: auto;
+    margin: 10px !important;
+}
+
+td,
+th {
+    max-width: 200px;
+    padding: 5px;
+    margin: 10px !important;
 }
 
 .data {
