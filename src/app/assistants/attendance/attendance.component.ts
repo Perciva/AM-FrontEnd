@@ -61,11 +61,21 @@ export class AttendanceComponent implements OnInit {
     this.strArrayEnter = this.str.split('\n');
     this.strArrayEnter.forEach(element => {
       this.strArrayComma = element.split(',');
-      this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
-      .subscribe(async data => {
-        await this.afterAdd(data);
-  
-      });
+      var invalueArr = this.strArrayComma[2].split(':')
+      var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2]
+      var outvalueArr = this.strArrayComma[3].split(':')
+      var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
+      console.log(invalue + outvalue)
+      if(invalue > outvalue){
+        alert("In Time must be before Out Time")
+        return;
+      }else{
+        this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
+        .subscribe(async data => {
+          await this.afterAdd(data);
+    
+        });
+      }
     });
 
   }
