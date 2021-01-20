@@ -170,7 +170,7 @@ export class WorkShiftComponent implements OnInit {
   doDeleteAllShift(){
     console.log(this.selected);
     this.shiftService.DeleteAllAssistantShifts(this.selected).subscribe();
-    this.retrieveNewShift();
+    location.reload();
   }
 
    isAllSelected() {
