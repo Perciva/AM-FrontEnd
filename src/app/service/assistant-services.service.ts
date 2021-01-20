@@ -36,6 +36,35 @@ export class AssistantService {
       }
     })
   }
+
+  GetAssistantById(id: number){
+    return this.apollo
+    .query<any>({
+      query: gql`
+      query($id:Int!) {
+        GetAssistantById(id:$id) {
+          id
+          period{
+            id
+            description
+            start
+            end
+          }
+          leader{
+            id
+            initial
+            name
+          }
+          initial
+          name
+        }
+      }
+      `,
+      variables:{
+        "id": id,
+      }
+    })
+  }
   
   InsertAssistant(period_id: number, leader_id: number, initial: string, name: string){
     return this.apollo
