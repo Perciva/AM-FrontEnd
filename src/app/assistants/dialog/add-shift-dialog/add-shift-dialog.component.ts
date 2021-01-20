@@ -67,10 +67,17 @@ export class AddShiftDialogComponent {
   }
 
   doAddShift(){
+    var invalueArr = this.timeIn.split(':')
+    var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2]
+    var outvalueArr = this.timeOut.split(':')
+    var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
+
     if(this.selectedDay == null || this.selectedShift == null ||
       (this.selectedShift == "Custom" && (this.timeIn == "" || this.timeOut == ""))
     ){
       alert("Some Field Empty");
+    }else if(invalue > outvalue){
+      alert("In Time must be before Out Time")
     }
     else{
       if(this.selectedShift == "Morning"){
@@ -90,6 +97,7 @@ export class AddShiftDialogComponent {
         }
       }
       
+      console.log(invalue + outvalue);
       console.log("Day : " + this.selectedDay);
       console.log("Time In : " + this.timeIn);
       console.log("Time Out : " + this.timeOut);
