@@ -43,9 +43,16 @@ export class AddSpecialShiftDialogComponent {
   }
 
   doAddShift(){
+    var invalueArr = this.timeIn.split(':')
+    var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2]
+    var outvalueArr = this.timeOut.split(':')
+    var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
+
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
       alert("Missing Values")
       return;
+    }else if(invalue > outvalue){
+      alert("In Time must be before Out Time")
     }
     var start = moment(this.day).add(7, 'hours')._d;
     
