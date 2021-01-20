@@ -5,6 +5,7 @@ import { GlobalConstants } from 'src/app/common/global-variable';
 import { LeaderData } from 'src/app/common/leader-model';
 import { AssistantPageComponent } from 'src/app/manage/assistant-page/assistant-page.component';
 import { AssistantService } from 'src/app/service/assistant-services.service';
+import { ExcelServicesService } from 'src/app/service/excel-services.service';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { PeriodService } from 'src/app/service/period-services.service';
 
@@ -27,10 +28,13 @@ export class SummaryComponent {
   displayedColumns: string[] = ['leader', 'assistant', 'ITM', 'LAM', 'TAM', 'TM', 'IP', 'LAP', 'TP', 'CT', 'SK', 'TL', 'AL', 'unverified'];
   dataSource = new MatTableDataSource<AssistantData>(this.assistants);
 
+  excel=[]; //Ini tempat simpen data yang mo di jadiin excel
+
   constructor(
     private periodService: PeriodService,
     private assistantService: AssistantService,
     private leaderService: LeaderService,
+    private excelService: ExcelServicesService,
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.periodService.GetPeriodById(period_id).subscribe(async data => {
@@ -98,5 +102,9 @@ export class SummaryComponent {
   isOpen(){
     return this.opened;
   }
+
+  exportAsXLSX() {
+    this.excelService.exportAsExcelFile(this.excel, 'sample');
+ }
 
 }
