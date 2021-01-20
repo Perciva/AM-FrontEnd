@@ -48,7 +48,6 @@ export class AttendanceComponent implements OnInit {
         _in: this.strArrayComma[2],
         _out: this.strArrayComma[3]
       })
-      
     });
     this.dataSource = new MatTableDataSource<AttendanceData>(temp);
     console.log(this.ELEMENT_DATA)
@@ -59,17 +58,15 @@ export class AttendanceComponent implements OnInit {
 
     console.log(this.str);
 
-    if(this.str.includes('\n')){
-      this.strArrayEnter = this.str.split('\n');
-    }else{
-      this.strArrayComma = this.str.split(',');
-      this.err =null;
+    this.strArrayEnter = this.str.split('\n');
+    this.strArrayEnter.forEach(element => {
+      this.strArrayComma = element.split(',');
       this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
       .subscribe(async data => {
         await this.afterAdd(data);
-
+  
       });
-    }
+    });
 
   }
 
