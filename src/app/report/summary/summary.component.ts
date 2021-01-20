@@ -19,8 +19,8 @@ export class SummaryComponent {
   minDate;
   maxDate;
   startDate;
-  leaderId;
-  astId;
+  leaderId = 0;  //ALL
+  astId = 0;     //ALL
   ast_initial;
   leaders= [];
   assistants= [];
@@ -78,6 +78,8 @@ export class SummaryComponent {
 
   viewData(){
     console.log("Test Masuk");
+    console.log("Leader : " + this.leaderId );
+    console.log("Assistant : " + this.astId );
     // this.assistantService.GetAssistantById(this.astId).subscribe(
     //   async data=>{
     //     await this.insertData(data);

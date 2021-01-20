@@ -5,7 +5,7 @@
       <mat-form-field class="mx-1">
         <mat-label for="leader-id">Leader</mat-label>
         <mat-select [(ngModel)]="leaderId">
-          <mat-option [value]="-1" id="">ALL</mat-option>
+          <mat-option [value]="0" id="">ALL</mat-option>
           <mat-option *ngFor="let leader of leaders" [value]="leader.id" id="leader-id">
             {{leader.initial}}
           </mat-option>
@@ -14,7 +14,7 @@
       <mat-form-field class="mx-1">
         <mat-label for="ast-id">Assistant</mat-label>
         <mat-select [(ngModel)]="astId">
-          <mat-option [value]="-1" id="">ALL</mat-option>
+          <mat-option [value]="0" id="">ALL</mat-option>
           <mat-option *ngFor="let ast of assistants" [value]="ast.id" id="ast-id">
             {{ast.initial}}
           </mat-option>
