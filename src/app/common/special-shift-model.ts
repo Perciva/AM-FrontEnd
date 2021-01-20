@@ -1,4 +1,3 @@
-import { PeriodService } from "../service/period-services.service";
 import { PeriodData } from "./period-model"
 
 export interface SpecialShiftData{

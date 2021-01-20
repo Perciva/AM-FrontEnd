@@ -24,6 +24,7 @@ export class AddSpecialShiftDialogComponent {
   formTimeOut;
   formAssistants;
   formDescription;
+  error;
 
   constructor(public dialogRef: MatDialogRef<AddSpecialShiftDialogComponent>,
     private specialShiftService: SpecialShiftService
@@ -58,7 +59,12 @@ export class AddSpecialShiftDialogComponent {
     this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
     .subscribe(
       async data =>{
-        await this.dialogRef.close();
+        if(data.data.InsertSpecialShift != null){
+          this.error = data.data.InsertSpecialShift.split(",");
+        }
+        else{
+          await this.dialogRef.close();
+        }
       }
     );
   }
