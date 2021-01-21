@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { HolidayData } from 'src/app/common/holiday-model';
 import { HolidayServicesService } from 'src/app/service/holiday-services.service';
@@ -14,6 +15,10 @@ import { UpdateHolidayDialogComponent } from '../dialog/update-holiday-dialog/up
   styleUrls: ['./holiday.component.scss']
 })
 export class HolidayComponent implements OnInit {
+  title= 'XlsRead';
+  file:File;
+  arrayBuffer:any;
+
   ELEMENT_DATA: HolidayData[] = [];
   mySub: any;
   period_id = -1;
@@ -42,6 +47,60 @@ export class HolidayComponent implements OnInit {
          this.ELEMENT_DATA.push(element)
       });
        this.dataSource.data = this.ELEMENT_DATA;
+    }
+  }
+
+  
+  addfile(event) {
+    if(this.FLAG_DONE == 0){
+      this.file= event.target.files[0]; 
+      let fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(this.file); 
+      fileReader.onload = (e) => {
+        this.arrayBuffer = fileReader.result;
+        var data = new Uint8Array(this.arrayBuffer);
+        var arr = new Array();
+        for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+        var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, {type:"binary"});
+        var first_sheet_name = "Holiday";
+        var worksheet = workbook.Sheets[first_sheet_name];
+        var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
+        var description = [];
+        var date = [];
+  
+        arraylist.forEach(element => {
+          description.push(element["Description"]);
+          date.push(element["Year"] + "-" + element["Month"] + "-" + element["Day"]);
+        });
+
+        this.FLAG_DONE= 1;
+        this.CURR_PROG= 0;
+        for(var i = 0; i < description.length; i++){
+          console.log(date[i]);
+          date[i] = this.formatDate(date[i]);
+          console.log(date[i]);
+          this.CURR_PROG++;
+          this.holidayService.InsertHoliday(period_id, description[i], date[i]).subscribe(
+            async data =>{
+              await this.removeFlag()
+            }
+          );
+        }
+        this.FLAG_DONE = 0;
+      }
+    }
+  }
+
+  CURR_PROG = 0;
+  FLAG_DONE = 0;
+
+  removeFlag(){
+    this.CURR_PROG--;
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
+      alert("Done");
+      location.reload();
     }
   }
 
@@ -90,4 +149,17 @@ export class HolidayComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
 }

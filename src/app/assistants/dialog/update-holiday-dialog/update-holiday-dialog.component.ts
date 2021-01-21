@@ -56,7 +56,6 @@ export class UpdateHolidayDialogComponent implements OnInit {
     this.dialogRef.close();
   } 
 
-
   formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -69,6 +68,5 @@ export class UpdateHolidayDialogComponent implements OnInit {
         day = '0' + day;
 
     return [year, month, day].join('-');
-}
-
+  }
 }
