@@ -119,7 +119,7 @@ export class WorkShiftComponent implements OnInit {
   removeFlag(){
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
-      this.retrieveNewShift();
+      // this.retrieveNewShift();
       alert("Done");
     }
   }
