@@ -40,38 +40,43 @@
     <div class="mat-elevation-z8 p-2">
        <h1>Attendance Report For {{ast_initial}}</h1>
 
-       <div *ngIf="report.length == 0" class="btn-danger w-100 d-flex justify-content-center align-items-center p-2">
+       <div *ngIf="finalReport.length == 0" class="btn-danger w-100 d-flex justify-content-center align-items-center p-2">
          Insert data first
        </div>
-       <table mat-table [dataSource]="report" *ngIf="report.length != 0">
+       <table mat-table [dataSource]="finalReport" *ngIf="finalReport.length != 0">
         <ng-container matColumnDef="date" sticky>
           <th mat-header-cell *matHeaderCellDef> Date </th>
-          <td mat-cell *matCellDef="let element"> {{element.attendance.date}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.date}} </td>
         </ng-container>
 
         <ng-container matColumnDef="day">
           <th mat-header-cell *matHeaderCellDef> Day </th>
-          <td mat-cell *matCellDef="let element"> {{getDayOfTheWeek(element.attendance.date)}} </td>
+          <td mat-cell *matCellDef="let element"> {{getDayOfTheWeek(element.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef class="text-break"> Description </th>
-          <td mat-cell *matCellDef="let element" class="text-break"> {{getDescription(element.attendance.date)}} </td>
+          <td mat-cell *matCellDef="let element" class="text-break"> {{getDescription(element.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="working_hour">
           <th mat-header-cell *matHeaderCellDef class="text-break wHour"> Working Hour </th>
-          <td mat-cell *matCellDef="let element" class="text-break wHour"> {{getWorkShift(element.attendance.date)}} </td>
+          <td mat-cell *matCellDef="let element" class="text-break wHour"> {{getWorkShift(element.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="in">
           <th mat-header-cell *matHeaderCellDef class="text-break"> In </th>
           <td mat-cell *matCellDef="let element" class="text-break">
-            <div class="btn-danger w-100 h-100 text-center" *ngIf="getLateIn(element.attendance.date, element.attendance._in)">
-              {{element.attendance._in}} 
+            <div class="w-100 h-100 text-center" *ngIf="element.report == null || getLateIn(element.date, element.report)">
+              <div class="alpha" *ngIf="element.report == null || !getAnyInPermission(element.report, element.report)">
+                {{getClockDataIn(element.report)}} 
+              </div>
+              <div class="anyInfo" *ngIf="getAnyInPermission(element.report, element.report)">
+                {{getClockDataIn(element.report)}} 
+              </div>
             </div>
-            <div class="w-100 h-100 text-center" *ngIf="!getLateIn(element.attendance.date, element.attendance._in)">
-              {{element.attendance._in}} 
+            <div class="w-100 h-100 text-center" *ngIf="!getLateIn(element.date, element.report)">
+              {{getClockDataIn(element.report)}} 
             </div>
           </td>
         </ng-container>
@@ -83,11 +88,11 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                        {{ getInPermissionWord(element.attendance.in_permission) }}
+                        {{ element.report != null ? element.report.attendance.in_permission : "" }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="text-break text-secondary">
-                      {{ element.attendance.in_permission_description }}
+                      {{ element.report != null ? element.report.attendance.in_permission_description : "" }}
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
@@ -98,11 +103,16 @@
           <th mat-header-cell *matHeaderCellDef class="text-break"> Out </th>
           <td mat-cell *matCellDef="let element" class="text-break">
             
-            <div class="btn-danger w-100 h-100 text-center" *ngIf="getEarlyOut(element.attendance.date, element.attendance._out)">
-              {{element.attendance._out}} 
+            <div class="w-100 h-100 text-center" *ngIf="element.report == null || getEarlyOut(element.date, element.report)">
+              <div class="alpha" *ngIf="element.report == null || !getAnyOutPermission(element.report, element.report)">
+                {{getClockDataOut(element.report)}} 
+              </div>
+              <div class="anyInfo" *ngIf="getAnyOutPermission(element.report, element.report)">
+                {{getClockDataOut(element.report)}} 
+              </div>
             </div>
-            <div class="w-100 h-100 text-center" *ngIf="!getEarlyOut(element.attendance.date, element.attendance._out)">
-              {{element.attendance._out}} 
+            <div class="w-100 h-100 text-center" *ngIf="!getEarlyOut(element.date, element.report)">
+              {{getClockDataOut(element.report)}} 
             </div>
           </td>
         </ng-container>
@@ -114,11 +124,11 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                          {{ getOutPermissionWord(element.attendance.out_permission) }}
+                          {{ element.report != null ? element.report.attendance.out_permission : "" }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="text-break text-secondary">
-                      {{ element.attendance.out_permission_description }}
+                      {{ element.report != null ? element.report.attendance.out_permission_description : "" }}
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
@@ -132,11 +142,11 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                          {{ getSpecialPermissionWord(element.attendance.special_permission) }}
+                          {{ element.report != null ? getSpecialPermissionWord(element.report.attendance.special_permission) : "" }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="text-break text-secondary">
-                      {{ element.attendance.special_permission_description }}
+                      {{ element.report != null ? element.report.attendance.special_permission_description : "" }}
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>

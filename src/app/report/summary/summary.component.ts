@@ -28,7 +28,12 @@ export class SummaryComponent {
   displayedColumns: string[] = ['leader', 'assistant', 'ITM', 'LAM', 'TAM', 'TM', 'IP', 'LAP', 'TP', 'CT', 'SK', 'TL', 'AL', 'unverified'];
   dataSource = new MatTableDataSource<AssistantData>(this.assistants);
 
-  excel=[]; //Ini tempat simpen data yang mo di jadiin excel
+  excel=[
+    {test: "Jast", viw: "anjsdk"},
+    {test: "wer", viw: "y"},
+    {test: "64eg", viw: "te"},
+    {test: "wer", viw: "hyt"},
+  ]; //Ini tempat simpen data yang mo di jadiin excel
 
   constructor(
     private periodService: PeriodService,

@@ -86,6 +86,8 @@ export class AttendanceComponent implements OnInit {
   afterAdd(data){
     console.log(data)
     this.err = data.data.InsertAttendance;
+    this.loaded = false;
+    this.str = "";
   }
 
   ngOnInit(): void {

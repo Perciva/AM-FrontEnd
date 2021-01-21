@@ -24,8 +24,6 @@ export class AddPeriodDialogComponent{
   thisOther;
   thisYear;
 
-  years: String[] = GlobalConstants.YEAR;
-
   constructor(public dialogRef: MatDialogRef<AddPeriodDialogComponent>,
     private periodService: PeriodService) {
         this.selectedPeriod= new FormControl('', [Validators.required]);

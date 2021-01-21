@@ -6,21 +6,16 @@
             <mat-select required name="periods" [(ngModel)]="thisPeriod" [formControl]="selectedPeriod">
                 <mat-option value="Odd">Odd</mat-option>
                 <mat-option value="Even">Even</mat-option>
-                <mat-option value="Other">Other</mat-option>
+                <mat-option value="Other">Custom</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field class="example-full-width" *ngIf="isOtherPeriod()">
             <input required matInput type="text" name="other" placeholder="Other" [(ngModel)]="thisOther" [formControl]="otherPeriod">
         </mat-form-field>
-
+        
         <mat-form-field *ngIf="isSelectedPeriod()">    
-            <mat-label for="years">Years</mat-label>
-            <mat-select required name="years" [(ngModel)]="thisYear" [formControl]="selectedYear">
-                <mat-option *ngFor="let year of years" [value]="year">
-                    {{year}}
-                </mat-option>
-            </mat-select>
+            <input required matInput type="text" name="other" placeholder="Years" [(ngModel)]="year" [formControl]="selectedYear">
         </mat-form-field>
 
         <mat-form-field>    

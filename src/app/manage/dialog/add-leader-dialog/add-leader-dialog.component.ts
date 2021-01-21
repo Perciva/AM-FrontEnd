@@ -24,15 +24,12 @@ export class AddLeaderDialogComponent {
   }
 
   doAddLeader(){
+    this.error = null;
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     if(this.name == null || this.initial == null){
-      alert("Some Field Empty");
-    }
-    else if(this.initial.length != 6){
-      alert("Initial must 6 character");
+      this.error = "Some Field Empty";
     }
     else{
-      this.error = null;
       this.leaderService.InsertLeader(period_id, this.initial, this.name)
       .subscribe(async data => {
         await this.afterInsert(data);

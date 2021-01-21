@@ -49,7 +49,7 @@ export class UpdateHolidayDialogComponent implements OnInit {
 
   afterUpdate(data){
     console.log(data)
-    if(data.data.UpdateHoliday != null && data.data.UpdateHoliday != "Succes"){
+    if(data.data.UpdateHoliday != null && data.data.UpdateHoliday != "Success"){
       this.err = data.data.UpdateHoliday;
       return;
     }

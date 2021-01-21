@@ -4,6 +4,7 @@ export class GlobalConstants {
     public static CURR_PERIOD = "CURR_PERIOD";
 
     public static YEAR: String[] = [
+      "2024-2025",
       "2023-2024",
       "2022-2023",
       "2021-2022",
