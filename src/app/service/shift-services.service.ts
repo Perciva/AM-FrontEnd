@@ -62,16 +62,17 @@ export class ShiftService {
     });
   }
   
-  InsertShiftByAssistantInitial(assistant_initial: string, day: number, _in: string, _out: string){
+  InsertShiftByAssistantInitial(period_id: number, assistant_initial: string, day: number, _in: string, _out: string){
     return this.apollo
     .mutate<any>({
       mutation: gql`
-        mutation($assistant_initial: String!,$day:Int! $_in: String!, $_out: String!) {
-          InsertShiftByAssistantInitial(assistant_initial: $assistant_initial, day: $day, _in: $_in, _out: $_out)
+        mutation($period_id: Int!, $assistant_initial: String!,$day:Int! $_in: String!, $_out: String!) {
+          InsertShiftByAssistantInitial(period_id: $period_id, assistant_initial: $assistant_initial, day: $day, _in: $_in, _out: $_out)
         }
          
       `,
       variables: {
+        "period_id": period_id,
         "assistant_initial": assistant_initial,
         "day": day,
         "_in": _in,

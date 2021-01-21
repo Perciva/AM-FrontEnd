@@ -101,7 +101,7 @@ export class WorkShiftComponent implements OnInit {
       for(var i = 0; i < initial.length; i++){
         console.log(initial[i]);
         this.CURR_PROG++;
-        this.shiftService.InsertShiftByAssistantInitial(initial[i], day[i], in_clock[i], out_clock[i]).subscribe(
+        this.shiftService.InsertShiftByAssistantInitial(period_id ,initial[i], day[i], in_clock[i], out_clock[i]).subscribe(
           async data =>{
             await this.removeFlag()
           }
