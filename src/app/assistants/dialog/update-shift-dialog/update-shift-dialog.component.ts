@@ -43,6 +43,8 @@ export class UpdateShiftDialogComponent {
   ast_id;
   shift_id;
 
+  err;
+
   constructor(public dialogRef: MatDialogRef<UpdateAssistantDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data , private shiftService: ShiftService) { 
     this.formDay= new FormControl(data.shift.day, [Validators.required]);
@@ -69,12 +71,13 @@ export class UpdateShiftDialogComponent {
     var outvalueArr = this.timeOut.split(':')
     var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
 
+    this.err = null;
     if(this.selectedDay == null || this.selectedShift == null ||
       (this.selectedShift == "Custom" && (this.timeIn == "" || this.timeOut == ""))
     ){
-      alert("Some Field Empty");
+      this.err = "Some Field Empty";
     }else if(invalue > outvalue){
-      alert("In Time must be before Out Time")
+      this.err = "In Time must be before Out Time";
     }
     else{
       if(this.selectedShift == "Morning"){
@@ -114,5 +117,8 @@ export class UpdateShiftDialogComponent {
     return false;  
   }
 
+  isErr(){
+    return this.err != null;
+  }
 
 }

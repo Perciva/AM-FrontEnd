@@ -41,6 +41,8 @@ export class AddShiftDialogComponent {
   assistants: AssistantData[] = [];
   selected;
 
+  err;
+
   constructor(public dialogRef: MatDialogRef<AddShiftDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private assistantId: number,
     private assistantService: AssistantService,
@@ -54,7 +56,6 @@ export class AddShiftDialogComponent {
     this.assistantService.GetAllAssistant(this.period_id).subscribe(async data => {
       await this.insertAssistantData(data);
     });
-    // this.retrieveNewShift();
    }
    
   insertAssistantData(data){
@@ -75,9 +76,9 @@ export class AddShiftDialogComponent {
     if(this.selectedDay == null || this.selectedShift == null ||
       (this.selectedShift == "Custom" && (this.timeIn == "" || this.timeOut == ""))
     ){
-      alert("Some Field Empty");
+      this.err = "Some Field Empty";
     }else if(invalue > outvalue){
-      alert("In Time must be before Out Time")
+      this.err = "In Time must be before Out Time";
     }
     else{
       if(this.selectedShift == "Morning"){
@@ -118,5 +119,7 @@ export class AddShiftDialogComponent {
     return false;  
   }
 
-
+  isErr(){
+    return this.err != null;
+  }
 }

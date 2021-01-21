@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { start } from 'repl';
 import { from } from 'rxjs';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
@@ -15,11 +16,17 @@ import { UpdateReportAttendanceDialogComponent } from '../dialog/update-report-a
 var moment = require('moment');
 moment().format(); 
 
+export interface test{
+  date: string,
+  report: ReportData
+}
+
 @Component({
   selector: 'app-report-attendance',
   templateUrl: './report-attendance.component.html',
   styleUrls: ['./report-attendance.component.scss']
 })
+
 export class ReportAttendanceComponent {
   errors = false;
   opened = false;
@@ -33,6 +40,7 @@ export class ReportAttendanceComponent {
   assistants: AssistantData[] = [];
   displayedColumns: string[] = ['date', 'day', 'description', 'working_hour', 'in', 'in_permission', 'out', 'out_permission', 'other', 'action'];
 
+  finalReport: test[] = [];
   report: ReportData[] = [];
   dataSource = new MatTableDataSource<ReportData>(this.report);
 
@@ -84,7 +92,8 @@ export class ReportAttendanceComponent {
         await this.insertData(data);
       }
     );
-      
+    
+    this.finalReport = [];
     this.report = [];
     this.holidays = [];
 
@@ -95,9 +104,16 @@ export class ReportAttendanceComponent {
         await this.insertHoliday(data);
       }
     );
+
+    this.startDate = this.formatDate(this.startDate);
+    this.endDate = this.formatDate(this.endDate);
+    var tempDate = this.startDate;
+    do{
+      var temp = moment(tempDate).add(1, 'days')._d;
+      tempDate = this.formatDate(temp);
+      this.finalReport.push({date: tempDate, report: null});
+    }while(tempDate <= this.endDate);
       
-    // var startDate = moment(this.startDate).add(7, 'hours')._d;
-    // var endDate = moment(this.endDate).add(7, 'hours')._d;
     this.reportAttendanceService.GetAllAttendanceByDate(this.startDate, this.endDate, this.astId)
     .subscribe(
       async data=>{
@@ -122,6 +138,11 @@ export class ReportAttendanceComponent {
   insertAttendanceData(data){
     if(data.data.GetAllAttendanceByDate != null){
       data.data.GetAllAttendanceByDate.forEach(element => {
+        this.finalReport.forEach(final => {
+          if(final.date == element.attendance.date){
+            final.report = element;
+          }
+        });
         this.report.push(element);
       });
 
@@ -136,6 +157,24 @@ export class ReportAttendanceComponent {
 
   isError(){
     return this.errors;
+  }
+
+  getData(s){
+    if(s == null)
+      return "";
+    return s;
+  }
+
+  getClockDataIn(s){
+    if(s == null)
+      return "00:00:00";
+    return s.attendance._in;
+  }
+
+  getClockDataOut(s){
+    if(s == null)
+      return "00:00:00";
+    return s.attendance._out;
   }
 
   getInPermissionWord(s){
@@ -196,8 +235,6 @@ export class ReportAttendanceComponent {
       var special = this.report[0].special_shift;
       if(special != null){
         for(var i = 0; i < special.length; i++){
-          // console.log(s + " >> " + special[i].date)
-          // console.log(special[i])
           if(s == special[i].date)
           msg = "Special Shift: " + special[i].description;
         }
@@ -205,25 +242,45 @@ export class ReportAttendanceComponent {
     }
     return msg;
   }
-
+  
   getLateIn(s, t){
-    var desc = this.getDescription(s).split(":");
-    if(desc[0] == "Holiday"){
+    if(t != null){
+      var desc = this.getDescription(s).split(":");
+      if(desc[0] == "Holiday"){
+        return false;
+      }
+      var shift = this.getWorkShift(s).split(" ");
+      return t.attendance._in > shift[0];
+    }
+    return true;
+  }
+  
+  getAnyInPermission(p1, p2){
+    if(p1 == null || p2 == null){
       return false;
     }
-    var shift = this.getWorkShift(s).split(" ");
-    return t > shift[0];
+    return p1.attendance.in_permission != "" || p2.attendance.special_permission != "";
   }
-
+  
   getEarlyOut(s, t){
-    var desc = this.getDescription(s).split(":");
-    if(desc[0] == "Holiday"){
+    if(t != null){
+      var desc = this.getDescription(s).split(":");
+      if(desc[0] == "Holiday"){
+        return false;
+      }
+      var shift = this.getWorkShift(s).split(" ");
+      return t.attendance._out < shift[2];
+    }
+    return true;
+  }
+  
+  getAnyOutPermission(p1, p2){
+    if(p1 == null || p2 == null){
       return false;
     }
-    var shift = this.getWorkShift(s).split(" ");
-    return t < shift[2];
+    return p1.attendance.out_permission != "" || p2.attendance.special_permission != "";
   }
-
+  
   getWorkShift(s){
     var day = this.getDayOfTheWeek(s);
     var msg = "00:00:00 - 00:00:00";
@@ -255,5 +312,19 @@ export class ReportAttendanceComponent {
       // console.log('The dialog was closed');
       // console.log(result)
     });
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 }

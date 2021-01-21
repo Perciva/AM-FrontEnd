@@ -2,7 +2,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GlobalConstants } from 'src/app/common/global-variable';
 import { SpecialShiftData } from 'src/app/common/special-shift-model';
 import { SpecialShiftService } from 'src/app/service/special-shift-services.service';
 
@@ -56,34 +55,38 @@ export class UpdateSpecialShiftDialogComponent{
     var outvalueArr = this.timeOut.split(':')
     var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
 
+    this.error = [];
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
-      alert("Missing Values")
+      this.error.push("Missing Values");
       return;
     }else if(invalue > outvalue){
-      alert("In Time must be before Out Time")
+      this.error.push("In Time must be before Out Time");
     }else{
       var start = moment(this.day).add(7, 'hours')._d;
-    
-    
-    console.log("Period " + this.period_id)
-    console.log("Day " + start)
-    console.log("In " + this.timeIn)
-    console.log("Out " + this.timeOut)
-    console.log("Assistant " + this.assistants)
-    console.log("Description " + this.description)
+      console.log("Period " + this.period_id)
+      console.log("Day " + start)
+      console.log("In " + this.timeIn)
+      console.log("Out " + this.timeOut)
+      console.log("Assistant " + this.assistants)
+      console.log("Description " + this.description)
 
-    this.specialShiftService.UpdateSpecialShift(this.data.id, this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
-    .subscribe(
-      async data =>{
-        if(data.data.UpdateSpecialShift != null && data.data.UpdateSpecialShift != "Success"){
-          this.error = data.data.UpdateSpecialShift.split(",");
+      this.specialShiftService.UpdateSpecialShift(this.data.id, this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
+      .subscribe(
+        async data =>{
+          await this.afterInsert(data);
         }
-        else{
-          await this.dialogRef.close();
-        }
+        );
       }
-    );
     }
     
+    afterInsert(data){
+      if(data.data.UpdateSpecialShift != null && data.data.UpdateSpecialShift != "Success"){
+        this.error = data.data.UpdateSpecialShift.split(",");
+      }
+      else{
+        this.error = null;
+        this.dialogRef.close();
+      }
+      
   }
 }

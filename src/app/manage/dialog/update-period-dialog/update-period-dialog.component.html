@@ -15,12 +15,7 @@
         </mat-form-field>
 
         <mat-form-field *ngIf="isSelectedPeriod()">    
-            <mat-label for="years">Years</mat-label>
-            <mat-select required name="years" [(ngModel)]="thisYear" [formControl]="selectedYear">
-                <mat-option *ngFor="let year of years" [value]="year">
-                    {{year}}
-                </mat-option>
-            </mat-select>
+            <input required matInput type="text" name="other" placeholder="Years" [(ngModel)]="year" [formControl]="selectedYear">
         </mat-form-field>
 
         <mat-form-field>    

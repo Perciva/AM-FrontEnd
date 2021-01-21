@@ -25,8 +25,6 @@ export class UpdatePeriodDialogComponent {
   thisOther;
   thisYear;
 
-  years: String[] = GlobalConstants.YEAR;
-
   constructor(
     public dialogRef: MatDialogRef<UpdatePeriodDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private periodData: PeriodData, private periodService: PeriodService) {

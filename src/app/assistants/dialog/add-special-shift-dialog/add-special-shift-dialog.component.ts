@@ -43,37 +43,44 @@ export class AddSpecialShiftDialogComponent {
   }
 
   doAddShift(){
-    var invalueArr = this.timeIn.split(':')
-    var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2]
-    var outvalueArr = this.timeOut.split(':')
-    var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2]
+    var invalueArr = this.timeIn.split(':');
+    var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2];
+    var outvalueArr = this.timeOut.split(':');
+    var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2];
 
+    this.error = [];
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
-      alert("Missing Values")
-      return;
+      this.error.push("Some Field Empty");
     }else if(invalue > outvalue){
-      alert("In Time must be before Out Time")
+      this.error.push("In Time must be before Out Time");
     }
-    var start = moment(this.day).add(7, 'hours')._d;
-    
-    console.log("Period " + this.period_id)
-    console.log("Day " + start)
-    console.log("In " + this.timeIn)
-    console.log("Out " + this.timeOut)
-    console.log("Assistant " + this.assistants)
-    console.log("Description " + this.description)
-
-    this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
-    .subscribe(
-      async data =>{
-        console.log(data.data.InsertSpecialShift)
-        if(data.data.InsertSpecialShift != null && data.data.InsertSpecialShift != "Success"){
-          this.error = data.data.InsertSpecialShift.split(",");
+    else{
+      var start = moment(this.day).add(7, 'hours')._d;
+      
+      console.log("Period " + this.period_id)
+      console.log("Day " + start)
+      console.log("In " + this.timeIn)
+      console.log("Out " + this.timeOut)
+      console.log("Assistant " + this.assistants)
+      console.log("Description " + this.description)
+  
+      this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
+      .subscribe(
+        async data =>{
+          console.log(data.data.InsertSpecialShift)
         }
-        else{
-          await this.dialogRef.close();
-        }
-      }
-    );
+      );  
+    }
   }
+  
+  afterInsert(data){
+    if(data.data.InsertSpecialShift != null && data.data.InsertSpecialShift != "Success"){
+      this.error = data.data.InsertSpecialShift.split(",");
+    }
+    else{
+      this.error = null;
+      this.dialogRef.close();
+    }
+  }
+
 }

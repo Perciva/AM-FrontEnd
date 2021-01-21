@@ -49,13 +49,11 @@ export class UpdateAssistantDialogComponent{
    }
 
   doUpdateAssistant(){
+    this.error = null;
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     console.log(period_id);
     if(this.name == null || this.initial == null|| this.selected == null){
-      alert("Some Field Empty");
-    }
-    else if(this.initial.length != 6){
-      alert("Initial must 6 character");
+      this.error = "Some Field Empty";
     }
     else{
       this.assistantService.UpdateAssistant (this.assistantData.id, period_id, this.selected, this.initial, this.name)
@@ -67,7 +65,6 @@ export class UpdateAssistantDialogComponent{
   }
 
   afterUpdate(data){
-    this.error = null;
     console.log(data.data);
     if(data.data.UpdateAssistant != null && data.data.UpdateAssistant != "Success"){
       this.error = data.data.UpdateAssistant;

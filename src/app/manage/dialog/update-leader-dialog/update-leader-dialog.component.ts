@@ -29,13 +29,11 @@ export class UpdateLeaderDialogComponent {
   }
 
   doUpdateLeader(){
+    this.error = null;
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     var id = this.leaderData.id;
     if(this.name == null || this.initial == null){
-      alert("Some Field Empty");
-    }
-    else if(this.initial.length != 6){
-      alert("Initial must 6 character");
+      this.error = "Some Field Empty";
     }
     else{
       this.leaderService.UpdateLeader(id, period_id, this.initial, this.name)
@@ -46,7 +44,6 @@ export class UpdateLeaderDialogComponent {
   }
 
   afterUpdate(data){
-    this.error = null;
     if(data.data.UpdateLeader != null && data.data.UpdateLeader != "Success"){
       this.error = data.data.UpdateLeader;
       return;
