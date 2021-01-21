@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AttendanceData } from 'src/app/common/attendance-model';
+import { GlobalConstants } from 'src/app/common/global-variable';
 import { InsertAttendanceServiceService } from 'src/app/service/insert-attendance-service.service';
 
 @Component({
@@ -54,6 +55,7 @@ export class AttendanceComponent implements OnInit {
   }
 
   doAddAttendance(){
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.str = this.formStr.value;
 
     console.log(this.str);
@@ -70,7 +72,7 @@ export class AttendanceComponent implements OnInit {
         alert("In Time must be before Out Time")
         return;
       }else{
-        this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
+        this.insertAttendanceService.InsertAttendance(this.strArrayComma[0], period_id, this.strArrayComma[1], this.strArrayComma[2], this.strArrayComma[3])
         .subscribe(async data => {
           await this.afterAdd(data);
     

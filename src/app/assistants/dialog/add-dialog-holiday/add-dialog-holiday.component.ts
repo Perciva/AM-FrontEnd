@@ -16,6 +16,7 @@ export class AddDialogHolidayComponent implements OnInit {
   date: string;
   formDescription;
   formDate;
+  err:any;
 
   constructor(public dialogRef: MatDialogRef<AddDialogHolidayComponent>,
     private holidayService: HolidayServicesService) {
@@ -40,5 +41,6 @@ export class AddDialogHolidayComponent implements OnInit {
 
     }
   }
+
 
 }
