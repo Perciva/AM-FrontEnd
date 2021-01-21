@@ -101,16 +101,17 @@ export class AssistantService {
     });
   }
   
-  UpdateAssistant(id: number, leader_id: number, initial: string, name: string){
+  UpdateAssistant(id: number, period_id: number, leader_id: number, initial: string, name: string){
     return this.apollo
     .mutate<any>({
       mutation: gql`
-        mutation($id: Int!, $leader_id: Int!, $initial: String!, $name: String!) {
-          UpdateAssistant(id:$id, leader_id: $leader_id, initial: $initial, name: $name)
+        mutation($id: Int!, $period_id: Int!, $leader_id: Int!, $initial: String!, $name: String!) {
+          UpdateAssistant(id:$id, period_id: $period_id leader_id: $leader_id, initial: $initial, name: $name)
         }
       `,
       variables: {
         "id": id,
+        "period_id": period_id,
         "leader_id": leader_id,
         "initial": initial,
         "name": name,
