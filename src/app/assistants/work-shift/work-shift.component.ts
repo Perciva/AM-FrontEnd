@@ -69,45 +69,47 @@ export class WorkShiftComponent implements OnInit {
   }
 
   addfile(event) {
-    this.file= event.target.files[0]; 
-    let fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(this.file); 
-    fileReader.onload = (e) => {
-      this.arrayBuffer = fileReader.result;
-      var data = new Uint8Array(this.arrayBuffer);
-      var arr = new Array();
-      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-      var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, {type:"binary"});
-      var first_sheet_name = "Shift Kerja (Include Special)";
-      var worksheet = workbook.Sheets[first_sheet_name];
-      var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
-      var initial = [];
-      var day = [];
-      var in_clock = [];
-      var out_clock = [];
-
-      arraylist.forEach(element => {
-        var temp = element["Initial"] + element["Gen"];
-        initial.push(temp);
-        day.push(element["Day"]);
-        in_clock.push(element["Clock In"]);
-        out_clock.push(element["Clock Out"]);
-      });
-      
-      this.FLAG_DONE= 1;
-      this.CURR_PROG= 0;
-      for(var i = 0; i < initial.length; i++){
-        console.log(initial[i]);
-        this.CURR_PROG++;
-        this.shiftService.InsertShiftByAssistantInitial(period_id ,initial[i], day[i], in_clock[i], out_clock[i]).subscribe(
-          async data =>{
-            await this.removeFlag()
-          }
-        );
+    if(this.FLAG_DONE == 0){
+      this.file= event.target.files[0]; 
+      let fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(this.file); 
+      fileReader.onload = (e) => {
+        this.arrayBuffer = fileReader.result;
+        var data = new Uint8Array(this.arrayBuffer);
+        var arr = new Array();
+        for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+        var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, {type:"binary"});
+        var first_sheet_name = "Shift Kerja (Include Special)";
+        var worksheet = workbook.Sheets[first_sheet_name];
+        var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true}); 
+        var initial = [];
+        var day = [];
+        var in_clock = [];
+        var out_clock = [];
+  
+        arraylist.forEach(element => {
+          var temp = element["Initial"] + element["Gen"];
+          initial.push(temp);
+          day.push(element["Day"]);
+          in_clock.push(element["Clock In"]);
+          out_clock.push(element["Clock Out"]);
+        });
+        
+        this.FLAG_DONE= 1;
+        this.CURR_PROG= 0;
+        for(var i = 0; i < initial.length; i++){
+          console.log(initial[i]);
+          this.CURR_PROG++;
+          this.shiftService.InsertShiftByAssistantInitial(period_id ,initial[i], day[i], in_clock[i], out_clock[i]).subscribe(
+            async data =>{
+              await this.removeFlag()
+            }
+          );
+        }
+        this.FLAG_DONE = 0;
       }
-      this.FLAG_DONE = 0;
     }
   }
 
