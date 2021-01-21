@@ -76,16 +76,17 @@ export class LeaderService {
   }
 
   
-  UpdateLeader(id: number, initial: string, name: string){
+  UpdateLeader(id: number, period_id: number, initial: string, name: string){
     return this.apollo
     .mutate<any>({
       mutation: gql`
-        mutation($id: Int!, $initial: String!, $name: String!) {
-          UpdateLeader(id: $id, initial: $initial, name: $name)
+        mutation($id: Int!, $period_id: Int!, $initial: String!, $name: String!) {
+          UpdateLeader(id: $id, period_id: $period_id, initial: $initial, name: $name)
         }  
       `,
       variables: {
         "id": id,
+        "period_id": period_id,
         "initial": initial,
         "name": name,
       }

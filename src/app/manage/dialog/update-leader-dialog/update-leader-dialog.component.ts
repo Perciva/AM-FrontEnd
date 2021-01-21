@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GlobalConstants } from 'src/app/common/global-variable';
 import { LeaderData } from 'src/app/common/leader-model';
 import { LeaderService } from 'src/app/service/leader-services.service';
 
@@ -16,6 +17,8 @@ export class UpdateLeaderDialogComponent {
   formInitial;
   formName;
 
+  error;
+
   constructor(public dialogRef: MatDialogRef<UpdateLeaderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private leaderData: LeaderData, 
      private leaderService: LeaderService) { 
@@ -26,7 +29,8 @@ export class UpdateLeaderDialogComponent {
   }
 
   doUpdateLeader(){
-    var period_id = this.leaderData.id;
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    var id = this.leaderData.id;
     if(this.name == null || this.initial == null){
       alert("Some Field Empty");
     }
@@ -34,15 +38,23 @@ export class UpdateLeaderDialogComponent {
       alert("Initial must 6 character");
     }
     else{
-      this.leaderService.UpdateLeader(period_id, this.initial, this.name)
+      this.leaderService.UpdateLeader(id, period_id, this.initial, this.name)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterUpdate(data);
       });
     }
   }
 
   afterUpdate(data){
-    alert(data.data.UpdatePeriod? "Update Success":"Update Failed");
+    this.error = null;
+    if(data.data.UpdateLeader != null && data.data.UpdateLeader != "Success"){
+      this.error = data.data.UpdateLeader;
+      return;
+    }
     location.reload();
   } 
+
+  isErr(){
+    return this.error != null;
+  }
 }

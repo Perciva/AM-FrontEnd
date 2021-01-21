@@ -19,6 +19,7 @@ export class UpdateAssistantDialogComponent{
   formInitial;
   formName;
   formLeader;
+  error;
   
   selection: LeaderData[] = [];
   selected;
@@ -57,12 +58,26 @@ export class UpdateAssistantDialogComponent{
       alert("Initial must 6 character");
     }
     else{
-      this.assistantService.UpdateAssistant (this.assistantData.id, this.selected, this.initial, this.name)
+      this.assistantService.UpdateAssistant (this.assistantData.id, period_id, this.selected, this.initial, this.name)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterUpdate(data);
       });
 
     }
   }
 
+  afterUpdate(data){
+    this.error = null;
+    console.log(data.data);
+    if(data.data.UpdateAssistant != null && data.data.UpdateAssistant != "Success"){
+      this.error = data.data.UpdateAssistant;
+      return;
+    }
+
+    this.dialogRef.close();
+  }
+
+  isErr(){
+    return this.error != null;
+  }
 }

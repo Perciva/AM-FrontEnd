@@ -24,6 +24,8 @@ export class LeaderPageComponent implements OnInit{
   file:File;
   arrayBuffer:any;
 
+  error;
+
   constructor(public dialog: MatDialog, private leaderService: LeaderService, private router: Router) {
     this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     console.log("Curr Period_Id: " + this.period_id);
@@ -55,13 +57,14 @@ export class LeaderPageComponent implements OnInit{
 
       this.CURR_PROG = 0;
       this.FLAG_DONE = 1;
+      this.error = [];
       arraylist.forEach(element => {
         var initial = element["Initial+Gen"];
         var leader = element["Name"];
         this.CURR_PROG++;
         this.leaderService.InsertLeader(period_id, initial, leader).subscribe(
           async data =>{
-            await this.removeFlag();
+            await this.removeFlag(data);
           }
         );
       })
@@ -72,9 +75,14 @@ export class LeaderPageComponent implements OnInit{
   CURR_PROG = 0;
   FLAG_DONE = 0;
 
-  removeFlag(){
+  removeFlag(data){
     this.CURR_PROG--;
-    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
+    if(data.data.InsertLeader != null && data.data.InsertLeader != "Success"){
+      this.error.push(data.data.InsertLeader);
+      return;
+    }
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0 && this.error.length == 0){
+      this.error = null;
       location.reload();
     }
   }
@@ -131,4 +139,9 @@ export class LeaderPageComponent implements OnInit{
     alert(data.data.DeleteLeader? "Delete Success":"Delete Failed");
     location.reload();
   }
+
+  isErr(){
+    return this.error != null;
+  }
+
 }

@@ -22,6 +22,8 @@ export class AddAssistantDialogComponent {
   selection: LeaderData[] = [];
   selected;
 
+  error;
+
   constructor(public dialogRef: MatDialogRef<AddAssistantDialogComponent>,
      private assistantService: AssistantService, private leaderService: LeaderService) { 
     this.formInitial= new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
@@ -54,10 +56,23 @@ export class AddAssistantDialogComponent {
     else{
       this.assistantService.InsertAssistant(period_id, this.selected, this.initial, this.name)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterInsert(data);
       });
 
     }
+  }
+
+  afterInsert(data){
+    this.error = null;
+    if(data.data.InsertAssistant != null && data.data.InsertAssistant != "Success"){
+      this.error = data.data.InsertAssistant;
+      return;
+    }
+    this.dialogRef.close();
+  }
+
+  isErr(){
+    return this.error != null;
   }
 
 }

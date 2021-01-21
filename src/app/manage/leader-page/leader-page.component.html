@@ -4,6 +4,12 @@
             <input type="file" id="inputGroupFile" class="form-control" (change)="addfile($event)" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">    
             <label class="file-custom" for="inputGroupFile"></label>
         </div>
+
+        <div class="w-100 mt-2" *ngIf="isErr()">
+            <div class="w-100 d-flex justify-content-center align-items-center btn-danger p-2" *ngFor="let err of error">
+                {{err}}
+            </div>
+        </div>
     </div>   
 </div> 
 

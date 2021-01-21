@@ -27,6 +27,8 @@ export class AssistantPageComponent implements OnInit {
   displayedColumns: string[] = ['initial', 'name', 'leader', 'action'];
   dataSource = new MatTableDataSource<AssistantData>(this.ELEMENT_DATA);
   
+  error;
+  
   constructor(private assistantService: AssistantService, public dialog: MatDialog,
      private router: Router, private leaderService: LeaderService) {   }
 
@@ -81,11 +83,12 @@ export class AssistantPageComponent implements OnInit {
       
       this.FLAG_DONE= 1;
       this.CURR_PROG= 0;
+      this.error = [];
       for(var i = 0; i < initial.length; i++){
         this.CURR_PROG++;
         this.assistantService.InsertAssistantByLeaderInitial(period_id,leader[i], initial[i], name[i]).subscribe(
-          async data1 =>{
-            await this.removeFlag()
+          async data =>{
+            await this.removeFlag(data)
           }
         );
       }
@@ -96,12 +99,21 @@ export class AssistantPageComponent implements OnInit {
   CURR_PROG = 0;
   FLAG_DONE = 0;
 
-  removeFlag(){
+  removeFlag(data){
     this.CURR_PROG--;
-    if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
+    if(data.data.InsertAssistantByLeaderInitial != null && data.data.InsertAssistantByLeaderInitial !="Success"){
+      this.error.push(data.data.InsertAssistantByLeaderInitial);
+    }
+
+    if(this.FLAG_DONE == 0 && this.CURR_PROG==0 && this.error.length == 0){
+      this.error = null;
       location.reload();
     }
 
+  }
+
+  isErr(){
+    return this.error != null;
   }
 
   

@@ -15,6 +15,7 @@ export class AddLeaderDialogComponent {
   name: string;
   formInitial;
   formName;
+  error;
 
   constructor(public dialogRef: MatDialogRef<AddLeaderDialogComponent>,
      private leaderService: LeaderService) { 
@@ -31,12 +32,26 @@ export class AddLeaderDialogComponent {
       alert("Initial must 6 character");
     }
     else{
+      this.error = null;
       this.leaderService.InsertLeader(period_id, this.initial, this.name)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterInsert(data);
       });
 
     }
+  }
+
+  afterInsert(data){
+    if(data.data.InsertLeader != null && data.data.InsertLeader != "Success"){
+      this.error = data.data.InsertLeader;
+      return;
+    }
+
+    this.dialogRef.close();
+  }
+
+  isErr(){
+    return this.error != null;
   }
 
 }
