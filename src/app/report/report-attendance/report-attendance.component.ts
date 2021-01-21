@@ -3,7 +3,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { from } from 'rxjs';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
+import { HolidayData } from 'src/app/common/holiday-model';
 import { AssistantService } from 'src/app/service/assistant-services.service';
+import { HolidayServicesService } from 'src/app/service/holiday-services.service';
 import { PeriodService } from 'src/app/service/period-services.service';
 import { ReportAttendanceService } from 'src/app/service/report-attendance-services.service';
 import { ReportData } from '../../common/report-model';
@@ -32,9 +34,12 @@ export class ReportAttendanceComponent {
   report: ReportData[] = [];
   dataSource = new MatTableDataSource<ReportData>(this.report);
 
+  holidays: HolidayData[] = [];
+
   constructor(
     private periodService: PeriodService,
     private assistantService: AssistantService,
+    private holidayService: HolidayServicesService,
     private reportAttendanceService : ReportAttendanceService,
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
@@ -45,8 +50,9 @@ export class ReportAttendanceComponent {
     this.assistantService.GetAllAssistant(period_id).subscribe(async data => {
       await this.insertAssistantData(data);
     });
-  }
 
+  }
+  
   insertDate(data){
     if(data.data.GetPeriodById != null){
       this.startDate = this.minDate = data.data.GetPeriodById.start;
@@ -62,7 +68,7 @@ export class ReportAttendanceComponent {
       });
     }
   }
-
+  
   viewData(){
     console.log("Test Masuk");
     if(this.astId == null){
@@ -74,21 +80,37 @@ export class ReportAttendanceComponent {
       async data=>{
         await this.insertData(data);
       }
-    )
+    );
+      
     this.report = [];
+    this.holidays = [];
 
-
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    this.holidayService.GetAllHoliday(period_id)
+    .subscribe(
+      async data=>{
+        await this.insertHoliday(data);
+      }
+    );
+      
     // var startDate = moment(this.startDate).add(7, 'hours')._d;
     // var endDate = moment(this.endDate).add(7, 'hours')._d;
-    //Get Report by the astId
     this.reportAttendanceService.GetAllAttendanceByDate(this.startDate, this.endDate, this.astId)
     .subscribe(
       async data=>{
         await this.insertAttendanceData(data);
       }
-    )
+    );
   }
-  
+
+  insertHoliday(data){
+    if(data.data.GetHolidayByPeriodId != null){
+      data.data.GetHolidayByPeriodId.forEach(element => {
+        this.holidays.push(element);
+      });
+    }
+  }
+      
   insertData(data){
     this.ast_initial = data.data.GetAssistantById.initial;
     this.ast_data = data.data.GetAssistantById;
@@ -121,7 +143,7 @@ export class ReportAttendanceComponent {
     if(s == "TM")
       return "Telat Absen Masuk"
     if(s == "TL")
-      return "Toleransi"
+      return "Toleransi Masuk"
     return "-";
   }
 
@@ -131,7 +153,7 @@ export class ReportAttendanceComponent {
     if(s == "LP")
       return "Lupa Absen Pulang"
     if(s == "TL")
-      return "Toleransi"
+      return "Toleransi Pulang"
     return "-";
   }
 
@@ -153,9 +175,54 @@ export class ReportAttendanceComponent {
 
   getDescription(s){
     var day = this.getDayOfTheWeek(s);
-    if(day == 7)
-      return "Holiday: Sunday";
-    return "";
+    var msg = "";
+    var flag = false;
+    if(day == 7 && !flag){
+      msg = "Holiday: Sunday";
+      flag = true;
+    }
+    else{
+      for(var i = 0; i < this.holidays.length; i++){
+        if(s == this.holidays[i].date){
+          msg = "Holiday: " + this.holidays[i].description;
+          flag = true;
+        }
+      }
+    }
+    if(!flag){
+      var special = this.report[0].special_shift;
+      if(special != null){
+        for(var i = 0; i < special.length; i++){
+          // console.log(s + " >> " + special[i].date)
+          // console.log(special[i])
+          if(s == special[i].date)
+          msg = "Special Shift: " + special[i].description;
+        }
+      }
+    }
+    return msg;
+  }
+
+  getLateIn(s, t){
+    var desc = this.getDescription(s).split(":");
+    if(desc[0] == "Holiday"){
+      return false;
+    }
+    var shift = this.getWorkShift(s).split(" ");
+    console.log( t + " > " + shift[0]);
+
+    return t > shift[0];
+  }
+
+  getEarlyOut(s, t){
+    var desc = this.getDescription(s).split(":");
+    if(desc[0] == "Holiday"){
+      return false;
+    }
+    var shift = this.getWorkShift(s).split(" ");
+    console.log( t + " > " + shift[2]);
+
+    return t < shift[2];
   }
 
   getWorkShift(s){
@@ -166,10 +233,17 @@ export class ReportAttendanceComponent {
         msg = element._in + " - " + element._out;
       }
     });
+    var special = this.report[0].special_shift;
+    if(special != null){
+      for(var i = 0; i < special.length; i++){
+        if(s == special[i].date)
+        msg = special[i]._in + " - " + special[i]._out;
+      }
+    }
     return msg;
   }
 
-  doUpdate(element){
+  doUpdate(){
     
   }
 }

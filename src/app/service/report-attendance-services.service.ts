@@ -52,6 +52,7 @@ export class ReportAttendanceService {
             _in
             _out
             date
+            description
           }
         }
       }
