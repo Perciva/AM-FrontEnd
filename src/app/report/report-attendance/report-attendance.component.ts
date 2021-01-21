@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { from } from 'rxjs';
 import { AssistantData } from 'src/app/common/assistant-model';
@@ -9,6 +10,7 @@ import { HolidayServicesService } from 'src/app/service/holiday-services.service
 import { PeriodService } from 'src/app/service/period-services.service';
 import { ReportAttendanceService } from 'src/app/service/report-attendance-services.service';
 import { ReportData } from '../../common/report-model';
+import { UpdateReportAttendanceDialogComponent } from '../dialog/update-report-attendance-dialog/update-report-attendance-dialog.component';
 
 var moment = require('moment');
 moment().format(); 
@@ -41,6 +43,7 @@ export class ReportAttendanceComponent {
     private assistantService: AssistantService,
     private holidayService: HolidayServicesService,
     private reportAttendanceService : ReportAttendanceService,
+    public dialog: MatDialog,
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.periodService.GetPeriodById(period_id).subscribe(async data => {
@@ -209,8 +212,6 @@ export class ReportAttendanceComponent {
       return false;
     }
     var shift = this.getWorkShift(s).split(" ");
-    console.log( t + " > " + shift[0]);
-
     return t > shift[0];
   }
 
@@ -220,8 +221,6 @@ export class ReportAttendanceComponent {
       return false;
     }
     var shift = this.getWorkShift(s).split(" ");
-    console.log( t + " > " + shift[2]);
-
     return t < shift[2];
   }
 
@@ -243,7 +242,18 @@ export class ReportAttendanceComponent {
     return msg;
   }
 
-  doUpdate(){
-    
+  doUpdate(element){
+    console.log(element.attendance);
+    const dialogRef = this.dialog.open(UpdateReportAttendanceDialogComponent, {
+      width: '500px',
+      maxHeight: '600px',
+      data: element.attendance 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+      // console.log('The dialog was closed');
+      // console.log(result)
+    });
   }
 }

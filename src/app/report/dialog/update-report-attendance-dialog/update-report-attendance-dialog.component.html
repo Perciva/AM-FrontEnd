@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center flex-column container">
+    <div class="font-weight-bold m-3">Update Attendance</div>
+    <form class="d-flex flex-column" (ngSubmit)="doUpdateReport()">
+        <mat-form-field class="period-selection">
+            <mat-label>In Permission</mat-label>
+            <mat-select [(value)] = "in_permission">
+                <mat-option *ngFor="let item of in_permissions" [value]="item.key">
+                    {{ item.value }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="In Permission Description" [(ngModel)]="in_permission_desc" name="in_permission_desc">
+        </mat-form-field>
+        
+        <mat-form-field class="period-selection">
+            <mat-label>Out Permission</mat-label>
+            <mat-select [(value)] = "out_permission">
+                <mat-option *ngFor="let item of out_permissions" [value]="item.key">
+                    {{ item.value }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Out Permission Description" [(ngModel)]="out_permission_desc" name="out_permission_desc">
+        </mat-form-field>
+        
+        <mat-form-field class="period-selection">
+            <mat-label>Special Permission</mat-label>
+            <mat-select [(value)] = "special_permission">
+                <mat-option *ngFor="let item of special_permissions" [value]="item.key">
+                    {{ item.value }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Special Permission Description" [(ngModel)]="special_permission_desc" name="special_permission_desc">
+        </mat-form-field>
+
+        <button mat-button type="submit" class="submit-button" cdkFocusInitial>Update</button>
+
+        <div class="w-100 mt-2" *ngIf="isErr()">
+            <div class="w-100 d-flex justify-content-center align-items-center btn-danger p-2">
+                {{error}}
+            </div>
+        </div>
+    </form>
+    
+</div>
+

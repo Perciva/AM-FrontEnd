@@ -1,5 +1,6 @@
 table {
     width: 98%;
+    overflow-x: auto;
 }
 
 .mat-elevation-z8 {
@@ -18,18 +19,20 @@ ng-container {
 
 td,
 th {
-    max-width: 150px;
+    max-width: 120px;
     padding: 5px;
     margin: 10px !important;
 }
 
 .wHour{
     max-width: 50px;
+    min-width: 50px;
 }
 
 mat-accordion{
     max-width: 145px !important;
     padding: 2px !important;
+    font-size: small;
 }
 
 .data {

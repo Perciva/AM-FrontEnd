@@ -32,6 +32,7 @@ import { AddDialogHolidayComponent } from './assistants/dialog/add-dialog-holida
 import { UpdateHolidayDialogComponent } from './assistants/dialog/update-holiday-dialog/update-holiday-dialog.component';
 import { AddSpecialShiftDialogComponent } from './assistants/dialog/add-special-shift-dialog/add-special-shift-dialog.component';
 import { UpdateSpecialShiftDialogComponent } from './assistants/dialog/update-special-shift-dialog/update-special-shift-dialog.component';
+import { UpdateReportAttendanceDialogComponent } from './report/dialog/update-report-attendance-dialog/update-report-attendance-dialog.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { UpdateSpecialShiftDialogComponent } from './assistants/dialog/update-sp
     UpdateHolidayDialogComponent,
     AddSpecialShiftDialogComponent,
     UpdateSpecialShiftDialogComponent,
+    UpdateReportAttendanceDialogComponent,
   ],
     providers: [
     ],

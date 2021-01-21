@@ -64,4 +64,49 @@ export class ReportAttendanceService {
       }
     });
   }
+
+  UpdateAttendance(
+    id: number, 
+    in_permission: string, 
+    out_permission: string, 
+    special_permission: string, 
+    in_permission_description: string, 
+    out_permission_description: string, 
+    special_permission_description: string
+    ){
+    return this.apollo
+    .mutate<any>({
+      mutation: gql`
+      mutation(
+        $id: Int!
+        $in_permission: String
+        $out_permission: String
+        $special_permission: String
+        $in_permission_description: String
+        $out_permission_description: String
+        $special_permission_description: String
+      ) {
+        UpdateAttendance(
+          id: $id
+          in_permission: $in_permission
+          out_permission: $out_permission
+          special_permission: $special_permission
+          in_permission_description: $in_permission_description
+          out_permission_description: $out_permission_description
+          special_permission_description: $special_permission_description
+        )
+      }
+      
+      `,
+      variables: {
+        "id": id,
+        "in_permission": in_permission,
+        "out_permission": out_permission,
+        "special_permission": special_permission,
+        "in_permission_description": in_permission_description,
+        "out_permission_description": out_permission_description,
+        "special_permission_description": special_permission_description
+      }
+    });
+  }
 }
