@@ -37,7 +37,7 @@ export class UpdateHolidayDialogComponent implements OnInit {
       this.err = "Some Field Empty";
     }
     else{
-      var exactDate = moment(this.formDate.value).add(7, 'hours')._d;
+      var exactDate = this.formatDate(this.date);
       console.log(exactDate)
       this.holidayService.UpdateHoliday(holidayId, this.formDescription.value, exactDate)
       .subscribe(async data => {
@@ -49,8 +49,26 @@ export class UpdateHolidayDialogComponent implements OnInit {
 
   afterUpdate(data){
     console.log(data)
-    this.err = data.data.InsertHoliday;
+    if(data.data.UpdateHoliday != null && data.data.UpdateHoliday != "Succes"){
+      this.err = data.data.UpdateHoliday;
+      return;
+    }
+    this.dialogRef.close();
   } 
 
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
 }

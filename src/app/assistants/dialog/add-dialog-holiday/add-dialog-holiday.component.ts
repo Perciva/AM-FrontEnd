@@ -33,15 +33,39 @@ export class AddDialogHolidayComponent implements OnInit {
       alert("Some Field Empty");
     }
     else{
-      var exactDate = moment(this.formDate.value).add(7, 'hours')._d;
+      var exactDate = this.formatDate(this.date);
+      // // moment(this.date).add(7, 'hours')._d;
+      // var temp = exactDate.split("T");
       console.log(exactDate)
       this.holidayService.InsertHoliday(period_id, this.description, exactDate)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterInsert(data);
       });
 
     }
   }
+  // Holiday with date 2021-12-12T00:00:00.000Z Already Exists!
+  afterInsert(data){
+    console.log(data)
+    if(data.data.InsertHoliday != null && data.data.InsertHoliday != "Success"){
+      this.err = data.data.InsertHoliday;
+      return;
+    }
+    this.dialogRef.close();
+  } 
 
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
 }
