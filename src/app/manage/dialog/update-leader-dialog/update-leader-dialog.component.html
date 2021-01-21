@@ -10,6 +10,13 @@
         </mat-form-field>
 
         <button mat-button type="submit" class="submit-button" cdkFocusInitial>Update</button>
+
+        
+        <div class="w-100 mt-2" *ngIf="isErr()">
+            <div class="w-100 d-flex justify-content-center align-items-center btn-danger p-2">
+                {{error}}
+            </div>
+        </div>
     </form>
     
 </div>
