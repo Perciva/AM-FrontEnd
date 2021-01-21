@@ -85,10 +85,7 @@ export class AttendanceComponent implements OnInit {
 
   afterAdd(data){
     console.log(data)
-    // alert(data.data.InsertAttendance? "Data Saved":"Failed to Save Data");
     this.err = data.data.InsertAttendance;
-
-    // location.reload();
   }
 
   ngOnInit(): void {

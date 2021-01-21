@@ -34,6 +34,7 @@ export class AddDialogHolidayComponent implements OnInit {
     }
     else{
       var exactDate = moment(this.formDate.value).add(7, 'hours')._d;
+      console.log(exactDate)
       this.holidayService.InsertHoliday(period_id, this.description, exactDate)
       .subscribe(async data => {
         await this.dialogRef.close();

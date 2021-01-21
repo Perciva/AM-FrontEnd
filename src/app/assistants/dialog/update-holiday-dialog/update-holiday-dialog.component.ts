@@ -14,9 +14,10 @@ moment().format();
 })
 export class UpdateHolidayDialogComponent implements OnInit {
   description: string;
-  date: string;
+  date;
   formDescription;
   formDate;
+  err:any;
 
   constructor(public dialogRef: MatDialogRef<UpdateHolidayDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private holidayData : HolidayData, 
@@ -32,18 +33,24 @@ export class UpdateHolidayDialogComponent implements OnInit {
 
   doUpdateHoliday(){
     var holidayId = this.holidayData.id;
-    if(this.formDescription.value == null || this.formDate.value == null){
-      alert("Some Field Empty");
+    if(this.formDescription.value == "null" || this.formDate.value == null){
+      this.err = "Some Field Empty";
     }
     else{
       var exactDate = moment(this.formDate.value).add(7, 'hours')._d;
+      console.log(exactDate)
       this.holidayService.UpdateHoliday(holidayId, this.formDescription.value, exactDate)
       .subscribe(async data => {
-        await this.dialogRef.close();
+        await this.afterUpdate(data);
       });
 
     }
   }
+
+  afterUpdate(data){
+    console.log(data)
+    this.err = data.data.InsertHoliday;
+  } 
 
 
 }
