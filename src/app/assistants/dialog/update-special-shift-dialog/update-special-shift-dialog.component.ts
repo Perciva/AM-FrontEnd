@@ -61,8 +61,8 @@ export class UpdateSpecialShiftDialogComponent{
       return;
     }else if(invalue > outvalue){
       alert("In Time must be before Out Time")
-    }
-    var start = moment(this.day).add(7, 'hours')._d;
+    }else{
+      var start = moment(this.day).add(7, 'hours')._d;
     
     
     console.log("Period " + this.period_id)
@@ -83,5 +83,7 @@ export class UpdateSpecialShiftDialogComponent{
         }
       }
     );
+    }
+    
   }
 }

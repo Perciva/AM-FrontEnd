@@ -75,6 +75,7 @@ export class UpdatePeriodDialogComponent {
 
       var start = moment(this.startDate.value).add(7, 'hours')._d;
       var end = moment(this.endDate.value).add(7, 'hours')._d;
+      console.log(start)
   
       this.periodService.UpdatePeriods(this.periodData.id, period, start, end).
       subscribe(async data => {
