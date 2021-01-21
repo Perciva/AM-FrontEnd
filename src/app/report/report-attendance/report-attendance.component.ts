@@ -24,6 +24,7 @@ export class ReportAttendanceComponent {
   startDate;
   endDate;
   astId;
+  ast_data : AssistantData;
   ast_initial;
   assistants: AssistantData[] = [];
   displayedColumns: string[] = ['date', 'day', 'description', 'working_hour', 'in', 'in_permission', 'out', 'out_permission', 'other', 'action'];
@@ -74,6 +75,8 @@ export class ReportAttendanceComponent {
         await this.insertData(data);
       }
     )
+    this.report = [];
+
 
     // var startDate = moment(this.startDate).add(7, 'hours')._d;
     // var endDate = moment(this.endDate).add(7, 'hours')._d;
@@ -88,12 +91,16 @@ export class ReportAttendanceComponent {
   
   insertData(data){
     this.ast_initial = data.data.GetAssistantById.initial;
+    this.ast_data = data.data.GetAssistantById;
   }
   
   insertAttendanceData(data){
-    data.data.GetAllAttendanceByDate.forEach(element => {
-      this.report.push(element);
-    });
+    if(data.data.GetAllAttendanceByDate != null){
+      data.data.GetAllAttendanceByDate.forEach(element => {
+        this.report.push(element);
+      });
+
+    }
     this.dataSource = new MatTableDataSource<ReportData>(this.report);
     this.opened = true;
   }
@@ -141,10 +148,25 @@ export class ReportAttendanceComponent {
   }
 
   getDayOfTheWeek(s){
-    console.log(s)
-    console.log(moment(s).day());
     return moment(s).day() == 0 ? 7 : moment(s).day();
+  }
 
+  getDescription(s){
+    var day = this.getDayOfTheWeek(s);
+    if(day == 7)
+      return "Holiday: Sunday";
+    return "";
+  }
+
+  getWorkShift(s){
+    var day = this.getDayOfTheWeek(s);
+    var msg = "00:00:00 - 00:00:00";
+    this.ast_data.shift.forEach(element => {
+      if(element.day == day){
+        msg = element._in + " - " + element._out;
+      }
+    });
+    return msg;
   }
 
   doUpdate(element){

@@ -57,6 +57,12 @@ export class AssistantService {
           }
           initial
           name
+          shift {
+            id
+            day
+            _in
+            _out
+          }
         }
       }
       `,

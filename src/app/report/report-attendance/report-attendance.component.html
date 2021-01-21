@@ -39,7 +39,11 @@
 <div class="data" *ngIf="isOpen()">
     <div class="mat-elevation-z8 p-2">
        <h1>Attendance Report For {{ast_initial}}</h1>
-       <table mat-table [dataSource]="report">
+
+       <div *ngIf="report.length == 0" class="btn-danger w-100 d-flex justify-content-center align-items-center p-2">
+         Insert data first
+       </div>
+       <table mat-table [dataSource]="report" *ngIf="report.length != 0">
         <ng-container matColumnDef="date" sticky>
           <th mat-header-cell *matHeaderCellDef> Date </th>
           <td mat-cell *matCellDef="let element"> {{element.attendance.date}} </td>
@@ -52,12 +56,12 @@
 
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef class="text-break"> Description </th>
-          <td mat-cell *matCellDef="let element" class="text-break"> - </td>
+          <td mat-cell *matCellDef="let element" class="text-break"> {{getDescription(element.attendance.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="working_hour">
           <th mat-header-cell *matHeaderCellDef class="text-break wHour"> Working Hour </th>
-          <td mat-cell *matCellDef="let element" class="text-break wHour"> 07:20:00 - 15:00:00 </td>
+          <td mat-cell *matCellDef="let element" class="text-break wHour"> {{getWorkShift(element.attendance.date)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="in">
