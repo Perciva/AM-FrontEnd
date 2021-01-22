@@ -8,45 +8,36 @@ import { AssistantService } from 'src/app/service/assistant-services.service';
 import { ExcelServicesService } from 'src/app/service/excel-services.service';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { PeriodService } from 'src/app/service/period-services.service';
-import { ReportSummaryServiceService } from 'src/app/service/report-summary-service.service';
+import { SummaryData } from '../../common/summary-model';
 
-var moment = require('moment');
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent {
-  period_id = -1;
+
   opened = false;
   minDate;
   maxDate;
   startDate;
-
-  dateStart:string;
-  dateEnd:string;
   leaderId = 0;  //ALL
   astId = 0;     //ALL
   ast_initial;
   leaders= [];
   assistants= [];
-  summary= [];
   displayedColumns: string[] = ['leader', 'assistant', 'ITM', 'LAM', 'TAM', 'TM', 'IP', 'LAP', 'TP', 'CT', 'SK', 'TL', 'AL', 'unverified'];
-  dataSource = new MatTableDataSource<AssistantData>(this.assistants);
 
-  excel=[
-    {test: "Jast", viw: "anjsdk"},
-    {test: "wer", viw: "y"},
-    {test: "64eg", viw: "te"},
-    {test: "wer", viw: "hyt"},
-  ]; //Ini tempat simpen data yang mo di jadiin excel
+  summary: SummaryData[] = [];
+  dataSource = new MatTableDataSource<SummaryData>(this.summary);
+
+  excel=[]; //Ini tempat simpen data yang mo di jadiin excel
 
   constructor(
     private periodService: PeriodService,
     private assistantService: AssistantService,
     private leaderService: LeaderService,
     private excelService: ExcelServicesService,
-    private reportSummaryService: ReportSummaryServiceService
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.periodService.GetPeriodById(period_id).subscribe(async data => {
@@ -60,7 +51,6 @@ export class SummaryComponent {
     this.leaderService.GetAllLeader(period_id).subscribe(async data => {
       await this.insertLeaderData(data);
     });
-
   }
 
   insertDate(data){
@@ -78,7 +68,7 @@ export class SummaryComponent {
       data.data.GetAssistantByPeriodId.forEach(element => {
         this.assistants.push(element)
       });
-      this.dataSource = new MatTableDataSource<AssistantData>(this.assistants);
+      // this.dataSource = new MatTableDataSource<SummaryData>(this.summary);
     }
   }
   
@@ -97,12 +87,7 @@ export class SummaryComponent {
     console.log("Test Masuk");
     console.log("Leader : " + this.leaderId );
     console.log("Assistant : " + this.astId );
-    this.period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-    this.dateStart = moment(this.startDate).add(7, 'hours')._d;
-    console.log(this.dateStart)
-    this.dateEnd = moment(this.maxDate).add(7, 'hours')._d;
-    console.log(this.dateEnd)
-    this.reportSummaryService.GetAttendanceSummary(this.astId, this.dateStart, this.dateEnd, this.period_id).subscribe(
+    this.assistantService.GetAssistantById(this.astId).subscribe(
       async data=>{
         await this.insertData(data);
       }
@@ -114,14 +99,8 @@ export class SummaryComponent {
   }
   
   insertData(data){
-    console.log(data.data);
-    if(data.data.getAttendanceSummary != null){
-      data.data.getAttendanceSummary.forEach(element => {
-         this.summary.push(element)
-         console.log(element.assistant)
-      });
-       this.dataSource.data = this.summary;
-    }
+    console.log(data);
+    this.ast_initial = data.data.GetAssistantById.initial;
   }
 
   isOpen(){
