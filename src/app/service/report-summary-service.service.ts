@@ -34,15 +34,18 @@ export class ReportSummaryServiceService {
           IT
           LM
           TM
+          TL
          }
          out{
+          IP
           LP
           TL
-          IP
          }
          special{
           CT
           SK
+          TL
+          AP
          }
          unverified
         }
@@ -84,15 +87,18 @@ export class ReportSummaryServiceService {
             IT
             LM
             TM
+            TL
           }
           out {
+            IP
             LP
             TL
-            IP
           }
           special {
             CT
             SK
+            TL
+            AP
           }
           unverified
         }
@@ -132,15 +138,18 @@ export class ReportSummaryServiceService {
             IT
             LM
             TM
+            TL
           }
           out {
+            IP
             LP
             TL
-            IP
           }
           special {
             CT
             SK
+            TL
+            AP
           }
           unverified
         }

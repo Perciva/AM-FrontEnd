@@ -23,7 +23,7 @@ export class SummaryComponent {
   opened = false;
   minDate;
   maxDate;
-  startDate;
+  cutOffDate;
   leaderId = 0;
   astId = 0;
   ast_initial;
@@ -63,20 +63,27 @@ export class SummaryComponent {
   insertDate(data){
     if(data.data.GetPeriodById != null){
       this.minDate = data.data.GetPeriodById.start;
-      this.startDate = this.maxDate = data.data.GetPeriodById.end;
+      this.cutOffDate = this.maxDate = data.data.GetPeriodById.end;
     }
   }
   
   insertAssistantData(data){
     console.log(data.data);
     if(data.data.GetAssistantByPeriodId != null){
-      // var temp = {id: 0, initial: "ALL"};
-      // this.assistants.push(temp)
       data.data.GetAssistantByPeriodId.forEach(element => {
         this.assistants.push(element)
       });
-      // this.dataSource = new MatTableDataSource<SummaryData>(this.summary);
     }
+  }
+
+  insertAssistantDataByLeader(data){
+    console.log(data.data);
+    if(data.data.GetAssistantByLeaderId != null){
+      data.data.GetAssistantByLeaderId.forEach(element => {
+        this.assistants.push(element)
+      });
+    }
+    
   }
   
   insertLeaderData(data){
@@ -96,25 +103,25 @@ export class SummaryComponent {
     console.log("Assistant : " + this.astId );
 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
-    this.startDate = this.formatDate(this.startDate);
+    this.cutOffDate = this.formatDate(this.cutOffDate);
     this.summary = [];
     if(this.leaderId == 0 && this.astId == 0){
       console.log("harusnya get all");
-      this.summaryService.GetAllAttendanceSummary(period_id, this.minDate, this.startDate)
+      this.summaryService.GetAllAttendanceSummary(period_id, this.minDate, this.cutOffDate)
       .subscribe(
         async data=>{
           await this.insertSummaryData(data);
         }
       );
     }else if(this.leaderId == 0 || this.astId != 0){
-      this.summaryService.GetAttendanceSummary(this.astId, this.minDate, this.startDate, period_id)
+      this.summaryService.GetAttendanceSummary(this.astId, this.minDate, this.cutOffDate, period_id)
       .subscribe(
         async data=>{
           await this.insertSummaryDataAssistant(data);
         }
       );
     }else if(this.leaderId != 0 || this.astId == 0){
-      this.summaryService.GetAllAttendanceSummaryByLeader(period_id, this.leaderId, this.minDate, this.startDate)
+      this.summaryService.GetAllAttendanceSummaryByLeader(period_id, this.leaderId, this.minDate, this.cutOffDate)
       .subscribe(
         async data=>{
           await this.insertSummaryDataLeader(data);
