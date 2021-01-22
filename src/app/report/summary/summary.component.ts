@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
 import { AssistantData } from 'src/app/common/assistant-model';
@@ -11,6 +11,7 @@ import { LeaderService } from 'src/app/service/leader-services.service';
 import { PeriodService } from 'src/app/service/period-services.service';
 import { ReportSummaryServiceService } from 'src/app/service/report-summary-service.service';
 import { SummaryData } from '../../common/summary-model';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-summary',
@@ -23,8 +24,8 @@ export class SummaryComponent {
   minDate;
   maxDate;
   startDate;
-  leaderId = 0;  //ALL
-  astId = 0;     //ALL
+  leaderId = 0;
+  astId = 0;
   ast_initial;
   leaders= [];
   assistants= [];
@@ -33,7 +34,7 @@ export class SummaryComponent {
   summary: SummaryData[] = [];
   dataSource = new MatTableDataSource<SummaryData>(this.summary);
 
-  excel=[]; //Ini tempat simpen data yang mo di jadiin excel
+  excel=[];
 
   row1 = [];
 
@@ -42,7 +43,8 @@ export class SummaryComponent {
     private assistantService: AssistantService,
     private leaderService: LeaderService,
     private excelService: ExcelServicesService,
-    private summaryService: ReportSummaryServiceService
+    private summaryService: ReportSummaryServiceService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.periodService.GetPeriodById(period_id).subscribe(async data => {
@@ -60,8 +62,8 @@ export class SummaryComponent {
 
   insertDate(data){
     if(data.data.GetPeriodById != null){
-      this.startDate = this.minDate = data.data.GetPeriodById.start;
-      this.maxDate = data.data.GetPeriodById.end;
+      this.minDate = data.data.GetPeriodById.start;
+      this.startDate = this.maxDate = data.data.GetPeriodById.end;
     }
   }
   
@@ -92,13 +94,10 @@ export class SummaryComponent {
     console.log("Test Masuk");
     console.log("Leader : " + this.leaderId );
     console.log("Assistant : " + this.astId );
-    // this.assistantService.GetAssistantById(this.astId).subscribe(
-    //   async data=>{
-    //     await this.insertData(data);
-    //   }
-    // )
 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    this.startDate = this.formatDate(this.startDate);
+    this.summary = [];
     if(this.leaderId == 0 && this.astId == 0){
       console.log("harusnya get all");
       this.summaryService.GetAllAttendanceSummary(period_id, this.minDate, this.startDate)
@@ -122,13 +121,6 @@ export class SummaryComponent {
         }
       );
     }
-
-
-    
-
-    //Get Report by the astId
-    // this.opened = true;
-    
   }
   
   insertData(data){
@@ -138,13 +130,7 @@ export class SummaryComponent {
   insertSummaryDataAssistant(data){
     console.log(data.data);
     if(data.data.GetAttendanceSummary != null){
-      // try{
-      //   data.data.GetAttendanceSummary.forEach(element => {
-      //     this.summary.push(element);
-      //   });
-      // }catch{
-        this.summary.push(data.data.GetAttendanceSummary);
-      // }
+      this.summary.push(data.data.GetAttendanceSummary);
 
       this.dataSource.data = this.summary;
       console.log(this.summary);
@@ -191,20 +177,12 @@ export class SummaryComponent {
   }
 
   exportAsXLSX() {
-    // var t = document.querySelector("table");
-
-    // var obj = {};
-    // var row, rows = t.rows;
-    // for (var i=0, iLen=rows.length; i<iLen; i++) {
-    //   row = rows[i];
-    //   for (var j=0, jLen=rows.length; j<jLen; j++) {
-    //     obj[row.cells[j].textContent] = row.cells[j+1].textContent
-    //   }
-    // }
-
-    // console.log(JSON.stringify(obj));
-    this.excel = this.summary;
-    this.excelService.exportAsExcelFile(this.excel, 'report-summary');
+    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(document.querySelector("table"));
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Report Summary');
+  
+    /* save to file */
+    XLSX.writeFile(wb, 'report-summary.xlsx');
  }
 
   getData(s){
@@ -213,6 +191,20 @@ export class SummaryComponent {
     }else{
       return s;
     }
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
 }
