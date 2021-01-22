@@ -8,6 +8,7 @@ import { AssistantService } from 'src/app/service/assistant-services.service';
 import { ExcelServicesService } from 'src/app/service/excel-services.service';
 import { LeaderService } from 'src/app/service/leader-services.service';
 import { PeriodService } from 'src/app/service/period-services.service';
+import { ReportSummaryServiceService } from 'src/app/service/report-summary-service.service';
 import { SummaryData } from '../../common/summary-model';
 
 @Component({
@@ -38,6 +39,7 @@ export class SummaryComponent {
     private assistantService: AssistantService,
     private leaderService: LeaderService,
     private excelService: ExcelServicesService,
+    private summaryService: ReportSummaryServiceService
   ) { 
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
     this.periodService.GetPeriodById(period_id).subscribe(async data => {
@@ -87,20 +89,98 @@ export class SummaryComponent {
     console.log("Test Masuk");
     console.log("Leader : " + this.leaderId );
     console.log("Assistant : " + this.astId );
-    this.assistantService.GetAssistantById(this.astId).subscribe(
-      async data=>{
-        await this.insertData(data);
-      }
-    )
+    // this.assistantService.GetAssistantById(this.astId).subscribe(
+    //   async data=>{
+    //     await this.insertData(data);
+    //   }
+    // )
+
+    var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    if(this.leaderId == 0 && this.astId == 0){
+      console.log("harusnya get all");
+      this.summaryService.GetAllAttendanceSummary(period_id, this.minDate, this.startDate)
+      .subscribe(
+        async data=>{
+          await this.insertSummaryData(data);
+        }
+      );
+    }else if(this.leaderId == 0 || this.astId != 0){
+      this.summaryService.GetAttendanceSummary(this.astId, this.minDate, this.startDate, period_id)
+      .subscribe(
+        async data=>{
+          await this.insertSummaryDataAssistant(data);
+        }
+      );
+    }else if(this.leaderId != 0 || this.astId == 0){
+      this.summaryService.GetAllAttendanceSummaryByLeader(period_id, this.leaderId, this.minDate, this.startDate)
+      .subscribe(
+        async data=>{
+          await this.insertSummaryDataLeader(data);
+        }
+      );
+    }
+
+
+    
 
     //Get Report by the astId
-    this.opened = true;
+    // this.opened = true;
     
   }
   
   insertData(data){
-    console.log(data);
     this.ast_initial = data.data.GetAssistantById.initial;
+  }
+
+  insertSummaryDataAssistant(data){
+    console.log(data.data);
+    if(data.data.GetAttendanceSummary != null){
+      // try{
+      //   data.data.GetAttendanceSummary.forEach(element => {
+      //     this.summary.push(element);
+      //   });
+      // }catch{
+        this.summary.push(data.data.GetAttendanceSummary);
+      // }
+
+      this.dataSource.data = this.summary;
+      console.log(this.summary);
+    }
+    this.opened = true;
+  }
+
+  insertSummaryDataLeader(data){
+    console.log(data.data);
+    if(data.data.GetAllAssistantAttendanceSummaryByLeader != null){
+      try{
+        data.data.GetAllAssistantAttendanceSummaryByLeader.forEach(element => {
+          this.summary.push(element);
+        });
+      }catch{
+        this.summary.push(data.data.GetAllAssistantAttendanceSummaryByLeader);
+      }
+
+      this.dataSource.data = this.summary;
+      console.log(this.summary);
+    }
+    this.opened = true;
+  }
+
+  insertSummaryData(data){
+    console.log(data.data);
+    if(data.data.GetAllAssistantAttendanceSummary != null){
+      try{
+        data.data.GetAllAssistantAttendanceSummary.forEach(element => {
+          this.summary.push(element);
+        });
+      }catch{
+        this.summary.push(data.data.GetAllAssistantAttendanceSummary);
+      }
+
+      this.dataSource.data = this.summary;
+      console.log(this.summary);
+    }
+    this.opened = true;
   }
 
   isOpen(){
@@ -108,7 +188,24 @@ export class SummaryComponent {
   }
 
   exportAsXLSX() {
+    this.excel = this.summary;
     this.excelService.exportAsExcelFile(this.excel, 'sample');
  }
+
+  getData(s){
+    if(s==null){
+      return 0;
+    }else{
+      return s;
+    }
+  }
+
+  getSubjectData(s){
+    if(s==null){
+      return 0;
+    }else{
+      return "ALL";
+    }
+  }
 
 }

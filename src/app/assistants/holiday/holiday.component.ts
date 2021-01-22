@@ -47,6 +47,7 @@ export class HolidayComponent implements OnInit {
          this.ELEMENT_DATA.push(element)
       });
        this.dataSource.data = this.ELEMENT_DATA;
+       console.log(this.ELEMENT_DATA);
     }
   }
 
