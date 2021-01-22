@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { element } from 'protractor';
 import { AssistantData } from 'src/app/common/assistant-model';
 import { GlobalConstants } from 'src/app/common/global-variable';
 import { LeaderData } from 'src/app/common/leader-model';
@@ -17,7 +18,7 @@ import { SummaryData } from '../../common/summary-model';
   styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent {
-
+  
   opened = false;
   minDate;
   maxDate;
@@ -33,6 +34,8 @@ export class SummaryComponent {
   dataSource = new MatTableDataSource<SummaryData>(this.summary);
 
   excel=[]; //Ini tempat simpen data yang mo di jadiin excel
+
+  row1 = [];
 
   constructor(
     private periodService: PeriodService,
@@ -188,8 +191,20 @@ export class SummaryComponent {
   }
 
   exportAsXLSX() {
+    // var t = document.querySelector("table");
+
+    // var obj = {};
+    // var row, rows = t.rows;
+    // for (var i=0, iLen=rows.length; i<iLen; i++) {
+    //   row = rows[i];
+    //   for (var j=0, jLen=rows.length; j<jLen; j++) {
+    //     obj[row.cells[j].textContent] = row.cells[j+1].textContent
+    //   }
+    // }
+
+    // console.log(JSON.stringify(obj));
     this.excel = this.summary;
-    this.excelService.exportAsExcelFile(this.excel, 'sample');
+    this.excelService.exportAsExcelFile(this.excel, 'report-summary');
  }
 
   getData(s){
@@ -197,14 +212,6 @@ export class SummaryComponent {
       return 0;
     }else{
       return s;
-    }
-  }
-
-  getSubjectData(s){
-    if(s==null){
-      return 0;
-    }else{
-      return "ALL";
     }
   }
 
