@@ -56,57 +56,57 @@
       
       <ng-container matColumnDef="ITM">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Ijin Telat Masuk </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in[0])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in.IT)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="LAM">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Lupa Absen Masuk </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in[1])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in.LM)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="TAM">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Telat Absen Masuk </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in[2])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in.TM)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="TM">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi Masuk </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in[3])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.in.TL)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="IP">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Izin Pulang </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out[0])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out.IP)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="LAP">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Lupa Absen Pulang </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out[1])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out.LP)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="TP">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi Pulang </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out[2])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.out.TP)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="CT">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Cuti </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special[0])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special.CT)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="SK">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Sakit </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special[1])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special.SK)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="TL">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Toleransi </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special[2])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special.TL)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="AL">
         <th mat-header-cell *matHeaderCellDef class="text-break text-center"> Alpha </th>
-        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special[3])}} </td>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{getData(element.special.AP)}} </td>
       </ng-container>
       
       <ng-container matColumnDef="unverified">
