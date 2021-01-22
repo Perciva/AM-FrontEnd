@@ -81,7 +81,6 @@ export class PeriodPageComponent implements AfterViewInit{
   }
 
   afterDelete(data){
-    alert(data.data.DeletePeriod? "Delete Success":"Delete Failed");
     location.reload();
   }
 

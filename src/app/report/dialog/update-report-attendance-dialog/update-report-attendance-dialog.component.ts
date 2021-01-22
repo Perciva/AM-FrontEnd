@@ -56,6 +56,19 @@ export class UpdateReportAttendanceDialogComponent{
 
   doUpdateReport(){
     var id = this.data.id;
+    if(this.in_permission != "" && this.in_permission_desc == ""){
+      this.error = "Fill In Permission Desc";
+      return;
+    }
+    if(this.out_permission != "" && this.out_permission_desc == ""){
+      this.error = "Fill Out Permission Desc";
+      return;
+    }
+    if(this.special_permission != "" && this.special_permission_desc == ""){
+      this.error = "Fill Special Permission Desc";
+      return;
+    }
+
     this.reportAttendanceService.UpdateAttendance(id, 
       this.in_permission, this.out_permission, this.special_permission, 
       this.in_permission_desc, this.out_permission_desc, this.special_permission_desc)

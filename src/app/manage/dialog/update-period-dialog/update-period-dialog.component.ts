@@ -25,6 +25,8 @@ export class UpdatePeriodDialogComponent {
   thisOther;
   thisYear;
 
+  err;
+
   constructor(
     public dialogRef: MatDialogRef<UpdatePeriodDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private periodData: PeriodData, private periodService: PeriodService) {
@@ -53,6 +55,7 @@ export class UpdatePeriodDialogComponent {
   
     doUpdatePeriod(){
       var period;
+      this.err = null;
       if(
           this.thisPeriod == null ||
           this.startDate.value == "" || 
@@ -60,7 +63,7 @@ export class UpdatePeriodDialogComponent {
           (this.thisPeriod==="Other" && this.thisOther == null) ||
           (this.thisPeriod != null && this.thisPeriod !="Other" && this.thisYear == null) 
         ){
-          alert("Some Field Empty");
+         this.err = "Some Field Empty";
         return;
       }
   
@@ -83,7 +86,7 @@ export class UpdatePeriodDialogComponent {
     }
 
     afterUpdate(data){
-      alert(data.data.UpdatePeriod? "Update Success":"Update Failed");
+      // alert(data.data.UpdatePeriod? "Update Success":"Update Failed");
       location.reload();
     } 
 
