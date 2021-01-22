@@ -15,7 +15,7 @@
         </mat-form-field>
 
         <mat-form-field *ngIf="isSelectedPeriod()">    
-            <input required matInput type="text" name="other" placeholder="Years" [(ngModel)]="year" [formControl]="selectedYear">
+            <input required matInput type="text" name="other" placeholder="Years" [(ngModel)]="thisYear" [formControl]="selectedYear">
         </mat-form-field>
 
         <mat-form-field>    

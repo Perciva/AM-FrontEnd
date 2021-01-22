@@ -29,8 +29,9 @@ export class AddDialogHolidayComponent implements OnInit {
 
   doAddHoliday(){
     var period_id = parseInt(localStorage.getItem(GlobalConstants.CURR_PERIOD));
+    this.err = null;
     if(this.description == null || this.formDate.value == null){
-      alert("Some Field Empty");
+      this.err = "Some Field Empty";
     }
     else{
       var exactDate = this.formatDate(this.date);

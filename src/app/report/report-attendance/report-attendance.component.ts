@@ -109,9 +109,9 @@ export class ReportAttendanceComponent {
     this.endDate = this.formatDate(this.endDate);
     var tempDate = this.startDate;
     do{
+      this.finalReport.push({date: tempDate, report: null});
       var temp = moment(tempDate).add(1, 'days')._d;
       tempDate = this.formatDate(temp);
-      this.finalReport.push({date: tempDate, report: null});
     }while(tempDate <= this.endDate);
       
     this.reportAttendanceService.GetAllAttendanceByDate(this.startDate, this.endDate, this.astId)
@@ -249,6 +249,9 @@ export class ReportAttendanceComponent {
       if(desc[0] == "Holiday"){
         return false;
       }
+      if( t.attendance.special_permission == "CT" || t.attendance.special_permission == "SK"){
+        return false;
+      }
       var shift = this.getWorkShift(s).split(" ");
       return t.attendance._in > shift[0];
     }
@@ -256,7 +259,7 @@ export class ReportAttendanceComponent {
   }
   
   getAnyInPermission(p1, p2){
-    if(p1 == null || p2 == null){
+    if(p1 == null && p2 == null){
       return false;
     }
     return p1.attendance.in_permission != "" || p2.attendance.special_permission != "";
@@ -268,6 +271,10 @@ export class ReportAttendanceComponent {
       if(desc[0] == "Holiday"){
         return false;
       }
+      if( t.attendance.special_permission == "CT" || t.attendance.special_permission == "SK"){
+        return false;
+      }
+
       var shift = this.getWorkShift(s).split(" ");
       return t.attendance._out < shift[2];
     }
@@ -275,7 +282,7 @@ export class ReportAttendanceComponent {
   }
   
   getAnyOutPermission(p1, p2){
-    if(p1 == null || p2 == null){
+    if(p1 == null && p2 == null){
       return false;
     }
     return p1.attendance.out_permission != "" || p2.attendance.special_permission != "";
@@ -284,34 +291,42 @@ export class ReportAttendanceComponent {
   getWorkShift(s){
     var day = this.getDayOfTheWeek(s);
     var msg = "00:00:00 - 00:00:00";
-    this.ast_data.shift.forEach(element => {
-      if(element.day == day){
-        msg = element._in + " - " + element._out;
+    if(this.ast_data!= null){
+      this.ast_data.shift.forEach(element => {
+        if(element.day == day){
+          msg = element._in + " - " + element._out;
+        }
+      });
+    }
+    if(this.report[0] != null){
+      var special = this.report[0].special_shift;
+      if(special != null){
+        for(var i = 0; i < special.length; i++){
+          if(s == special[i].date)
+          msg = special[i]._in + " - " + special[i]._out;
+        }
       }
-    });
-    var special = this.report[0].special_shift;
-    if(special != null){
-      for(var i = 0; i < special.length; i++){
-        if(s == special[i].date)
-        msg = special[i]._in + " - " + special[i]._out;
-      }
+
     }
     return msg;
   }
 
   doUpdate(element){
-    console.log(element.attendance);
-    const dialogRef = this.dialog.open(UpdateReportAttendanceDialogComponent, {
-      width: '500px',
-      maxHeight: '600px',
-      data: element.attendance 
-    });
+    if(element!=null){
+      console.log(element.attendance);
+      const dialogRef = this.dialog.open(UpdateReportAttendanceDialogComponent, {
+        width: '500px',
+        maxHeight: '600px',
+        data: element.attendance 
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      location.reload();
-      // console.log('The dialog was closed');
-      // console.log(result)
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        location.reload();
+        // console.log('The dialog was closed');
+        // console.log(result)
+      });
+      
+    }
   }
 
   formatDate(date) {

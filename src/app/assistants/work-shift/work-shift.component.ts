@@ -162,7 +162,6 @@ export class WorkShiftComponent implements OnInit {
         await this.afterDelete(data);
       }
     );
-    location.reload();
   }
   
   isAllSelected() {

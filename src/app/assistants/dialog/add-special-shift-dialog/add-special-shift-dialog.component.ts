@@ -43,11 +43,7 @@ export class AddSpecialShiftDialogComponent {
   }
 
   doAddShift(){
-    var invalueArr = this.timeIn.split(':');
-    var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2];
-    var outvalueArr = this.timeOut.split(':');
-    var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2];
-
+    
     this.error = [];
     if(this.day == null || this.timeIn == null || this.timeOut == null || this.assistants == null || this.description == null){
       this.error.push("Some Field Empty");
@@ -55,6 +51,10 @@ export class AddSpecialShiftDialogComponent {
       this.error.push("In Time must be before Out Time");
     }
     else{
+      var invalueArr = this.timeIn.split(':');
+      var invalue = invalueArr[0]+invalueArr[1]+invalueArr[2];
+      var outvalueArr = this.timeOut.split(':');
+      var outvalue = outvalueArr[0]+outvalueArr[1]+outvalueArr[2];
       var start = moment(this.day).add(7, 'hours')._d;
       
       console.log("Period " + this.period_id)
@@ -67,15 +67,16 @@ export class AddSpecialShiftDialogComponent {
       this.specialShiftService.InsertSpecialShift(this.period_id, this.description, this.assistants, start, this.timeIn, this.timeOut)
       .subscribe(
         async data =>{
-          console.log(data.data.InsertSpecialShift)
+          this.afterInsert(data);
         }
-      );  
+        );  
+      }
     }
-  }
-  
+    
   afterInsert(data){
+    console.log(data.data.InsertSpecialShift)
     if(data.data.InsertSpecialShift != null && data.data.InsertSpecialShift != "Success"){
-      this.error = data.data.InsertSpecialShift.split(",");
+      this.error.push(data.data.InsertSpecialShift);
     }
     else{
       this.error = null;
