@@ -36,10 +36,14 @@ export class AttendanceComponent implements OnInit {
     this.formStr= new FormControl('', [Validators.required]);
   }
 
-  previewData(data){
+  previewData(){
+    if(this.str == "" || this.str == null){
+      this.loaded = false;
+      return;
+    }
     this.loaded = true;
-    console.log(data);
-    this.strArrayEnter = data.split('\n');
+    console.log(this.str);
+    this.strArrayEnter = this.str.split('\n');
     var temp= [];
     this.strArrayEnter.forEach(element => {
       this.strArrayComma = element.split(',');

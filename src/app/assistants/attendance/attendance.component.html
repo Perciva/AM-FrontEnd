@@ -1,11 +1,9 @@
-<div class="data">
+<div class="data mat-elevation-z8">
     <div class="container d-flex justify-content-start m-2">
         <label class="title">Insert Attendances</label>
     </div>
-    <div class="container d-flex justify-content-start m-2">
+    <div class="container d-flex justify-content-start m-2 flex-column">
         <label class="title-csv">CSV</label>
-    </div>
-    <div class="container d-flex justify-content-start m-2">
         <textarea cols="120" rows="10" [(ngModel)]="str" [formControl]="formStr"></textarea>
     </div>
     <div class="container d-flex justify-content-start m-2">
@@ -13,20 +11,15 @@
             Earliest time will become in time and latest time will become out time, unless compared to '00:00:00', then the other compared time will always be taken. If out time is earlier than in time, than out time will be taken as in time instead. The same logic applies to in time. Only attendances in current period 2020-08-14 - 2020-09-12) will be accepted.
         </label>
     </div>
-    <div class="container d-flex justify-content-start m-2">
+    <div class="container d-flex justify-content-start m-2 flex-column">
         <label>Input will be distinguished by assistant and date.</label>
-    </div>
-    <div class="container d-flex justify-content-start m-2">
         <label>All time comparisons have taken previous saved attendance times on the server into account.</label>
-    </div>
-    <div class="container d-flex justify-content-start m-2">
         <label>The parsed result in preview table can be edited before saving to server.</label>
+        <label>Format: Initial. Date, In, Out</label>
+        <label>Example: YK13-0, 2016-01-13, 07:00:00, 15:00:00</label>
     </div>
-    <div class="container d-flex justify-content-start m-2">
-        <label>Format: Initial. Date, In, Out Example: YK13-0, 2016-01-13, 07:00:00, 15:00:00</label>
-    </div>
-    <div class="container d-flex justify-content-start m-2">
-        <button class="btn btn-light" (click)="previewData(formStr.value)">
+    <div class="container d-flex justify-content-center m-2">
+        <button class="btn btn-outline-dark" (click)="previewData()">
             Preview
         </button>
     </div>
@@ -56,8 +49,8 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
-    <div class="container d-flex justify-content-start m-2" *ngIf="loaded == true">
-        <button class="btn btn-light" (click)="doAddAttendance()">
+    <div class="container d-flex justify-content-center m-2" *ngIf="loaded == true">
+        <button class="btn btn-primary" (click)="doAddAttendance()">
             Save
         </button>
     </div>
