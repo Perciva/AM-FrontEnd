@@ -114,7 +114,6 @@ export class WorkShiftComponent implements OnInit {
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
       this.retrieveNewShift();
-      alert("Done");
       location.reload();
     }
   }

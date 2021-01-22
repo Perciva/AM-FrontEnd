@@ -94,3 +94,9 @@
 
     </div>
 </div>
+
+
+<div *ngIf="CURR_PROG != 0 || FLAG_DONE != 0" class="waitingScreen d-flex justify-content-center align-items-center flex-column">
+    <h1>Please Wait</h1>
+    <mat-spinner></mat-spinner>
+</div>
