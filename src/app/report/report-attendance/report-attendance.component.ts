@@ -231,7 +231,7 @@ export class ReportAttendanceComponent {
         }
       }
     }
-    if(!flag){
+    if(!flag && this.report[0] != null){
       var special = this.report[0].special_shift;
       if(special != null){
         for(var i = 0; i < special.length; i++){
