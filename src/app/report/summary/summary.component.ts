@@ -193,10 +193,10 @@ export class SummaryComponent {
  }
 
   getData(s){
-    if(s==null){
-      return 0;
-    }else{
+    if(s!=null){
       return s;
+    }else{
+      return 0;
     }
   }
 
