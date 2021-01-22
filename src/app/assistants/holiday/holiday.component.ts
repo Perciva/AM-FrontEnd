@@ -100,7 +100,6 @@ export class HolidayComponent implements OnInit {
   removeFlag(){
     this.CURR_PROG--;
     if(this.FLAG_DONE == 0 && this.CURR_PROG==0){
-      alert("Done");
       location.reload();
     }
   }

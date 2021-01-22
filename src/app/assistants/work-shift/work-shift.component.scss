@@ -21,3 +21,17 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+.waitingScreen{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color: black, $alpha: 0.5);
+  position: fixed;
+  top: 0;
+  left:  0;
+  z-index: 5;
+}
+
+h1{
+    color: white;
+}

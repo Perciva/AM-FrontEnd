@@ -24,6 +24,8 @@ export class AddPeriodDialogComponent{
   thisOther;
   thisYear;
 
+  err;
+
   constructor(public dialogRef: MatDialogRef<AddPeriodDialogComponent>,
     private periodService: PeriodService) {
         this.selectedPeriod= new FormControl('', [Validators.required]);
@@ -47,6 +49,7 @@ export class AddPeriodDialogComponent{
   }
 
   doAddPeriod(){
+    this.err = null;
     var period;
     if(
         this.thisPeriod == null ||
@@ -55,7 +58,7 @@ export class AddPeriodDialogComponent{
         (this.thisPeriod==="Other" && this.thisOther == null) ||
         (this.thisPeriod != null && this.thisPeriod !="Other" && this.thisYear == null) 
       ){
-        alert("Some Field Empty");
+        this.err = "Some Field Empty";
       return;
     }
 
@@ -73,8 +76,10 @@ export class AddPeriodDialogComponent{
     subscribe(async data => {
       await this.dialogRef.close();
     });
+  }
 
-    
+  isErr(){
+    return this.err != null;
   }
 
 }
